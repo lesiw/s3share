@@ -5,7 +5,6 @@ import (
 	"context"
 	"io"
 	"io/fs"
-	"os"
 	"testing"
 
 	s3manager "github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -26,9 +25,7 @@ func mockIO(t *testing.T) {
 	t.Cleanup(func() { Args = realArgs })
 	Args = []string{"s3share", "somefile"}
 
-	realEnvVal := os.Getenv("S3SHARE_BUCKET")
-	t.Cleanup(func() { os.Setenv("S3SHARE_BUCKET", realEnvVal) })
-	os.Setenv("S3SHARE_BUCKET", "somebucket")
+	t.Setenv("S3SHARE_BUCKET", "somebucket")
 
 	realSetupS3Client := setupS3Client
 	t.Cleanup(func() { setupS3Client = realSetupS3Client })
