@@ -18,11 +18,12 @@ type nopCloser struct {
 func (nopCloser) Close() error { mockFileClosed = true; return nil }
 
 var mockFileClosed bool
-var mockFileReadSeekCloser io.ReadSeekCloser
 var mockFileData = []byte("filedata")
 var mockFileDataEncoded = "M_PXf7Ma7qaZMzw6v2PyyFjL4omBIN0xN2lHGWjh7Ag"
 
 func mockIO(t *testing.T) {
+	mockFileClosed = false
+
 	realArgs := Args
 	t.Cleanup(func() { Args = realArgs })
 	Args = []string{"s3share", "somefile"}
@@ -41,14 +42,11 @@ func mockIO(t *testing.T) {
 		return nil, nil
 	}
 
-	mockFileClosed = false
-	mockFileBuf := bytes.NewReader(mockFileData)
-	mockFileReadSeekCloser := nopCloser{mockFileBuf}
 	realFileReadSeekCloser := fileReadSeekCloser
-
 	t.Cleanup(func() { fileReadSeekCloser = realFileReadSeekCloser })
 	fileReadSeekCloser = func(string) (io.ReadSeekCloser, error) {
-		return mockFileReadSeekCloser, nil
+		buf := bytes.NewReader(mockFileData)
+		return nopCloser{buf}, nil
 	}
 
 	realS3HeadObject := s3HeadObject
