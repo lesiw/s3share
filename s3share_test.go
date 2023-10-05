@@ -130,6 +130,7 @@ func TestKeyDoesNotExist(t *testing.T) {
 	assert.Equal(t, bucket, "somebucket")
 	assert.Equal(t, key, mockFileDataEncoded+"/somefile")
 	assert.Equal(t, calledS3PutObject, true)
+	assert.Equal(t, mockFileClosed, true)
 }
 
 func TestHeadObjectFailure(t *testing.T) {
@@ -157,6 +158,7 @@ func TestHeadObjectFailure(t *testing.T) {
 	assert.Equal(t, bucket, "somebucket")
 	assert.Equal(t, key, mockFileDataEncoded+"/somefile")
 	assert.Equal(t, calledS3PutObject, false)
+	assert.Equal(t, mockFileClosed, true)
 }
 
 func TestSuccess(t *testing.T) {
@@ -165,4 +167,5 @@ func TestSuccess(t *testing.T) {
 	err := run()
 
 	assert.NilError(t, err)
+	assert.Equal(t, mockFileClosed, true)
 }
