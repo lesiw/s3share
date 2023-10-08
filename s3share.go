@@ -70,7 +70,9 @@ func uploadFileToBucket(ctx context.Context, path string, bucket string) (string
 		return objectUrl(bucket, key), nil
 	}
 
-	file.Seek(0, io.SeekStart)
+	if _, err = file.Seek(0, io.SeekStart); err != nil {
+		return "", err
+	}
 
 	s3PutObject(ctx, &s3.PutObjectInput{
 		Bucket: &bucket,
