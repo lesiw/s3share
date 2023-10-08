@@ -74,12 +74,15 @@ func uploadFileToBucket(ctx context.Context, path string, bucket string) (string
 		return "", err
 	}
 
-	s3PutObject(ctx, &s3.PutObjectInput{
+	_, err = s3PutObject(ctx, &s3.PutObjectInput{
 		Bucket: &bucket,
 		Key:    &key,
 		Body:   file,
 		ACL:    s3types.ObjectCannedACLPublicRead,
 	})
+	if err != nil {
+		return "", err
+	}
 
 	return objectUrl(bucket, key), nil
 }
