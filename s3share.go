@@ -16,20 +16,20 @@ import (
 )
 
 var s3Client *s3.Client
-var helpErr = errors.New(`s3share [file]
+var errHelp = errors.New(`s3share [file]
 
 Uploads files to an S3 bucket specified in the environment variable S3SHARE_BUCKET.`)
-var envNotSetErr = errors.New("S3SHARE_BUCKET environment variable not set.")
+var errEnvNotSet = errors.New("S3SHARE_BUCKET environment variable not set.")
 
 func run() (err error) {
 	ctx := context.Background()
 
 	if len(Args) < 2 {
-		return helpErr
+		return errHelp
 	}
 	bucket := os.Getenv("S3SHARE_BUCKET")
 	if bucket == "" {
-		return envNotSetErr
+		return errEnvNotSet
 	}
 
 	s3Client, err = setupS3Client(ctx)

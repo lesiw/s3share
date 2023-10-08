@@ -18,7 +18,7 @@ func TestRunNoArgs(t *testing.T) {
 
 	Args = []string{}
 	err := run()
-	assert.ErrorIs(t, err, helpErr)
+	assert.ErrorIs(t, err, errHelp)
 }
 
 func TestRunNoEnv(t *testing.T) {
@@ -26,7 +26,7 @@ func TestRunNoEnv(t *testing.T) {
 
 	t.Setenv("S3SHARE_BUCKET", "")
 	err := run()
-	assert.ErrorIs(t, err, envNotSetErr)
+	assert.ErrorIs(t, err, errEnvNotSet)
 }
 
 func TestSetupS3Called(t *testing.T) {
