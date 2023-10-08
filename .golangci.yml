@@ -2,10 +2,11 @@ linters:
   enable:
     - errname
     - gocheckcompilerdirectives
+    - gocritic
     - gocyclo
+    - godot
     - lll
     - makezero
-    - godot
 
 linters-settings:
   gocyclo:
