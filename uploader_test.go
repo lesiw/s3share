@@ -24,7 +24,7 @@ func TestRunNoArgs(t *testing.T) {
 
 func TestRunNoEnv(t *testing.T) {
 	r := newTestRun(t)
-	t.Setenv("S3SHARE_BUCKET", "")
+	r.Uploader.Getenv = func(string) string { return "" }
 
 	err := run(r.Uploader)
 

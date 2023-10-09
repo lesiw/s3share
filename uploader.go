@@ -29,6 +29,7 @@ type Uploader struct {
 	Context context.Context
 
 	// IO functions.
+	Getenv     func(string) string
 	HeadObject func(*s3.HeadObjectInput) (*s3.HeadObjectOutput, error)
 	OpenFile   func(string) (io.ReadSeekCloser, error)
 	Println    func(...any) (int, error)

@@ -17,6 +17,14 @@ func main() {
 	}
 }
 
+func (u *Uploader) getenv(name string) string {
+	if u.Getenv != nil {
+		return u.Getenv(name)
+	}
+
+	return os.Getenv(name)
+}
+
 func (u *Uploader) args() []string {
 	if u.Args != nil {
 		return *u.Args

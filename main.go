@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"os"
 )
 
 func run(u *Uploader) error {
@@ -12,7 +11,7 @@ func run(u *Uploader) error {
 		return errHelp
 	}
 
-	u.Bucket = os.Getenv("S3SHARE_BUCKET")
+	u.Bucket = u.getenv("S3SHARE_BUCKET")
 	if u.Bucket == "" {
 		return errEnvNotSet
 	}

@@ -50,6 +50,8 @@ var testUploader = &Uploader{
 }
 
 func newTestRun(t *testing.T) *testRun {
+	t.Parallel()
+
 	u := testUploader.Clone()
 	run := &testRun{Uploader: u}
 
@@ -60,6 +62,12 @@ func newTestRun(t *testing.T) *testRun {
 	}
 	run.MockFile = &mockFile
 
+	u.Getenv = func(name string) string {
+		if name == "S3SHARE_BUCKET" {
+			return "somebucket"
+		}
+		return ""
+	}
 	u.OpenFile = func(string) (io.ReadSeekCloser, error) {
 		return run.MockFile, nil
 	}
@@ -80,8 +88,6 @@ func newTestRun(t *testing.T) *testRun {
 		run.UploadFileCalls = append(run.UploadFileCalls, file)
 		return "", nil
 	}
-
-	t.Setenv("S3SHARE_BUCKET", "somebucket")
 
 	return run
 }
