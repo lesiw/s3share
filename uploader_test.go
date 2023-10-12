@@ -170,6 +170,7 @@ func TestUploadFileObjectPutError(t *testing.T) {
 	assert.Equal(t, *r.PutObjectCalls[0].Key, mockFileDataEncoded+"/somefile")
 	assert.Equal(t, r.PutObjectCalls[0].ACL, s3types.ObjectCannedACLPublicRead)
 }
+
 func TestObjectExistsHeadSuccess(t *testing.T) {
 	r := newTestRun(t)
 

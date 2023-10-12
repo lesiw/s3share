@@ -99,7 +99,6 @@ func (u *Uploader) objectExists(key string) (bool, error) {
 		Bucket: &u.Bucket,
 		Key:    &key,
 	})
-
 	if err != nil {
 		var apiErr smithy.APIError
 		if errors.As(err, &apiErr) && apiErr.ErrorCode() == "NotFound" {
