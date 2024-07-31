@@ -25,7 +25,7 @@ type Uploader struct {
 	// Variables.
 	Args    *[]string
 	Bucket  string
-	Client  *s3.Client
+	Client  *S3Client
 	Context context.Context
 
 	// IO functions.
@@ -40,6 +40,10 @@ type Uploader struct {
 	ObjectExists func(string) (bool, error)
 	SetupClient  func() error
 	UploadFile   func(string) (string, error)
+}
+
+type S3Client struct {
+	*s3.Client
 }
 
 func (u *Uploader) uploadFile(path string) (string, error) {
