@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"io"
 	"io/fs"
@@ -175,11 +176,16 @@ func TestObjectExistsHeadSuccess(t *testing.T) {
 	r := newTestRun(t)
 
 	var bucket, key string
-	r.Uploader.HeadObject = func(input *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
+	r.Uploader.Client = new(S3Client)
+	r.Uploader.Client._HeadObject_Patch(func(
+		_ context.Context,
+		input *s3.HeadObjectInput,
+		_ ...func(*s3.Options),
+	) (*s3.HeadObjectOutput, error) {
 		bucket = *input.Bucket
 		key = *input.Key
 		return nil, nil
-	}
+	})
 
 	r.Uploader.ObjectExists = nil
 	exists, err := r.Uploader.objectExists("some/key")
@@ -194,11 +200,16 @@ func TestObjectExistsHeadFailure(t *testing.T) {
 	r := newTestRun(t)
 
 	var bucket, key string
-	r.Uploader.HeadObject = func(input *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
+	r.Uploader.Client = new(S3Client)
+	r.Uploader.Client._HeadObject_Patch(func(
+		_ context.Context,
+		input *s3.HeadObjectInput,
+		_ ...func(*s3.Options),
+	) (*s3.HeadObjectOutput, error) {
 		bucket = *input.Bucket
 		key = *input.Key
 		return nil, &smithy.GenericAPIError{Code: "NotFound"}
-	}
+	})
 
 	r.Uploader.ObjectExists = nil
 	exists, err := r.Uploader.objectExists("some/key")
@@ -214,11 +225,16 @@ func TestObjectExistsUnexpectedError(t *testing.T) {
 
 	headErr := errors.New("mock error")
 	var bucket, key string
-	r.Uploader.HeadObject = func(input *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
+	r.Uploader.Client = new(S3Client)
+	r.Uploader.Client._HeadObject_Patch(func(
+		_ context.Context,
+		input *s3.HeadObjectInput,
+		_ ...func(*s3.Options),
+	) (*s3.HeadObjectOutput, error) {
 		bucket = *input.Bucket
 		key = *input.Key
 		return nil, headErr
-	}
+	})
 
 	r.Uploader.ObjectExists = nil
 	_, err := r.Uploader.objectExists("some/key")

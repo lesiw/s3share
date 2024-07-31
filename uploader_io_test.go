@@ -41,9 +41,6 @@ var testUploader = &Uploader{
 	Bucket:  "somebucket",
 	Context: context.Background(),
 
-	HeadObject: func(*s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
-		return &s3.HeadObjectOutput{}, nil
-	},
 	Stat: func(string) (fs.FileInfo, error) {
 		return nil, nil
 	},

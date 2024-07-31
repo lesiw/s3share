@@ -29,12 +29,11 @@ type Uploader struct {
 	Context context.Context
 
 	// IO functions.
-	Getenv     func(string) string
-	HeadObject func(*s3.HeadObjectInput) (*s3.HeadObjectOutput, error)
-	OpenFile   func(string) (io.ReadSeekCloser, error)
-	Println    func(...any) (int, error)
-	PutObject  func(*s3.PutObjectInput) (*s3manager.UploadOutput, error)
-	Stat       func(string) (os.FileInfo, error)
+	Getenv    func(string) string
+	OpenFile  func(string) (io.ReadSeekCloser, error)
+	Println   func(...any) (int, error)
+	PutObject func(*s3.PutObjectInput) (*s3manager.UploadOutput, error)
+	Stat      func(string) (os.FileInfo, error)
 
 	// Internal functions.
 	ObjectExists func(string) (bool, error)
@@ -121,11 +120,10 @@ func (u *Uploader) Clone() *Uploader {
 		Client:  u.Client,
 		Context: u.Context,
 
-		HeadObject: u.HeadObject,
-		OpenFile:   u.OpenFile,
-		Println:    u.Println,
-		PutObject:  u.PutObject,
-		Stat:       u.Stat,
+		OpenFile:  u.OpenFile,
+		Println:   u.Println,
+		PutObject: u.PutObject,
+		Stat:      u.Stat,
 
 		ObjectExists: u.ObjectExists,
 		SetupClient:  u.SetupClient,

@@ -1,6 +1,6 @@
 module s3share
 
-go 1.21.0
+go 1.22.5
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.43
@@ -8,6 +8,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.40.0
 	github.com/aws/smithy-go v1.14.2
 	gotest.tools/v3 v3.5.1
+	labs.lesiw.io/ops v0.0.0-20240728191215-eec8c4bbe3a4
+	lesiw.io/ops v0.7.0
 )
 
 require (
@@ -28,4 +30,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.23.0 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	golang.org/x/sync v0.7.0 // indirect
+	lesiw.io/clerk v0.1.0 // indirect
+	lesiw.io/cmdio v0.0.0-20240723224912-c34a917524ae // indirect
+	lesiw.io/flag v0.7.0 // indirect
 )

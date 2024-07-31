@@ -58,15 +58,11 @@ func (u *Uploader) setupClient() error {
 	if err != nil {
 		return err
 	}
-	u.Client = s3.NewFromConfig(cfg)
+	u.Client.Client = s3.NewFromConfig(cfg)
 	return nil
 }
 
 func (u *Uploader) headObject(in *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
-	if u.HeadObject != nil {
-		return u.HeadObject(in)
-	}
-
 	if u.Client == nil {
 		if err := u.setupClient(); err != nil {
 			return nil, err
