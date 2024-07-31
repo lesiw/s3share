@@ -1,16 +1,18 @@
 linters:
   enable:
     - errname
+    - errcheck
     - gocheckcompilerdirectives
-    - gocritic
     - gocyclo
-    - godot
     - lll
     - makezero
+    - godot
+    - unparam
+    - unused
 
 linters-settings:
   gocyclo:
     min-complexity: 15
   lll:
-    tab-width: 8
-    line-length: 99
+    tab-width: 4
+    line-length: 79
