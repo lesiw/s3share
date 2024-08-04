@@ -3,11 +3,11 @@
 package main
 
 import (
+	context "context"
+	s3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	runtime "runtime"
 	sync "sync"
 	unsafe "unsafe"
-	context "context"
-	s3 "github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 var _s3Client = new(sync.Map)
