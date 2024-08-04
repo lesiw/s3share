@@ -25,7 +25,7 @@ type Uploader struct {
 	// Variables.
 	Args    *[]string
 	Bucket  string
-	Client  *S3Client
+	Client  *s3Client
 	Context context.Context
 
 	// IO functions.
@@ -41,7 +41,8 @@ type Uploader struct {
 	UploadFile   func(string) (string, error)
 }
 
-type S3Client struct {
+//go:generate go run lesiw.io/moxie@latest s3Client
+type s3Client struct {
 	*s3.Client
 }
 

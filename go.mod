@@ -28,10 +28,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.15.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.17.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.23.0 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	golang.org/x/mod v0.19.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
+	golang.org/x/tools v0.23.0 // indirect
 	lesiw.io/clerk v0.1.0 // indirect
 	lesiw.io/cmdio v0.0.0-20240723224912-c34a917524ae // indirect
 	lesiw.io/flag v0.7.0 // indirect
+	lesiw.io/moxie v0.5.0 // indirect
 )

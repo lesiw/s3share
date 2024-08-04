@@ -176,8 +176,8 @@ func TestObjectExistsHeadSuccess(t *testing.T) {
 	r := newTestRun(t)
 
 	var bucket, key string
-	r.Uploader.Client = new(S3Client)
-	r.Uploader.Client._HeadObject_Patch(func(
+	r.Uploader.Client = new(s3Client)
+	r.Uploader.Client._HeadObject_Do(func(
 		_ context.Context,
 		input *s3.HeadObjectInput,
 		_ ...func(*s3.Options),
@@ -200,8 +200,8 @@ func TestObjectExistsHeadFailure(t *testing.T) {
 	r := newTestRun(t)
 
 	var bucket, key string
-	r.Uploader.Client = new(S3Client)
-	r.Uploader.Client._HeadObject_Patch(func(
+	r.Uploader.Client = new(s3Client)
+	r.Uploader.Client._HeadObject_Do(func(
 		_ context.Context,
 		input *s3.HeadObjectInput,
 		_ ...func(*s3.Options),
@@ -225,8 +225,8 @@ func TestObjectExistsUnexpectedError(t *testing.T) {
 
 	headErr := errors.New("mock error")
 	var bucket, key string
-	r.Uploader.Client = new(S3Client)
-	r.Uploader.Client._HeadObject_Patch(func(
+	r.Uploader.Client = new(s3Client)
+	r.Uploader.Client._HeadObject_Do(func(
 		_ context.Context,
 		input *s3.HeadObjectInput,
 		_ ...func(*s3.Options),

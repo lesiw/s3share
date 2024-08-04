@@ -3,2246 +3,6164 @@
 package main
 
 import (
+	runtime "runtime"
+	sync "sync"
 	unsafe "unsafe"
 	context "context"
 	s3 "github.com/aws/aws-sdk-go-v2/service/s3"
-	sync "sync"
 )
 
-var _S3Client = new(sync.Map)
-
-type _S3ClientData struct {
-	AbortMultipartUploadOverride func(ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)
-	CompleteMultipartUploadOverride func(ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)
-	CopyObjectOverride func(ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error)
-	CreateBucketOverride func(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error)
-	CreateMultipartUploadOverride func(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)
-	DeleteBucketOverride func(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)
-	DeleteBucketAnalyticsConfigurationOverride func(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)
-	DeleteBucketCorsOverride func(ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)
-	DeleteBucketEncryptionOverride func(ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)
-	DeleteBucketIntelligentTieringConfigurationOverride func(ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)
-	DeleteBucketInventoryConfigurationOverride func(ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)
-	DeleteBucketLifecycleOverride func(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)
-	DeleteBucketMetricsConfigurationOverride func(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)
-	DeleteBucketOwnershipControlsOverride func(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)
-	DeleteBucketPolicyOverride func(ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)
-	DeleteBucketReplicationOverride func(ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)
-	DeleteBucketTaggingOverride func(ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)
-	DeleteBucketWebsiteOverride func(ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)
-	DeleteObjectOverride func(ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)
-	DeleteObjectTaggingOverride func(ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)
-	DeleteObjectsOverride func(ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)
-	DeletePublicAccessBlockOverride func(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)
-	GetBucketAccelerateConfigurationOverride func(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)
-	GetBucketAclOverride func(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)
-	GetBucketAnalyticsConfigurationOverride func(ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)
-	GetBucketCorsOverride func(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)
-	GetBucketEncryptionOverride func(ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)
-	GetBucketIntelligentTieringConfigurationOverride func(ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)
-	GetBucketInventoryConfigurationOverride func(ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)
-	GetBucketLifecycleConfigurationOverride func(ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)
-	GetBucketLocationOverride func(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)
-	GetBucketLoggingOverride func(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)
-	GetBucketMetricsConfigurationOverride func(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)
-	GetBucketNotificationConfigurationOverride func(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)
-	GetBucketOwnershipControlsOverride func(ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)
-	GetBucketPolicyOverride func(ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)
-	GetBucketPolicyStatusOverride func(ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)
-	GetBucketReplicationOverride func(ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)
-	GetBucketRequestPaymentOverride func(ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)
-	GetBucketTaggingOverride func(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)
-	GetBucketVersioningOverride func(ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)
-	GetBucketWebsiteOverride func(ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)
-	GetObjectOverride func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)
-	GetObjectAclOverride func(ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)
-	GetObjectAttributesOverride func(ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)
-	GetObjectLegalHoldOverride func(ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)
-	GetObjectLockConfigurationOverride func(ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)
-	GetObjectRetentionOverride func(ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)
-	GetObjectTaggingOverride func(ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)
-	GetObjectTorrentOverride func(ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)
-	GetPublicAccessBlockOverride func(ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)
-	HeadBucketOverride func(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error)
-	HeadObjectOverride func(ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error)
-	ListBucketAnalyticsConfigurationsOverride func(ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)
-	ListBucketIntelligentTieringConfigurationsOverride func(ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)
-	ListBucketInventoryConfigurationsOverride func(ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)
-	ListBucketMetricsConfigurationsOverride func(ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)
-	ListBucketsOverride func(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
-	ListMultipartUploadsOverride func(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)
-	ListObjectVersionsOverride func(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)
-	ListObjectsOverride func(ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error)
-	ListObjectsV2Override func(ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)
-	ListPartsOverride func(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error)
-	PutBucketAccelerateConfigurationOverride func(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)
-	PutBucketAclOverride func(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)
-	PutBucketAnalyticsConfigurationOverride func(ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)
-	PutBucketCorsOverride func(ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)
-	PutBucketEncryptionOverride func(ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)
-	PutBucketIntelligentTieringConfigurationOverride func(ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)
-	PutBucketInventoryConfigurationOverride func(ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)
-	PutBucketLifecycleConfigurationOverride func(ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)
-	PutBucketLoggingOverride func(ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)
-	PutBucketMetricsConfigurationOverride func(ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)
-	PutBucketNotificationConfigurationOverride func(ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)
-	PutBucketOwnershipControlsOverride func(ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)
-	PutBucketPolicyOverride func(ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)
-	PutBucketReplicationOverride func(ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)
-	PutBucketRequestPaymentOverride func(ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)
-	PutBucketTaggingOverride func(ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)
-	PutBucketVersioningOverride func(ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)
-	PutBucketWebsiteOverride func(ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)
-	PutObjectOverride func(ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error)
-	PutObjectAclOverride func(ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)
-	PutObjectLegalHoldOverride func(ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)
-	PutObjectLockConfigurationOverride func(ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)
-	PutObjectRetentionOverride func(ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)
-	PutObjectTaggingOverride func(ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)
-	PutPublicAccessBlockOverride func(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)
-	RestoreObjectOverride func(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)
-	SelectObjectContentOverride func(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)
-	UploadPartOverride func(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error)
-	UploadPartCopyOverride func(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)
-	WriteGetObjectResponseOverride func(ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)
-}
-
-func (_recv *S3Client) AbortMultipartUpload(ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) {
-	if _recv == nil {
-		panic("S3Client.AbortMultipartUpload: nil pointer receiver")
+var _s3Client = new(sync.Map)
+
+type _s3ClientData struct {
+	mutex sync.Mutex
+	once sync.Once
+	AbortMultipartUploadMocks []func(ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)
+	AbortMultipartUploadCalls []_s3Client_AbortMultipartUpload_Call
+	CompleteMultipartUploadMocks []func(ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)
+	CompleteMultipartUploadCalls []_s3Client_CompleteMultipartUpload_Call
+	CopyObjectMocks []func(ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error)
+	CopyObjectCalls []_s3Client_CopyObject_Call
+	CreateBucketMocks []func(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error)
+	CreateBucketCalls []_s3Client_CreateBucket_Call
+	CreateMultipartUploadMocks []func(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)
+	CreateMultipartUploadCalls []_s3Client_CreateMultipartUpload_Call
+	DeleteBucketMocks []func(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)
+	DeleteBucketCalls []_s3Client_DeleteBucket_Call
+	DeleteBucketAnalyticsConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)
+	DeleteBucketAnalyticsConfigurationCalls []_s3Client_DeleteBucketAnalyticsConfiguration_Call
+	DeleteBucketCorsMocks []func(ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)
+	DeleteBucketCorsCalls []_s3Client_DeleteBucketCors_Call
+	DeleteBucketEncryptionMocks []func(ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)
+	DeleteBucketEncryptionCalls []_s3Client_DeleteBucketEncryption_Call
+	DeleteBucketIntelligentTieringConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)
+	DeleteBucketIntelligentTieringConfigurationCalls []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call
+	DeleteBucketInventoryConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)
+	DeleteBucketInventoryConfigurationCalls []_s3Client_DeleteBucketInventoryConfiguration_Call
+	DeleteBucketLifecycleMocks []func(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)
+	DeleteBucketLifecycleCalls []_s3Client_DeleteBucketLifecycle_Call
+	DeleteBucketMetricsConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)
+	DeleteBucketMetricsConfigurationCalls []_s3Client_DeleteBucketMetricsConfiguration_Call
+	DeleteBucketOwnershipControlsMocks []func(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)
+	DeleteBucketOwnershipControlsCalls []_s3Client_DeleteBucketOwnershipControls_Call
+	DeleteBucketPolicyMocks []func(ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)
+	DeleteBucketPolicyCalls []_s3Client_DeleteBucketPolicy_Call
+	DeleteBucketReplicationMocks []func(ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)
+	DeleteBucketReplicationCalls []_s3Client_DeleteBucketReplication_Call
+	DeleteBucketTaggingMocks []func(ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)
+	DeleteBucketTaggingCalls []_s3Client_DeleteBucketTagging_Call
+	DeleteBucketWebsiteMocks []func(ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)
+	DeleteBucketWebsiteCalls []_s3Client_DeleteBucketWebsite_Call
+	DeleteObjectMocks []func(ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)
+	DeleteObjectCalls []_s3Client_DeleteObject_Call
+	DeleteObjectTaggingMocks []func(ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)
+	DeleteObjectTaggingCalls []_s3Client_DeleteObjectTagging_Call
+	DeleteObjectsMocks []func(ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)
+	DeleteObjectsCalls []_s3Client_DeleteObjects_Call
+	DeletePublicAccessBlockMocks []func(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)
+	DeletePublicAccessBlockCalls []_s3Client_DeletePublicAccessBlock_Call
+	GetBucketAccelerateConfigurationMocks []func(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)
+	GetBucketAccelerateConfigurationCalls []_s3Client_GetBucketAccelerateConfiguration_Call
+	GetBucketAclMocks []func(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)
+	GetBucketAclCalls []_s3Client_GetBucketAcl_Call
+	GetBucketAnalyticsConfigurationMocks []func(ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)
+	GetBucketAnalyticsConfigurationCalls []_s3Client_GetBucketAnalyticsConfiguration_Call
+	GetBucketCorsMocks []func(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)
+	GetBucketCorsCalls []_s3Client_GetBucketCors_Call
+	GetBucketEncryptionMocks []func(ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)
+	GetBucketEncryptionCalls []_s3Client_GetBucketEncryption_Call
+	GetBucketIntelligentTieringConfigurationMocks []func(ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)
+	GetBucketIntelligentTieringConfigurationCalls []_s3Client_GetBucketIntelligentTieringConfiguration_Call
+	GetBucketInventoryConfigurationMocks []func(ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)
+	GetBucketInventoryConfigurationCalls []_s3Client_GetBucketInventoryConfiguration_Call
+	GetBucketLifecycleConfigurationMocks []func(ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)
+	GetBucketLifecycleConfigurationCalls []_s3Client_GetBucketLifecycleConfiguration_Call
+	GetBucketLocationMocks []func(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)
+	GetBucketLocationCalls []_s3Client_GetBucketLocation_Call
+	GetBucketLoggingMocks []func(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)
+	GetBucketLoggingCalls []_s3Client_GetBucketLogging_Call
+	GetBucketMetricsConfigurationMocks []func(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)
+	GetBucketMetricsConfigurationCalls []_s3Client_GetBucketMetricsConfiguration_Call
+	GetBucketNotificationConfigurationMocks []func(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)
+	GetBucketNotificationConfigurationCalls []_s3Client_GetBucketNotificationConfiguration_Call
+	GetBucketOwnershipControlsMocks []func(ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)
+	GetBucketOwnershipControlsCalls []_s3Client_GetBucketOwnershipControls_Call
+	GetBucketPolicyMocks []func(ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)
+	GetBucketPolicyCalls []_s3Client_GetBucketPolicy_Call
+	GetBucketPolicyStatusMocks []func(ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)
+	GetBucketPolicyStatusCalls []_s3Client_GetBucketPolicyStatus_Call
+	GetBucketReplicationMocks []func(ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)
+	GetBucketReplicationCalls []_s3Client_GetBucketReplication_Call
+	GetBucketRequestPaymentMocks []func(ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)
+	GetBucketRequestPaymentCalls []_s3Client_GetBucketRequestPayment_Call
+	GetBucketTaggingMocks []func(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)
+	GetBucketTaggingCalls []_s3Client_GetBucketTagging_Call
+	GetBucketVersioningMocks []func(ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)
+	GetBucketVersioningCalls []_s3Client_GetBucketVersioning_Call
+	GetBucketWebsiteMocks []func(ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)
+	GetBucketWebsiteCalls []_s3Client_GetBucketWebsite_Call
+	GetObjectMocks []func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)
+	GetObjectCalls []_s3Client_GetObject_Call
+	GetObjectAclMocks []func(ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)
+	GetObjectAclCalls []_s3Client_GetObjectAcl_Call
+	GetObjectAttributesMocks []func(ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)
+	GetObjectAttributesCalls []_s3Client_GetObjectAttributes_Call
+	GetObjectLegalHoldMocks []func(ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)
+	GetObjectLegalHoldCalls []_s3Client_GetObjectLegalHold_Call
+	GetObjectLockConfigurationMocks []func(ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)
+	GetObjectLockConfigurationCalls []_s3Client_GetObjectLockConfiguration_Call
+	GetObjectRetentionMocks []func(ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)
+	GetObjectRetentionCalls []_s3Client_GetObjectRetention_Call
+	GetObjectTaggingMocks []func(ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)
+	GetObjectTaggingCalls []_s3Client_GetObjectTagging_Call
+	GetObjectTorrentMocks []func(ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)
+	GetObjectTorrentCalls []_s3Client_GetObjectTorrent_Call
+	GetPublicAccessBlockMocks []func(ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)
+	GetPublicAccessBlockCalls []_s3Client_GetPublicAccessBlock_Call
+	HeadBucketMocks []func(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error)
+	HeadBucketCalls []_s3Client_HeadBucket_Call
+	HeadObjectMocks []func(ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error)
+	HeadObjectCalls []_s3Client_HeadObject_Call
+	ListBucketAnalyticsConfigurationsMocks []func(ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)
+	ListBucketAnalyticsConfigurationsCalls []_s3Client_ListBucketAnalyticsConfigurations_Call
+	ListBucketIntelligentTieringConfigurationsMocks []func(ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)
+	ListBucketIntelligentTieringConfigurationsCalls []_s3Client_ListBucketIntelligentTieringConfigurations_Call
+	ListBucketInventoryConfigurationsMocks []func(ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)
+	ListBucketInventoryConfigurationsCalls []_s3Client_ListBucketInventoryConfigurations_Call
+	ListBucketMetricsConfigurationsMocks []func(ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)
+	ListBucketMetricsConfigurationsCalls []_s3Client_ListBucketMetricsConfigurations_Call
+	ListBucketsMocks []func(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
+	ListBucketsCalls []_s3Client_ListBuckets_Call
+	ListMultipartUploadsMocks []func(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)
+	ListMultipartUploadsCalls []_s3Client_ListMultipartUploads_Call
+	ListObjectVersionsMocks []func(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)
+	ListObjectVersionsCalls []_s3Client_ListObjectVersions_Call
+	ListObjectsMocks []func(ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error)
+	ListObjectsCalls []_s3Client_ListObjects_Call
+	ListObjectsV2Mocks []func(ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)
+	ListObjectsV2Calls []_s3Client_ListObjectsV2_Call
+	ListPartsMocks []func(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error)
+	ListPartsCalls []_s3Client_ListParts_Call
+	PutBucketAccelerateConfigurationMocks []func(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)
+	PutBucketAccelerateConfigurationCalls []_s3Client_PutBucketAccelerateConfiguration_Call
+	PutBucketAclMocks []func(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)
+	PutBucketAclCalls []_s3Client_PutBucketAcl_Call
+	PutBucketAnalyticsConfigurationMocks []func(ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)
+	PutBucketAnalyticsConfigurationCalls []_s3Client_PutBucketAnalyticsConfiguration_Call
+	PutBucketCorsMocks []func(ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)
+	PutBucketCorsCalls []_s3Client_PutBucketCors_Call
+	PutBucketEncryptionMocks []func(ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)
+	PutBucketEncryptionCalls []_s3Client_PutBucketEncryption_Call
+	PutBucketIntelligentTieringConfigurationMocks []func(ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)
+	PutBucketIntelligentTieringConfigurationCalls []_s3Client_PutBucketIntelligentTieringConfiguration_Call
+	PutBucketInventoryConfigurationMocks []func(ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)
+	PutBucketInventoryConfigurationCalls []_s3Client_PutBucketInventoryConfiguration_Call
+	PutBucketLifecycleConfigurationMocks []func(ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)
+	PutBucketLifecycleConfigurationCalls []_s3Client_PutBucketLifecycleConfiguration_Call
+	PutBucketLoggingMocks []func(ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)
+	PutBucketLoggingCalls []_s3Client_PutBucketLogging_Call
+	PutBucketMetricsConfigurationMocks []func(ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)
+	PutBucketMetricsConfigurationCalls []_s3Client_PutBucketMetricsConfiguration_Call
+	PutBucketNotificationConfigurationMocks []func(ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)
+	PutBucketNotificationConfigurationCalls []_s3Client_PutBucketNotificationConfiguration_Call
+	PutBucketOwnershipControlsMocks []func(ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)
+	PutBucketOwnershipControlsCalls []_s3Client_PutBucketOwnershipControls_Call
+	PutBucketPolicyMocks []func(ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)
+	PutBucketPolicyCalls []_s3Client_PutBucketPolicy_Call
+	PutBucketReplicationMocks []func(ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)
+	PutBucketReplicationCalls []_s3Client_PutBucketReplication_Call
+	PutBucketRequestPaymentMocks []func(ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)
+	PutBucketRequestPaymentCalls []_s3Client_PutBucketRequestPayment_Call
+	PutBucketTaggingMocks []func(ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)
+	PutBucketTaggingCalls []_s3Client_PutBucketTagging_Call
+	PutBucketVersioningMocks []func(ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)
+	PutBucketVersioningCalls []_s3Client_PutBucketVersioning_Call
+	PutBucketWebsiteMocks []func(ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)
+	PutBucketWebsiteCalls []_s3Client_PutBucketWebsite_Call
+	PutObjectMocks []func(ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error)
+	PutObjectCalls []_s3Client_PutObject_Call
+	PutObjectAclMocks []func(ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)
+	PutObjectAclCalls []_s3Client_PutObjectAcl_Call
+	PutObjectLegalHoldMocks []func(ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)
+	PutObjectLegalHoldCalls []_s3Client_PutObjectLegalHold_Call
+	PutObjectLockConfigurationMocks []func(ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)
+	PutObjectLockConfigurationCalls []_s3Client_PutObjectLockConfiguration_Call
+	PutObjectRetentionMocks []func(ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)
+	PutObjectRetentionCalls []_s3Client_PutObjectRetention_Call
+	PutObjectTaggingMocks []func(ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)
+	PutObjectTaggingCalls []_s3Client_PutObjectTagging_Call
+	PutPublicAccessBlockMocks []func(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)
+	PutPublicAccessBlockCalls []_s3Client_PutPublicAccessBlock_Call
+	RestoreObjectMocks []func(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)
+	RestoreObjectCalls []_s3Client_RestoreObject_Call
+	SelectObjectContentMocks []func(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)
+	SelectObjectContentCalls []_s3Client_SelectObjectContent_Call
+	UploadPartMocks []func(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error)
+	UploadPartCalls []_s3Client_UploadPart_Call
+	UploadPartCopyMocks []func(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)
+	UploadPartCopyCalls []_s3Client_UploadPartCopy_Call
+	WriteGetObjectResponseMocks []func(ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)
+	WriteGetObjectResponseCalls []_s3Client_WriteGetObjectResponse_Call
+}
+
+func _s3ClientPtrData(t *s3Client) *_s3ClientData {
+	ptr := uintptr(unsafe.Pointer(t))
+	val, loaded := _s3Client.LoadOrStore(ptr, new(_s3ClientData))
+	if !loaded {
+		val.(*_s3ClientData).once.Do(func() { runtime.SetFinalizer(t, func(_ *s3Client) { _s3Client.Delete(ptr) })})
+	}
+	return val.(*_s3ClientData)
+}
+
+type _s3Client_AbortMultipartUpload_Call struct {
+	ctx context.Context
+	params *s3.AbortMultipartUploadInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_CompleteMultipartUpload_Call struct {
+	ctx context.Context
+	params *s3.CompleteMultipartUploadInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_CopyObject_Call struct {
+	ctx context.Context
+	params *s3.CopyObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_CreateBucket_Call struct {
+	ctx context.Context
+	params *s3.CreateBucketInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_CreateMultipartUpload_Call struct {
+	ctx context.Context
+	params *s3.CreateMultipartUploadInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucket_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketAnalyticsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketAnalyticsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketCors_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketCorsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketEncryption_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketEncryptionInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketIntelligentTieringConfiguration_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketIntelligentTieringConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketInventoryConfiguration_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketInventoryConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketLifecycle_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketLifecycleInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketMetricsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketMetricsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketOwnershipControls_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketOwnershipControlsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketPolicy_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketPolicyInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketReplication_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketReplicationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketTagging_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteBucketWebsite_Call struct {
+	ctx context.Context
+	params *s3.DeleteBucketWebsiteInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteObject_Call struct {
+	ctx context.Context
+	params *s3.DeleteObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteObjectTagging_Call struct {
+	ctx context.Context
+	params *s3.DeleteObjectTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeleteObjects_Call struct {
+	ctx context.Context
+	params *s3.DeleteObjectsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_DeletePublicAccessBlock_Call struct {
+	ctx context.Context
+	params *s3.DeletePublicAccessBlockInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketAccelerateConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketAccelerateConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketAcl_Call struct {
+	ctx context.Context
+	params *s3.GetBucketAclInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketAnalyticsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketAnalyticsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketCors_Call struct {
+	ctx context.Context
+	params *s3.GetBucketCorsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketEncryption_Call struct {
+	ctx context.Context
+	params *s3.GetBucketEncryptionInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketIntelligentTieringConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketIntelligentTieringConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketInventoryConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketInventoryConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketLifecycleConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketLifecycleConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketLocation_Call struct {
+	ctx context.Context
+	params *s3.GetBucketLocationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketLogging_Call struct {
+	ctx context.Context
+	params *s3.GetBucketLoggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketMetricsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketMetricsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketNotificationConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetBucketNotificationConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketOwnershipControls_Call struct {
+	ctx context.Context
+	params *s3.GetBucketOwnershipControlsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketPolicy_Call struct {
+	ctx context.Context
+	params *s3.GetBucketPolicyInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketPolicyStatus_Call struct {
+	ctx context.Context
+	params *s3.GetBucketPolicyStatusInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketReplication_Call struct {
+	ctx context.Context
+	params *s3.GetBucketReplicationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketRequestPayment_Call struct {
+	ctx context.Context
+	params *s3.GetBucketRequestPaymentInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketTagging_Call struct {
+	ctx context.Context
+	params *s3.GetBucketTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketVersioning_Call struct {
+	ctx context.Context
+	params *s3.GetBucketVersioningInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetBucketWebsite_Call struct {
+	ctx context.Context
+	params *s3.GetBucketWebsiteInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObject_Call struct {
+	ctx context.Context
+	params *s3.GetObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectAcl_Call struct {
+	ctx context.Context
+	params *s3.GetObjectAclInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectAttributes_Call struct {
+	ctx context.Context
+	params *s3.GetObjectAttributesInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectLegalHold_Call struct {
+	ctx context.Context
+	params *s3.GetObjectLegalHoldInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectLockConfiguration_Call struct {
+	ctx context.Context
+	params *s3.GetObjectLockConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectRetention_Call struct {
+	ctx context.Context
+	params *s3.GetObjectRetentionInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectTagging_Call struct {
+	ctx context.Context
+	params *s3.GetObjectTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetObjectTorrent_Call struct {
+	ctx context.Context
+	params *s3.GetObjectTorrentInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_GetPublicAccessBlock_Call struct {
+	ctx context.Context
+	params *s3.GetPublicAccessBlockInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_HeadBucket_Call struct {
+	ctx context.Context
+	params *s3.HeadBucketInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_HeadObject_Call struct {
+	ctx context.Context
+	params *s3.HeadObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListBucketAnalyticsConfigurations_Call struct {
+	ctx context.Context
+	params *s3.ListBucketAnalyticsConfigurationsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListBucketIntelligentTieringConfigurations_Call struct {
+	ctx context.Context
+	params *s3.ListBucketIntelligentTieringConfigurationsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListBucketInventoryConfigurations_Call struct {
+	ctx context.Context
+	params *s3.ListBucketInventoryConfigurationsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListBucketMetricsConfigurations_Call struct {
+	ctx context.Context
+	params *s3.ListBucketMetricsConfigurationsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListBuckets_Call struct {
+	ctx context.Context
+	params *s3.ListBucketsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListMultipartUploads_Call struct {
+	ctx context.Context
+	params *s3.ListMultipartUploadsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListObjectVersions_Call struct {
+	ctx context.Context
+	params *s3.ListObjectVersionsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListObjects_Call struct {
+	ctx context.Context
+	params *s3.ListObjectsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListObjectsV2_Call struct {
+	ctx context.Context
+	params *s3.ListObjectsV2Input
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_ListParts_Call struct {
+	ctx context.Context
+	params *s3.ListPartsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketAccelerateConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketAccelerateConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketAcl_Call struct {
+	ctx context.Context
+	params *s3.PutBucketAclInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketAnalyticsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketAnalyticsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketCors_Call struct {
+	ctx context.Context
+	params *s3.PutBucketCorsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketEncryption_Call struct {
+	ctx context.Context
+	params *s3.PutBucketEncryptionInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketIntelligentTieringConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketIntelligentTieringConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketInventoryConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketInventoryConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketLifecycleConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketLifecycleConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketLogging_Call struct {
+	ctx context.Context
+	params *s3.PutBucketLoggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketMetricsConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketMetricsConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketNotificationConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutBucketNotificationConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketOwnershipControls_Call struct {
+	ctx context.Context
+	params *s3.PutBucketOwnershipControlsInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketPolicy_Call struct {
+	ctx context.Context
+	params *s3.PutBucketPolicyInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketReplication_Call struct {
+	ctx context.Context
+	params *s3.PutBucketReplicationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketRequestPayment_Call struct {
+	ctx context.Context
+	params *s3.PutBucketRequestPaymentInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketTagging_Call struct {
+	ctx context.Context
+	params *s3.PutBucketTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketVersioning_Call struct {
+	ctx context.Context
+	params *s3.PutBucketVersioningInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutBucketWebsite_Call struct {
+	ctx context.Context
+	params *s3.PutBucketWebsiteInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObject_Call struct {
+	ctx context.Context
+	params *s3.PutObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObjectAcl_Call struct {
+	ctx context.Context
+	params *s3.PutObjectAclInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObjectLegalHold_Call struct {
+	ctx context.Context
+	params *s3.PutObjectLegalHoldInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObjectLockConfiguration_Call struct {
+	ctx context.Context
+	params *s3.PutObjectLockConfigurationInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObjectRetention_Call struct {
+	ctx context.Context
+	params *s3.PutObjectRetentionInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutObjectTagging_Call struct {
+	ctx context.Context
+	params *s3.PutObjectTaggingInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_PutPublicAccessBlock_Call struct {
+	ctx context.Context
+	params *s3.PutPublicAccessBlockInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_RestoreObject_Call struct {
+	ctx context.Context
+	params *s3.RestoreObjectInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_SelectObjectContent_Call struct {
+	ctx context.Context
+	params *s3.SelectObjectContentInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_UploadPart_Call struct {
+	ctx context.Context
+	params *s3.UploadPartInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_UploadPartCopy_Call struct {
+	ctx context.Context
+	params *s3.UploadPartCopyInput
+	optFns []func(*s3.Options)
+}
+
+type _s3Client_WriteGetObjectResponse_Call struct {
+	ctx context.Context
+	params *s3.WriteGetObjectResponseInput
+	optFns []func(*s3.Options)
+}
+
+func (_recv *s3Client) AbortMultipartUpload(ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) {
+	if _recv == nil {
+		panic("s3Client.AbortMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.AbortMultipartUploadCalls = append(_dat.AbortMultipartUploadCalls, _s3Client_AbortMultipartUpload_Call{ctx, params, optFns})
+	_fn := _recv.Client.AbortMultipartUpload
+	if len(_dat.AbortMultipartUploadMocks) > 0 {
+		_fn = _dat.AbortMultipartUploadMocks[0]
+		if len(_dat.AbortMultipartUploadMocks) > 1 {
+			_dat.AbortMultipartUploadMocks = _dat.AbortMultipartUploadMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _AbortMultipartUpload_Do(fn func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.AbortMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.AbortMultipartUploadMocks = []func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error){}
+	} else if len(_dat.AbortMultipartUploadMocks) < 2 {
+		_dat.AbortMultipartUploadMocks = []func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.AbortMultipartUploadMocks = _dat.AbortMultipartUploadMocks[:len(_dat.AbortMultipartUploadMocks)-1]
+		_dat.AbortMultipartUploadMocks = append(_dat.AbortMultipartUploadMocks, fn)
+		_dat.AbortMultipartUploadMocks = append(_dat.AbortMultipartUploadMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _AbortMultipartUpload_Stub() {
+	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.AbortMultipartUploadOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _AbortMultipartUpload_Return(r0 *s3.AbortMultipartUploadOutput, r1 error) {
+	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _AbortMultipartUpload_Calls() []_s3Client_AbortMultipartUpload_Call {
+	if _recv == nil {
+		panic("s3Client.AbortMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.AbortMultipartUploadCalls
+}
+
+func (_recv *s3Client) CompleteMultipartUpload(ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CompleteMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CompleteMultipartUploadCalls = append(_dat.CompleteMultipartUploadCalls, _s3Client_CompleteMultipartUpload_Call{ctx, params, optFns})
+	_fn := _recv.Client.CompleteMultipartUpload
+	if len(_dat.CompleteMultipartUploadMocks) > 0 {
+		_fn = _dat.CompleteMultipartUploadMocks[0]
+		if len(_dat.CompleteMultipartUploadMocks) > 1 {
+			_dat.CompleteMultipartUploadMocks = _dat.CompleteMultipartUploadMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CompleteMultipartUpload_Do(fn func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CompleteMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CompleteMultipartUploadMocks = []func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error){}
+	} else if len(_dat.CompleteMultipartUploadMocks) < 2 {
+		_dat.CompleteMultipartUploadMocks = []func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.CompleteMultipartUploadMocks = _dat.CompleteMultipartUploadMocks[:len(_dat.CompleteMultipartUploadMocks)-1]
+		_dat.CompleteMultipartUploadMocks = append(_dat.CompleteMultipartUploadMocks, fn)
+		_dat.CompleteMultipartUploadMocks = append(_dat.CompleteMultipartUploadMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _CompleteMultipartUpload_Stub() {
+	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CompleteMultipartUploadOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CompleteMultipartUpload_Return(r0 *s3.CompleteMultipartUploadOutput, r1 error) {
+	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CompleteMultipartUpload_Calls() []_s3Client_CompleteMultipartUpload_Call {
+	if _recv == nil {
+		panic("s3Client.CompleteMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CompleteMultipartUploadCalls
+}
+
+func (_recv *s3Client) CopyObject(ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CopyObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CopyObjectCalls = append(_dat.CopyObjectCalls, _s3Client_CopyObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.CopyObject
+	if len(_dat.CopyObjectMocks) > 0 {
+		_fn = _dat.CopyObjectMocks[0]
+		if len(_dat.CopyObjectMocks) > 1 {
+			_dat.CopyObjectMocks = _dat.CopyObjectMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CopyObject_Do(fn func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CopyObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CopyObjectMocks = []func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error){}
+	} else if len(_dat.CopyObjectMocks) < 2 {
+		_dat.CopyObjectMocks = []func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error){fn, fn}
+	} else {
+		_dat.CopyObjectMocks = _dat.CopyObjectMocks[:len(_dat.CopyObjectMocks)-1]
+		_dat.CopyObjectMocks = append(_dat.CopyObjectMocks, fn)
+		_dat.CopyObjectMocks = append(_dat.CopyObjectMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _CopyObject_Stub() {
+	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (r0 *s3.CopyObjectOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CopyObject_Return(r0 *s3.CopyObjectOutput, r1 error) {
+	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CopyObject_Calls() []_s3Client_CopyObject_Call {
+	if _recv == nil {
+		panic("s3Client.CopyObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CopyObjectCalls
+}
+
+func (_recv *s3Client) CreateBucket(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CreateBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CreateBucketCalls = append(_dat.CreateBucketCalls, _s3Client_CreateBucket_Call{ctx, params, optFns})
+	_fn := _recv.Client.CreateBucket
+	if len(_dat.CreateBucketMocks) > 0 {
+		_fn = _dat.CreateBucketMocks[0]
+		if len(_dat.CreateBucketMocks) > 1 {
+			_dat.CreateBucketMocks = _dat.CreateBucketMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CreateBucket_Do(fn func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CreateBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMocks = []func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error){}
+	} else if len(_dat.CreateBucketMocks) < 2 {
+		_dat.CreateBucketMocks = []func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMocks = _dat.CreateBucketMocks[:len(_dat.CreateBucketMocks)-1]
+		_dat.CreateBucketMocks = append(_dat.CreateBucketMocks, fn)
+		_dat.CreateBucketMocks = append(_dat.CreateBucketMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _CreateBucket_Stub() {
+	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (r0 *s3.CreateBucketOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CreateBucket_Return(r0 *s3.CreateBucketOutput, r1 error) {
+	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CreateBucket_Calls() []_s3Client_CreateBucket_Call {
+	if _recv == nil {
+		panic("s3Client.CreateBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketCalls
+}
+
+func (_recv *s3Client) CreateMultipartUpload(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CreateMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CreateMultipartUploadCalls = append(_dat.CreateMultipartUploadCalls, _s3Client_CreateMultipartUpload_Call{ctx, params, optFns})
+	_fn := _recv.Client.CreateMultipartUpload
+	if len(_dat.CreateMultipartUploadMocks) > 0 {
+		_fn = _dat.CreateMultipartUploadMocks[0]
+		if len(_dat.CreateMultipartUploadMocks) > 1 {
+			_dat.CreateMultipartUploadMocks = _dat.CreateMultipartUploadMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CreateMultipartUpload_Do(fn func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CreateMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateMultipartUploadMocks = []func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error){}
+	} else if len(_dat.CreateMultipartUploadMocks) < 2 {
+		_dat.CreateMultipartUploadMocks = []func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.CreateMultipartUploadMocks = _dat.CreateMultipartUploadMocks[:len(_dat.CreateMultipartUploadMocks)-1]
+		_dat.CreateMultipartUploadMocks = append(_dat.CreateMultipartUploadMocks, fn)
+		_dat.CreateMultipartUploadMocks = append(_dat.CreateMultipartUploadMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _CreateMultipartUpload_Stub() {
+	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CreateMultipartUploadOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CreateMultipartUpload_Return(r0 *s3.CreateMultipartUploadOutput, r1 error) {
+	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _CreateMultipartUpload_Calls() []_s3Client_CreateMultipartUpload_Call {
+	if _recv == nil {
+		panic("s3Client.CreateMultipartUpload: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateMultipartUploadCalls
+}
+
+func (_recv *s3Client) DeleteBucket(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketCalls = append(_dat.DeleteBucketCalls, _s3Client_DeleteBucket_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucket
+	if len(_dat.DeleteBucketMocks) > 0 {
+		_fn = _dat.DeleteBucketMocks[0]
+		if len(_dat.DeleteBucketMocks) > 1 {
+			_dat.DeleteBucketMocks = _dat.DeleteBucketMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucket_Do(fn func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMocks = []func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error){}
+	} else if len(_dat.DeleteBucketMocks) < 2 {
+		_dat.DeleteBucketMocks = []func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMocks = _dat.DeleteBucketMocks[:len(_dat.DeleteBucketMocks)-1]
+		_dat.DeleteBucketMocks = append(_dat.DeleteBucketMocks, fn)
+		_dat.DeleteBucketMocks = append(_dat.DeleteBucketMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucket_Stub() {
+	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucket_Return(r0 *s3.DeleteBucketOutput, r1 error) {
+	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucket_Calls() []_s3Client_DeleteBucket_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketCalls
+}
+
+func (_recv *s3Client) DeleteBucketAnalyticsConfiguration(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketAnalyticsConfigurationCalls = append(_dat.DeleteBucketAnalyticsConfigurationCalls, _s3Client_DeleteBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketAnalyticsConfiguration
+	if len(_dat.DeleteBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketAnalyticsConfigurationMocks[0]
+		if len(_dat.DeleteBucketAnalyticsConfigurationMocks) > 1 {
+			_dat.DeleteBucketAnalyticsConfigurationMocks = _dat.DeleteBucketAnalyticsConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Do(fn func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = _dat.DeleteBucketAnalyticsConfigurationMocks[:len(_dat.DeleteBucketAnalyticsConfigurationMocks)-1]
+		_dat.DeleteBucketAnalyticsConfigurationMocks = append(_dat.DeleteBucketAnalyticsConfigurationMocks, fn)
+		_dat.DeleteBucketAnalyticsConfigurationMocks = append(_dat.DeleteBucketAnalyticsConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Stub() {
+	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Return(r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) {
+	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Calls() []_s3Client_DeleteBucketAnalyticsConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketAnalyticsConfigurationCalls
+}
+
+func (_recv *s3Client) DeleteBucketCors(ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketCorsCalls = append(_dat.DeleteBucketCorsCalls, _s3Client_DeleteBucketCors_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketCors
+	if len(_dat.DeleteBucketCorsMocks) > 0 {
+		_fn = _dat.DeleteBucketCorsMocks[0]
+		if len(_dat.DeleteBucketCorsMocks) > 1 {
+			_dat.DeleteBucketCorsMocks = _dat.DeleteBucketCorsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketCors_Do(fn func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketCorsMocks = []func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error){}
+	} else if len(_dat.DeleteBucketCorsMocks) < 2 {
+		_dat.DeleteBucketCorsMocks = []func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketCorsMocks = _dat.DeleteBucketCorsMocks[:len(_dat.DeleteBucketCorsMocks)-1]
+		_dat.DeleteBucketCorsMocks = append(_dat.DeleteBucketCorsMocks, fn)
+		_dat.DeleteBucketCorsMocks = append(_dat.DeleteBucketCorsMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketCors_Stub() {
+	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketCorsOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketCors_Return(r0 *s3.DeleteBucketCorsOutput, r1 error) {
+	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketCors_Calls() []_s3Client_DeleteBucketCors_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketCorsCalls
+}
+
+func (_recv *s3Client) DeleteBucketEncryption(ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketEncryptionCalls = append(_dat.DeleteBucketEncryptionCalls, _s3Client_DeleteBucketEncryption_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketEncryption
+	if len(_dat.DeleteBucketEncryptionMocks) > 0 {
+		_fn = _dat.DeleteBucketEncryptionMocks[0]
+		if len(_dat.DeleteBucketEncryptionMocks) > 1 {
+			_dat.DeleteBucketEncryptionMocks = _dat.DeleteBucketEncryptionMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketEncryption_Do(fn func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketEncryptionMocks = []func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error){}
+	} else if len(_dat.DeleteBucketEncryptionMocks) < 2 {
+		_dat.DeleteBucketEncryptionMocks = []func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketEncryptionMocks = _dat.DeleteBucketEncryptionMocks[:len(_dat.DeleteBucketEncryptionMocks)-1]
+		_dat.DeleteBucketEncryptionMocks = append(_dat.DeleteBucketEncryptionMocks, fn)
+		_dat.DeleteBucketEncryptionMocks = append(_dat.DeleteBucketEncryptionMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketEncryption_Stub() {
+	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketEncryptionOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketEncryption_Return(r0 *s3.DeleteBucketEncryptionOutput, r1 error) {
+	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketEncryption_Calls() []_s3Client_DeleteBucketEncryption_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketEncryptionCalls
+}
+
+func (_recv *s3Client) DeleteBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketIntelligentTieringConfigurationCalls = append(_dat.DeleteBucketIntelligentTieringConfigurationCalls, _s3Client_DeleteBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketIntelligentTieringConfiguration
+	if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketIntelligentTieringConfigurationMocks[0]
+		if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) > 1 {
+			_dat.DeleteBucketIntelligentTieringConfigurationMocks = _dat.DeleteBucketIntelligentTieringConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Do(fn func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = _dat.DeleteBucketIntelligentTieringConfigurationMocks[:len(_dat.DeleteBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = append(_dat.DeleteBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = append(_dat.DeleteBucketIntelligentTieringConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Stub() {
+	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Return(r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) {
+	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Calls() []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketIntelligentTieringConfigurationCalls
+}
+
+func (_recv *s3Client) DeleteBucketInventoryConfiguration(ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketInventoryConfigurationCalls = append(_dat.DeleteBucketInventoryConfigurationCalls, _s3Client_DeleteBucketInventoryConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketInventoryConfiguration
+	if len(_dat.DeleteBucketInventoryConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketInventoryConfigurationMocks[0]
+		if len(_dat.DeleteBucketInventoryConfigurationMocks) > 1 {
+			_dat.DeleteBucketInventoryConfigurationMocks = _dat.DeleteBucketInventoryConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Do(fn func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketInventoryConfigurationMocks = []func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketInventoryConfigurationMocks) < 2 {
+		_dat.DeleteBucketInventoryConfigurationMocks = []func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketInventoryConfigurationMocks = _dat.DeleteBucketInventoryConfigurationMocks[:len(_dat.DeleteBucketInventoryConfigurationMocks)-1]
+		_dat.DeleteBucketInventoryConfigurationMocks = append(_dat.DeleteBucketInventoryConfigurationMocks, fn)
+		_dat.DeleteBucketInventoryConfigurationMocks = append(_dat.DeleteBucketInventoryConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Stub() {
+	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Return(r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) {
+	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Calls() []_s3Client_DeleteBucketInventoryConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketInventoryConfigurationCalls
+}
+
+func (_recv *s3Client) DeleteBucketLifecycle(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketLifecycle: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketLifecycleCalls = append(_dat.DeleteBucketLifecycleCalls, _s3Client_DeleteBucketLifecycle_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketLifecycle
+	if len(_dat.DeleteBucketLifecycleMocks) > 0 {
+		_fn = _dat.DeleteBucketLifecycleMocks[0]
+		if len(_dat.DeleteBucketLifecycleMocks) > 1 {
+			_dat.DeleteBucketLifecycleMocks = _dat.DeleteBucketLifecycleMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketLifecycle_Do(fn func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketLifecycle: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketLifecycleMocks = []func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error){}
+	} else if len(_dat.DeleteBucketLifecycleMocks) < 2 {
+		_dat.DeleteBucketLifecycleMocks = []func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketLifecycleMocks = _dat.DeleteBucketLifecycleMocks[:len(_dat.DeleteBucketLifecycleMocks)-1]
+		_dat.DeleteBucketLifecycleMocks = append(_dat.DeleteBucketLifecycleMocks, fn)
+		_dat.DeleteBucketLifecycleMocks = append(_dat.DeleteBucketLifecycleMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketLifecycle_Stub() {
+	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketLifecycleOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketLifecycle_Return(r0 *s3.DeleteBucketLifecycleOutput, r1 error) {
+	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketLifecycle_Calls() []_s3Client_DeleteBucketLifecycle_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketLifecycle: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketLifecycleCalls
+}
+
+func (_recv *s3Client) DeleteBucketMetricsConfiguration(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetricsConfigurationCalls = append(_dat.DeleteBucketMetricsConfigurationCalls, _s3Client_DeleteBucketMetricsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketMetricsConfiguration
+	if len(_dat.DeleteBucketMetricsConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketMetricsConfigurationMocks[0]
+		if len(_dat.DeleteBucketMetricsConfigurationMocks) > 1 {
+			_dat.DeleteBucketMetricsConfigurationMocks = _dat.DeleteBucketMetricsConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Do(fn func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetricsConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetricsConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetricsConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetricsConfigurationMocks = _dat.DeleteBucketMetricsConfigurationMocks[:len(_dat.DeleteBucketMetricsConfigurationMocks)-1]
+		_dat.DeleteBucketMetricsConfigurationMocks = append(_dat.DeleteBucketMetricsConfigurationMocks, fn)
+		_dat.DeleteBucketMetricsConfigurationMocks = append(_dat.DeleteBucketMetricsConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Stub() {
+	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Return(r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) {
+	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Calls() []_s3Client_DeleteBucketMetricsConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetricsConfigurationCalls
+}
+
+func (_recv *s3Client) DeleteBucketOwnershipControls(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketOwnershipControlsCalls = append(_dat.DeleteBucketOwnershipControlsCalls, _s3Client_DeleteBucketOwnershipControls_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketOwnershipControls
+	if len(_dat.DeleteBucketOwnershipControlsMocks) > 0 {
+		_fn = _dat.DeleteBucketOwnershipControlsMocks[0]
+		if len(_dat.DeleteBucketOwnershipControlsMocks) > 1 {
+			_dat.DeleteBucketOwnershipControlsMocks = _dat.DeleteBucketOwnershipControlsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketOwnershipControls_Do(fn func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketOwnershipControlsMocks = []func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.DeleteBucketOwnershipControlsMocks) < 2 {
+		_dat.DeleteBucketOwnershipControlsMocks = []func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketOwnershipControlsMocks = _dat.DeleteBucketOwnershipControlsMocks[:len(_dat.DeleteBucketOwnershipControlsMocks)-1]
+		_dat.DeleteBucketOwnershipControlsMocks = append(_dat.DeleteBucketOwnershipControlsMocks, fn)
+		_dat.DeleteBucketOwnershipControlsMocks = append(_dat.DeleteBucketOwnershipControlsMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketOwnershipControls_Stub() {
+	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketOwnershipControls_Return(r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) {
+	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketOwnershipControls_Calls() []_s3Client_DeleteBucketOwnershipControls_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketOwnershipControlsCalls
+}
+
+func (_recv *s3Client) DeleteBucketPolicy(ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketPolicyCalls = append(_dat.DeleteBucketPolicyCalls, _s3Client_DeleteBucketPolicy_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketPolicy
+	if len(_dat.DeleteBucketPolicyMocks) > 0 {
+		_fn = _dat.DeleteBucketPolicyMocks[0]
+		if len(_dat.DeleteBucketPolicyMocks) > 1 {
+			_dat.DeleteBucketPolicyMocks = _dat.DeleteBucketPolicyMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketPolicy_Do(fn func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketPolicyMocks = []func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error){}
+	} else if len(_dat.DeleteBucketPolicyMocks) < 2 {
+		_dat.DeleteBucketPolicyMocks = []func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketPolicyMocks = _dat.DeleteBucketPolicyMocks[:len(_dat.DeleteBucketPolicyMocks)-1]
+		_dat.DeleteBucketPolicyMocks = append(_dat.DeleteBucketPolicyMocks, fn)
+		_dat.DeleteBucketPolicyMocks = append(_dat.DeleteBucketPolicyMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketPolicy_Stub() {
+	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketPolicyOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketPolicy_Return(r0 *s3.DeleteBucketPolicyOutput, r1 error) {
+	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketPolicy_Calls() []_s3Client_DeleteBucketPolicy_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketPolicyCalls
+}
+
+func (_recv *s3Client) DeleteBucketReplication(ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketReplicationCalls = append(_dat.DeleteBucketReplicationCalls, _s3Client_DeleteBucketReplication_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketReplication
+	if len(_dat.DeleteBucketReplicationMocks) > 0 {
+		_fn = _dat.DeleteBucketReplicationMocks[0]
+		if len(_dat.DeleteBucketReplicationMocks) > 1 {
+			_dat.DeleteBucketReplicationMocks = _dat.DeleteBucketReplicationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketReplication_Do(fn func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketReplicationMocks = []func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error){}
+	} else if len(_dat.DeleteBucketReplicationMocks) < 2 {
+		_dat.DeleteBucketReplicationMocks = []func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketReplicationMocks = _dat.DeleteBucketReplicationMocks[:len(_dat.DeleteBucketReplicationMocks)-1]
+		_dat.DeleteBucketReplicationMocks = append(_dat.DeleteBucketReplicationMocks, fn)
+		_dat.DeleteBucketReplicationMocks = append(_dat.DeleteBucketReplicationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketReplication_Stub() {
+	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketReplicationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketReplication_Return(r0 *s3.DeleteBucketReplicationOutput, r1 error) {
+	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketReplication_Calls() []_s3Client_DeleteBucketReplication_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketReplicationCalls
+}
+
+func (_recv *s3Client) DeleteBucketTagging(ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketTaggingCalls = append(_dat.DeleteBucketTaggingCalls, _s3Client_DeleteBucketTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketTagging
+	if len(_dat.DeleteBucketTaggingMocks) > 0 {
+		_fn = _dat.DeleteBucketTaggingMocks[0]
+		if len(_dat.DeleteBucketTaggingMocks) > 1 {
+			_dat.DeleteBucketTaggingMocks = _dat.DeleteBucketTaggingMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketTagging_Do(fn func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketTaggingMocks = []func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error){}
+	} else if len(_dat.DeleteBucketTaggingMocks) < 2 {
+		_dat.DeleteBucketTaggingMocks = []func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketTaggingMocks = _dat.DeleteBucketTaggingMocks[:len(_dat.DeleteBucketTaggingMocks)-1]
+		_dat.DeleteBucketTaggingMocks = append(_dat.DeleteBucketTaggingMocks, fn)
+		_dat.DeleteBucketTaggingMocks = append(_dat.DeleteBucketTaggingMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketTagging_Stub() {
+	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketTaggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketTagging_Return(r0 *s3.DeleteBucketTaggingOutput, r1 error) {
+	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketTagging_Calls() []_s3Client_DeleteBucketTagging_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketTaggingCalls
+}
+
+func (_recv *s3Client) DeleteBucketWebsite(ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketWebsiteCalls = append(_dat.DeleteBucketWebsiteCalls, _s3Client_DeleteBucketWebsite_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteBucketWebsite
+	if len(_dat.DeleteBucketWebsiteMocks) > 0 {
+		_fn = _dat.DeleteBucketWebsiteMocks[0]
+		if len(_dat.DeleteBucketWebsiteMocks) > 1 {
+			_dat.DeleteBucketWebsiteMocks = _dat.DeleteBucketWebsiteMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketWebsite_Do(fn func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketWebsiteMocks = []func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error){}
+	} else if len(_dat.DeleteBucketWebsiteMocks) < 2 {
+		_dat.DeleteBucketWebsiteMocks = []func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketWebsiteMocks = _dat.DeleteBucketWebsiteMocks[:len(_dat.DeleteBucketWebsiteMocks)-1]
+		_dat.DeleteBucketWebsiteMocks = append(_dat.DeleteBucketWebsiteMocks, fn)
+		_dat.DeleteBucketWebsiteMocks = append(_dat.DeleteBucketWebsiteMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteBucketWebsite_Stub() {
+	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketWebsiteOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketWebsite_Return(r0 *s3.DeleteBucketWebsiteOutput, r1 error) {
+	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketWebsite_Calls() []_s3Client_DeleteBucketWebsite_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketWebsiteCalls
+}
+
+func (_recv *s3Client) DeleteObject(ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteObjectCalls = append(_dat.DeleteObjectCalls, _s3Client_DeleteObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteObject
+	if len(_dat.DeleteObjectMocks) > 0 {
+		_fn = _dat.DeleteObjectMocks[0]
+		if len(_dat.DeleteObjectMocks) > 1 {
+			_dat.DeleteObjectMocks = _dat.DeleteObjectMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteObject_Do(fn func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectMocks = []func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error){}
+	} else if len(_dat.DeleteObjectMocks) < 2 {
+		_dat.DeleteObjectMocks = []func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectMocks = _dat.DeleteObjectMocks[:len(_dat.DeleteObjectMocks)-1]
+		_dat.DeleteObjectMocks = append(_dat.DeleteObjectMocks, fn)
+		_dat.DeleteObjectMocks = append(_dat.DeleteObjectMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteObject_Stub() {
+	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObject_Return(r0 *s3.DeleteObjectOutput, r1 error) {
+	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObject_Calls() []_s3Client_DeleteObject_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectCalls
+}
+
+func (_recv *s3Client) DeleteObjectTagging(ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteObjectTaggingCalls = append(_dat.DeleteObjectTaggingCalls, _s3Client_DeleteObjectTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteObjectTagging
+	if len(_dat.DeleteObjectTaggingMocks) > 0 {
+		_fn = _dat.DeleteObjectTaggingMocks[0]
+		if len(_dat.DeleteObjectTaggingMocks) > 1 {
+			_dat.DeleteObjectTaggingMocks = _dat.DeleteObjectTaggingMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteObjectTagging_Do(fn func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectTaggingMocks = []func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error){}
+	} else if len(_dat.DeleteObjectTaggingMocks) < 2 {
+		_dat.DeleteObjectTaggingMocks = []func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectTaggingMocks = _dat.DeleteObjectTaggingMocks[:len(_dat.DeleteObjectTaggingMocks)-1]
+		_dat.DeleteObjectTaggingMocks = append(_dat.DeleteObjectTaggingMocks, fn)
+		_dat.DeleteObjectTaggingMocks = append(_dat.DeleteObjectTaggingMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteObjectTagging_Stub() {
+	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectTaggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObjectTagging_Return(r0 *s3.DeleteObjectTaggingOutput, r1 error) {
+	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObjectTagging_Calls() []_s3Client_DeleteObjectTagging_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectTaggingCalls
+}
+
+func (_recv *s3Client) DeleteObjects(ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteObjects: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteObjectsCalls = append(_dat.DeleteObjectsCalls, _s3Client_DeleteObjects_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeleteObjects
+	if len(_dat.DeleteObjectsMocks) > 0 {
+		_fn = _dat.DeleteObjectsMocks[0]
+		if len(_dat.DeleteObjectsMocks) > 1 {
+			_dat.DeleteObjectsMocks = _dat.DeleteObjectsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteObjects_Do(fn func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteObjects: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectsMocks = []func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error){}
+	} else if len(_dat.DeleteObjectsMocks) < 2 {
+		_dat.DeleteObjectsMocks = []func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectsMocks = _dat.DeleteObjectsMocks[:len(_dat.DeleteObjectsMocks)-1]
+		_dat.DeleteObjectsMocks = append(_dat.DeleteObjectsMocks, fn)
+		_dat.DeleteObjectsMocks = append(_dat.DeleteObjectsMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeleteObjects_Stub() {
+	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectsOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObjects_Return(r0 *s3.DeleteObjectsOutput, r1 error) {
+	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeleteObjects_Calls() []_s3Client_DeleteObjects_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteObjects: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectsCalls
+}
+
+func (_recv *s3Client) DeletePublicAccessBlock(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeletePublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeletePublicAccessBlockCalls = append(_dat.DeletePublicAccessBlockCalls, _s3Client_DeletePublicAccessBlock_Call{ctx, params, optFns})
+	_fn := _recv.Client.DeletePublicAccessBlock
+	if len(_dat.DeletePublicAccessBlockMocks) > 0 {
+		_fn = _dat.DeletePublicAccessBlockMocks[0]
+		if len(_dat.DeletePublicAccessBlockMocks) > 1 {
+			_dat.DeletePublicAccessBlockMocks = _dat.DeletePublicAccessBlockMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeletePublicAccessBlock_Do(fn func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeletePublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeletePublicAccessBlockMocks = []func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error){}
+	} else if len(_dat.DeletePublicAccessBlockMocks) < 2 {
+		_dat.DeletePublicAccessBlockMocks = []func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.DeletePublicAccessBlockMocks = _dat.DeletePublicAccessBlockMocks[:len(_dat.DeletePublicAccessBlockMocks)-1]
+		_dat.DeletePublicAccessBlockMocks = append(_dat.DeletePublicAccessBlockMocks, fn)
+		_dat.DeletePublicAccessBlockMocks = append(_dat.DeletePublicAccessBlockMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _DeletePublicAccessBlock_Stub() {
+	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.DeletePublicAccessBlockOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeletePublicAccessBlock_Return(r0 *s3.DeletePublicAccessBlockOutput, r1 error) {
+	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _DeletePublicAccessBlock_Calls() []_s3Client_DeletePublicAccessBlock_Call {
+	if _recv == nil {
+		panic("s3Client.DeletePublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeletePublicAccessBlockCalls
+}
+
+func (_recv *s3Client) GetBucketAccelerateConfiguration(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketAccelerateConfigurationCalls = append(_dat.GetBucketAccelerateConfigurationCalls, _s3Client_GetBucketAccelerateConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketAccelerateConfiguration
+	if len(_dat.GetBucketAccelerateConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketAccelerateConfigurationMocks[0]
+		if len(_dat.GetBucketAccelerateConfigurationMocks) > 1 {
+			_dat.GetBucketAccelerateConfigurationMocks = _dat.GetBucketAccelerateConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketAccelerateConfiguration_Do(fn func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAccelerateConfigurationMocks = []func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error){}
+	} else if len(_dat.GetBucketAccelerateConfigurationMocks) < 2 {
+		_dat.GetBucketAccelerateConfigurationMocks = []func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAccelerateConfigurationMocks = _dat.GetBucketAccelerateConfigurationMocks[:len(_dat.GetBucketAccelerateConfigurationMocks)-1]
+		_dat.GetBucketAccelerateConfigurationMocks = append(_dat.GetBucketAccelerateConfigurationMocks, fn)
+		_dat.GetBucketAccelerateConfigurationMocks = append(_dat.GetBucketAccelerateConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketAccelerateConfiguration_Stub() {
+	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAccelerateConfiguration_Return(r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) {
+	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAccelerateConfiguration_Calls() []_s3Client_GetBucketAccelerateConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAccelerateConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketAcl(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketAclCalls = append(_dat.GetBucketAclCalls, _s3Client_GetBucketAcl_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketAcl
+	if len(_dat.GetBucketAclMocks) > 0 {
+		_fn = _dat.GetBucketAclMocks[0]
+		if len(_dat.GetBucketAclMocks) > 1 {
+			_dat.GetBucketAclMocks = _dat.GetBucketAclMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketAcl_Do(fn func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAclMocks = []func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error){}
+	} else if len(_dat.GetBucketAclMocks) < 2 {
+		_dat.GetBucketAclMocks = []func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAclMocks = _dat.GetBucketAclMocks[:len(_dat.GetBucketAclMocks)-1]
+		_dat.GetBucketAclMocks = append(_dat.GetBucketAclMocks, fn)
+		_dat.GetBucketAclMocks = append(_dat.GetBucketAclMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketAcl_Stub() {
+	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (r0 *s3.GetBucketAclOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAcl_Return(r0 *s3.GetBucketAclOutput, r1 error) {
+	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAcl_Calls() []_s3Client_GetBucketAcl_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAclCalls
+}
+
+func (_recv *s3Client) GetBucketAnalyticsConfiguration(ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketAnalyticsConfigurationCalls = append(_dat.GetBucketAnalyticsConfigurationCalls, _s3Client_GetBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketAnalyticsConfiguration
+	if len(_dat.GetBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketAnalyticsConfigurationMocks[0]
+		if len(_dat.GetBucketAnalyticsConfigurationMocks) > 1 {
+			_dat.GetBucketAnalyticsConfigurationMocks = _dat.GetBucketAnalyticsConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Do(fn func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.GetBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.GetBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAnalyticsConfigurationMocks = _dat.GetBucketAnalyticsConfigurationMocks[:len(_dat.GetBucketAnalyticsConfigurationMocks)-1]
+		_dat.GetBucketAnalyticsConfigurationMocks = append(_dat.GetBucketAnalyticsConfigurationMocks, fn)
+		_dat.GetBucketAnalyticsConfigurationMocks = append(_dat.GetBucketAnalyticsConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Stub() {
+	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Return(r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) {
+	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Calls() []_s3Client_GetBucketAnalyticsConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAnalyticsConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketCors(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketCorsCalls = append(_dat.GetBucketCorsCalls, _s3Client_GetBucketCors_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketCors
+	if len(_dat.GetBucketCorsMocks) > 0 {
+		_fn = _dat.GetBucketCorsMocks[0]
+		if len(_dat.GetBucketCorsMocks) > 1 {
+			_dat.GetBucketCorsMocks = _dat.GetBucketCorsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketCors_Do(fn func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketCorsMocks = []func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error){}
+	} else if len(_dat.GetBucketCorsMocks) < 2 {
+		_dat.GetBucketCorsMocks = []func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketCorsMocks = _dat.GetBucketCorsMocks[:len(_dat.GetBucketCorsMocks)-1]
+		_dat.GetBucketCorsMocks = append(_dat.GetBucketCorsMocks, fn)
+		_dat.GetBucketCorsMocks = append(_dat.GetBucketCorsMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketCors_Stub() {
+	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (r0 *s3.GetBucketCorsOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketCors_Return(r0 *s3.GetBucketCorsOutput, r1 error) {
+	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketCors_Calls() []_s3Client_GetBucketCors_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketCors: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketCorsCalls
+}
+
+func (_recv *s3Client) GetBucketEncryption(ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketEncryptionCalls = append(_dat.GetBucketEncryptionCalls, _s3Client_GetBucketEncryption_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketEncryption
+	if len(_dat.GetBucketEncryptionMocks) > 0 {
+		_fn = _dat.GetBucketEncryptionMocks[0]
+		if len(_dat.GetBucketEncryptionMocks) > 1 {
+			_dat.GetBucketEncryptionMocks = _dat.GetBucketEncryptionMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketEncryption_Do(fn func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketEncryptionMocks = []func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error){}
+	} else if len(_dat.GetBucketEncryptionMocks) < 2 {
+		_dat.GetBucketEncryptionMocks = []func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketEncryptionMocks = _dat.GetBucketEncryptionMocks[:len(_dat.GetBucketEncryptionMocks)-1]
+		_dat.GetBucketEncryptionMocks = append(_dat.GetBucketEncryptionMocks, fn)
+		_dat.GetBucketEncryptionMocks = append(_dat.GetBucketEncryptionMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketEncryption_Stub() {
+	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.GetBucketEncryptionOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketEncryption_Return(r0 *s3.GetBucketEncryptionOutput, r1 error) {
+	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketEncryption_Calls() []_s3Client_GetBucketEncryption_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketEncryptionCalls
+}
+
+func (_recv *s3Client) GetBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketIntelligentTieringConfigurationCalls = append(_dat.GetBucketIntelligentTieringConfigurationCalls, _s3Client_GetBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketIntelligentTieringConfiguration
+	if len(_dat.GetBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketIntelligentTieringConfigurationMocks[0]
+		if len(_dat.GetBucketIntelligentTieringConfigurationMocks) > 1 {
+			_dat.GetBucketIntelligentTieringConfigurationMocks = _dat.GetBucketIntelligentTieringConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Do(fn func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.GetBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = _dat.GetBucketIntelligentTieringConfigurationMocks[:len(_dat.GetBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.GetBucketIntelligentTieringConfigurationMocks = append(_dat.GetBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.GetBucketIntelligentTieringConfigurationMocks = append(_dat.GetBucketIntelligentTieringConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Stub() {
+	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Return(r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) {
+	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Calls() []_s3Client_GetBucketIntelligentTieringConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketIntelligentTieringConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketInventoryConfiguration(ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketInventoryConfigurationCalls = append(_dat.GetBucketInventoryConfigurationCalls, _s3Client_GetBucketInventoryConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketInventoryConfiguration
+	if len(_dat.GetBucketInventoryConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketInventoryConfigurationMocks[0]
+		if len(_dat.GetBucketInventoryConfigurationMocks) > 1 {
+			_dat.GetBucketInventoryConfigurationMocks = _dat.GetBucketInventoryConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketInventoryConfiguration_Do(fn func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketInventoryConfigurationMocks = []func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.GetBucketInventoryConfigurationMocks) < 2 {
+		_dat.GetBucketInventoryConfigurationMocks = []func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketInventoryConfigurationMocks = _dat.GetBucketInventoryConfigurationMocks[:len(_dat.GetBucketInventoryConfigurationMocks)-1]
+		_dat.GetBucketInventoryConfigurationMocks = append(_dat.GetBucketInventoryConfigurationMocks, fn)
+		_dat.GetBucketInventoryConfigurationMocks = append(_dat.GetBucketInventoryConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketInventoryConfiguration_Stub() {
+	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketInventoryConfiguration_Return(r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) {
+	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketInventoryConfiguration_Calls() []_s3Client_GetBucketInventoryConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketInventoryConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketInventoryConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketLifecycleConfiguration(ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketLifecycleConfigurationCalls = append(_dat.GetBucketLifecycleConfigurationCalls, _s3Client_GetBucketLifecycleConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketLifecycleConfiguration
+	if len(_dat.GetBucketLifecycleConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketLifecycleConfigurationMocks[0]
+		if len(_dat.GetBucketLifecycleConfigurationMocks) > 1 {
+			_dat.GetBucketLifecycleConfigurationMocks = _dat.GetBucketLifecycleConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketLifecycleConfiguration_Do(fn func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLifecycleConfigurationMocks = []func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error){}
+	} else if len(_dat.GetBucketLifecycleConfigurationMocks) < 2 {
+		_dat.GetBucketLifecycleConfigurationMocks = []func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLifecycleConfigurationMocks = _dat.GetBucketLifecycleConfigurationMocks[:len(_dat.GetBucketLifecycleConfigurationMocks)-1]
+		_dat.GetBucketLifecycleConfigurationMocks = append(_dat.GetBucketLifecycleConfigurationMocks, fn)
+		_dat.GetBucketLifecycleConfigurationMocks = append(_dat.GetBucketLifecycleConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketLifecycleConfiguration_Stub() {
+	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLifecycleConfiguration_Return(r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) {
+	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLifecycleConfiguration_Calls() []_s3Client_GetBucketLifecycleConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLifecycleConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketLocation(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLocation: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketLocationCalls = append(_dat.GetBucketLocationCalls, _s3Client_GetBucketLocation_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketLocation
+	if len(_dat.GetBucketLocationMocks) > 0 {
+		_fn = _dat.GetBucketLocationMocks[0]
+		if len(_dat.GetBucketLocationMocks) > 1 {
+			_dat.GetBucketLocationMocks = _dat.GetBucketLocationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketLocation_Do(fn func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLocation: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLocationMocks = []func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error){}
+	} else if len(_dat.GetBucketLocationMocks) < 2 {
+		_dat.GetBucketLocationMocks = []func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLocationMocks = _dat.GetBucketLocationMocks[:len(_dat.GetBucketLocationMocks)-1]
+		_dat.GetBucketLocationMocks = append(_dat.GetBucketLocationMocks, fn)
+		_dat.GetBucketLocationMocks = append(_dat.GetBucketLocationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketLocation_Stub() {
+	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLocationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLocation_Return(r0 *s3.GetBucketLocationOutput, r1 error) {
+	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLocation_Calls() []_s3Client_GetBucketLocation_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketLocation: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLocationCalls
+}
+
+func (_recv *s3Client) GetBucketLogging(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLogging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketLoggingCalls = append(_dat.GetBucketLoggingCalls, _s3Client_GetBucketLogging_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketLogging
+	if len(_dat.GetBucketLoggingMocks) > 0 {
+		_fn = _dat.GetBucketLoggingMocks[0]
+		if len(_dat.GetBucketLoggingMocks) > 1 {
+			_dat.GetBucketLoggingMocks = _dat.GetBucketLoggingMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketLogging_Do(fn func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketLogging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLoggingMocks = []func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error){}
+	} else if len(_dat.GetBucketLoggingMocks) < 2 {
+		_dat.GetBucketLoggingMocks = []func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLoggingMocks = _dat.GetBucketLoggingMocks[:len(_dat.GetBucketLoggingMocks)-1]
+		_dat.GetBucketLoggingMocks = append(_dat.GetBucketLoggingMocks, fn)
+		_dat.GetBucketLoggingMocks = append(_dat.GetBucketLoggingMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketLogging_Stub() {
+	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketLoggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLogging_Return(r0 *s3.GetBucketLoggingOutput, r1 error) {
+	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketLogging_Calls() []_s3Client_GetBucketLogging_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketLogging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLoggingCalls
+}
+
+func (_recv *s3Client) GetBucketMetricsConfiguration(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketMetricsConfigurationCalls = append(_dat.GetBucketMetricsConfigurationCalls, _s3Client_GetBucketMetricsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketMetricsConfiguration
+	if len(_dat.GetBucketMetricsConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketMetricsConfigurationMocks[0]
+		if len(_dat.GetBucketMetricsConfigurationMocks) > 1 {
+			_dat.GetBucketMetricsConfigurationMocks = _dat.GetBucketMetricsConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketMetricsConfiguration_Do(fn func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetricsConfigurationMocks = []func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetricsConfigurationMocks) < 2 {
+		_dat.GetBucketMetricsConfigurationMocks = []func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetricsConfigurationMocks = _dat.GetBucketMetricsConfigurationMocks[:len(_dat.GetBucketMetricsConfigurationMocks)-1]
+		_dat.GetBucketMetricsConfigurationMocks = append(_dat.GetBucketMetricsConfigurationMocks, fn)
+		_dat.GetBucketMetricsConfigurationMocks = append(_dat.GetBucketMetricsConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketMetricsConfiguration_Stub() {
+	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketMetricsConfiguration_Return(r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) {
+	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketMetricsConfiguration_Calls() []_s3Client_GetBucketMetricsConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetricsConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketNotificationConfiguration(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketNotificationConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketNotificationConfigurationCalls = append(_dat.GetBucketNotificationConfigurationCalls, _s3Client_GetBucketNotificationConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketNotificationConfiguration
+	if len(_dat.GetBucketNotificationConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketNotificationConfigurationMocks[0]
+		if len(_dat.GetBucketNotificationConfigurationMocks) > 1 {
+			_dat.GetBucketNotificationConfigurationMocks = _dat.GetBucketNotificationConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketNotificationConfiguration_Do(fn func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketNotificationConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketNotificationConfigurationMocks = []func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error){}
+	} else if len(_dat.GetBucketNotificationConfigurationMocks) < 2 {
+		_dat.GetBucketNotificationConfigurationMocks = []func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketNotificationConfigurationMocks = _dat.GetBucketNotificationConfigurationMocks[:len(_dat.GetBucketNotificationConfigurationMocks)-1]
+		_dat.GetBucketNotificationConfigurationMocks = append(_dat.GetBucketNotificationConfigurationMocks, fn)
+		_dat.GetBucketNotificationConfigurationMocks = append(_dat.GetBucketNotificationConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketNotificationConfiguration_Stub() {
+	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketNotificationConfiguration_Return(r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) {
+	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketNotificationConfiguration_Calls() []_s3Client_GetBucketNotificationConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketNotificationConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketNotificationConfigurationCalls
+}
+
+func (_recv *s3Client) GetBucketOwnershipControls(ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketOwnershipControlsCalls = append(_dat.GetBucketOwnershipControlsCalls, _s3Client_GetBucketOwnershipControls_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketOwnershipControls
+	if len(_dat.GetBucketOwnershipControlsMocks) > 0 {
+		_fn = _dat.GetBucketOwnershipControlsMocks[0]
+		if len(_dat.GetBucketOwnershipControlsMocks) > 1 {
+			_dat.GetBucketOwnershipControlsMocks = _dat.GetBucketOwnershipControlsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketOwnershipControls_Do(fn func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketOwnershipControlsMocks = []func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.GetBucketOwnershipControlsMocks) < 2 {
+		_dat.GetBucketOwnershipControlsMocks = []func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketOwnershipControlsMocks = _dat.GetBucketOwnershipControlsMocks[:len(_dat.GetBucketOwnershipControlsMocks)-1]
+		_dat.GetBucketOwnershipControlsMocks = append(_dat.GetBucketOwnershipControlsMocks, fn)
+		_dat.GetBucketOwnershipControlsMocks = append(_dat.GetBucketOwnershipControlsMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketOwnershipControls_Stub() {
+	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.GetBucketOwnershipControlsOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketOwnershipControls_Return(r0 *s3.GetBucketOwnershipControlsOutput, r1 error) {
+	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketOwnershipControls_Calls() []_s3Client_GetBucketOwnershipControls_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketOwnershipControls: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketOwnershipControlsCalls
+}
+
+func (_recv *s3Client) GetBucketPolicy(ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketPolicyCalls = append(_dat.GetBucketPolicyCalls, _s3Client_GetBucketPolicy_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketPolicy
+	if len(_dat.GetBucketPolicyMocks) > 0 {
+		_fn = _dat.GetBucketPolicyMocks[0]
+		if len(_dat.GetBucketPolicyMocks) > 1 {
+			_dat.GetBucketPolicyMocks = _dat.GetBucketPolicyMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketPolicy_Do(fn func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketPolicyMocks = []func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error){}
+	} else if len(_dat.GetBucketPolicyMocks) < 2 {
+		_dat.GetBucketPolicyMocks = []func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketPolicyMocks = _dat.GetBucketPolicyMocks[:len(_dat.GetBucketPolicyMocks)-1]
+		_dat.GetBucketPolicyMocks = append(_dat.GetBucketPolicyMocks, fn)
+		_dat.GetBucketPolicyMocks = append(_dat.GetBucketPolicyMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketPolicy_Stub() {
+	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketPolicy_Return(r0 *s3.GetBucketPolicyOutput, r1 error) {
+	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketPolicy_Calls() []_s3Client_GetBucketPolicy_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketPolicyCalls
+}
+
+func (_recv *s3Client) GetBucketPolicyStatus(ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicyStatus: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketPolicyStatusCalls = append(_dat.GetBucketPolicyStatusCalls, _s3Client_GetBucketPolicyStatus_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketPolicyStatus
+	if len(_dat.GetBucketPolicyStatusMocks) > 0 {
+		_fn = _dat.GetBucketPolicyStatusMocks[0]
+		if len(_dat.GetBucketPolicyStatusMocks) > 1 {
+			_dat.GetBucketPolicyStatusMocks = _dat.GetBucketPolicyStatusMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketPolicyStatus_Do(fn func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicyStatus: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketPolicyStatusMocks = []func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error){}
+	} else if len(_dat.GetBucketPolicyStatusMocks) < 2 {
+		_dat.GetBucketPolicyStatusMocks = []func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketPolicyStatusMocks = _dat.GetBucketPolicyStatusMocks[:len(_dat.GetBucketPolicyStatusMocks)-1]
+		_dat.GetBucketPolicyStatusMocks = append(_dat.GetBucketPolicyStatusMocks, fn)
+		_dat.GetBucketPolicyStatusMocks = append(_dat.GetBucketPolicyStatusMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketPolicyStatus_Stub() {
+	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyStatusOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketPolicyStatus_Return(r0 *s3.GetBucketPolicyStatusOutput, r1 error) {
+	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketPolicyStatus_Calls() []_s3Client_GetBucketPolicyStatus_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketPolicyStatus: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketPolicyStatusCalls
+}
+
+func (_recv *s3Client) GetBucketReplication(ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketReplicationCalls = append(_dat.GetBucketReplicationCalls, _s3Client_GetBucketReplication_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketReplication
+	if len(_dat.GetBucketReplicationMocks) > 0 {
+		_fn = _dat.GetBucketReplicationMocks[0]
+		if len(_dat.GetBucketReplicationMocks) > 1 {
+			_dat.GetBucketReplicationMocks = _dat.GetBucketReplicationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketReplication_Do(fn func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketReplicationMocks = []func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error){}
+	} else if len(_dat.GetBucketReplicationMocks) < 2 {
+		_dat.GetBucketReplicationMocks = []func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketReplicationMocks = _dat.GetBucketReplicationMocks[:len(_dat.GetBucketReplicationMocks)-1]
+		_dat.GetBucketReplicationMocks = append(_dat.GetBucketReplicationMocks, fn)
+		_dat.GetBucketReplicationMocks = append(_dat.GetBucketReplicationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketReplication_Stub() {
+	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.GetBucketReplicationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketReplication_Return(r0 *s3.GetBucketReplicationOutput, r1 error) {
+	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketReplication_Calls() []_s3Client_GetBucketReplication_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketReplicationCalls
+}
+
+func (_recv *s3Client) GetBucketRequestPayment(ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketRequestPayment: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketRequestPaymentCalls = append(_dat.GetBucketRequestPaymentCalls, _s3Client_GetBucketRequestPayment_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketRequestPayment
+	if len(_dat.GetBucketRequestPaymentMocks) > 0 {
+		_fn = _dat.GetBucketRequestPaymentMocks[0]
+		if len(_dat.GetBucketRequestPaymentMocks) > 1 {
+			_dat.GetBucketRequestPaymentMocks = _dat.GetBucketRequestPaymentMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketRequestPayment_Do(fn func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketRequestPayment: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketRequestPaymentMocks = []func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error){}
+	} else if len(_dat.GetBucketRequestPaymentMocks) < 2 {
+		_dat.GetBucketRequestPaymentMocks = []func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketRequestPaymentMocks = _dat.GetBucketRequestPaymentMocks[:len(_dat.GetBucketRequestPaymentMocks)-1]
+		_dat.GetBucketRequestPaymentMocks = append(_dat.GetBucketRequestPaymentMocks, fn)
+		_dat.GetBucketRequestPaymentMocks = append(_dat.GetBucketRequestPaymentMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketRequestPayment_Stub() {
+	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.GetBucketRequestPaymentOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketRequestPayment_Return(r0 *s3.GetBucketRequestPaymentOutput, r1 error) {
+	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketRequestPayment_Calls() []_s3Client_GetBucketRequestPayment_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketRequestPayment: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketRequestPaymentCalls
+}
+
+func (_recv *s3Client) GetBucketTagging(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketTaggingCalls = append(_dat.GetBucketTaggingCalls, _s3Client_GetBucketTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketTagging
+	if len(_dat.GetBucketTaggingMocks) > 0 {
+		_fn = _dat.GetBucketTaggingMocks[0]
+		if len(_dat.GetBucketTaggingMocks) > 1 {
+			_dat.GetBucketTaggingMocks = _dat.GetBucketTaggingMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketTagging_Do(fn func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketTaggingMocks = []func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error){}
+	} else if len(_dat.GetBucketTaggingMocks) < 2 {
+		_dat.GetBucketTaggingMocks = []func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketTaggingMocks = _dat.GetBucketTaggingMocks[:len(_dat.GetBucketTaggingMocks)-1]
+		_dat.GetBucketTaggingMocks = append(_dat.GetBucketTaggingMocks, fn)
+		_dat.GetBucketTaggingMocks = append(_dat.GetBucketTaggingMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketTagging_Stub() {
+	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketTaggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketTagging_Return(r0 *s3.GetBucketTaggingOutput, r1 error) {
+	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketTagging_Calls() []_s3Client_GetBucketTagging_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketTaggingCalls
+}
+
+func (_recv *s3Client) GetBucketVersioning(ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketVersioning: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketVersioningCalls = append(_dat.GetBucketVersioningCalls, _s3Client_GetBucketVersioning_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketVersioning
+	if len(_dat.GetBucketVersioningMocks) > 0 {
+		_fn = _dat.GetBucketVersioningMocks[0]
+		if len(_dat.GetBucketVersioningMocks) > 1 {
+			_dat.GetBucketVersioningMocks = _dat.GetBucketVersioningMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketVersioning_Do(fn func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketVersioning: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketVersioningMocks = []func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error){}
+	} else if len(_dat.GetBucketVersioningMocks) < 2 {
+		_dat.GetBucketVersioningMocks = []func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketVersioningMocks = _dat.GetBucketVersioningMocks[:len(_dat.GetBucketVersioningMocks)-1]
+		_dat.GetBucketVersioningMocks = append(_dat.GetBucketVersioningMocks, fn)
+		_dat.GetBucketVersioningMocks = append(_dat.GetBucketVersioningMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketVersioning_Stub() {
+	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.GetBucketVersioningOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketVersioning_Return(r0 *s3.GetBucketVersioningOutput, r1 error) {
+	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketVersioning_Calls() []_s3Client_GetBucketVersioning_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketVersioning: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketVersioningCalls
+}
+
+func (_recv *s3Client) GetBucketWebsite(ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketWebsiteCalls = append(_dat.GetBucketWebsiteCalls, _s3Client_GetBucketWebsite_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetBucketWebsite
+	if len(_dat.GetBucketWebsiteMocks) > 0 {
+		_fn = _dat.GetBucketWebsiteMocks[0]
+		if len(_dat.GetBucketWebsiteMocks) > 1 {
+			_dat.GetBucketWebsiteMocks = _dat.GetBucketWebsiteMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketWebsite_Do(fn func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketWebsiteMocks = []func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error){}
+	} else if len(_dat.GetBucketWebsiteMocks) < 2 {
+		_dat.GetBucketWebsiteMocks = []func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketWebsiteMocks = _dat.GetBucketWebsiteMocks[:len(_dat.GetBucketWebsiteMocks)-1]
+		_dat.GetBucketWebsiteMocks = append(_dat.GetBucketWebsiteMocks, fn)
+		_dat.GetBucketWebsiteMocks = append(_dat.GetBucketWebsiteMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetBucketWebsite_Stub() {
+	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.GetBucketWebsiteOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketWebsite_Return(r0 *s3.GetBucketWebsiteOutput, r1 error) {
+	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetBucketWebsite_Calls() []_s3Client_GetBucketWebsite_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketWebsiteCalls
+}
+
+func (_recv *s3Client) GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectCalls = append(_dat.GetObjectCalls, _s3Client_GetObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObject
+	if len(_dat.GetObjectMocks) > 0 {
+		_fn = _dat.GetObjectMocks[0]
+		if len(_dat.GetObjectMocks) > 1 {
+			_dat.GetObjectMocks = _dat.GetObjectMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObject_Do(fn func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectMocks = []func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error){}
+	} else if len(_dat.GetObjectMocks) < 2 {
+		_dat.GetObjectMocks = []func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectMocks = _dat.GetObjectMocks[:len(_dat.GetObjectMocks)-1]
+		_dat.GetObjectMocks = append(_dat.GetObjectMocks, fn)
+		_dat.GetObjectMocks = append(_dat.GetObjectMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObject_Stub() {
+	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (r0 *s3.GetObjectOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObject_Return(r0 *s3.GetObjectOutput, r1 error) {
+	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObject_Calls() []_s3Client_GetObject_Call {
+	if _recv == nil {
+		panic("s3Client.GetObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectCalls
+}
+
+func (_recv *s3Client) GetObjectAcl(ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectAclCalls = append(_dat.GetObjectAclCalls, _s3Client_GetObjectAcl_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectAcl
+	if len(_dat.GetObjectAclMocks) > 0 {
+		_fn = _dat.GetObjectAclMocks[0]
+		if len(_dat.GetObjectAclMocks) > 1 {
+			_dat.GetObjectAclMocks = _dat.GetObjectAclMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectAcl_Do(fn func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectAclMocks = []func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error){}
+	} else if len(_dat.GetObjectAclMocks) < 2 {
+		_dat.GetObjectAclMocks = []func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectAclMocks = _dat.GetObjectAclMocks[:len(_dat.GetObjectAclMocks)-1]
+		_dat.GetObjectAclMocks = append(_dat.GetObjectAclMocks, fn)
+		_dat.GetObjectAclMocks = append(_dat.GetObjectAclMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectAcl_Stub() {
+	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (r0 *s3.GetObjectAclOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectAcl_Return(r0 *s3.GetObjectAclOutput, r1 error) {
+	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectAcl_Calls() []_s3Client_GetObjectAcl_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectAclCalls
+}
+
+func (_recv *s3Client) GetObjectAttributes(ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectAttributes: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectAttributesCalls = append(_dat.GetObjectAttributesCalls, _s3Client_GetObjectAttributes_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectAttributes
+	if len(_dat.GetObjectAttributesMocks) > 0 {
+		_fn = _dat.GetObjectAttributesMocks[0]
+		if len(_dat.GetObjectAttributesMocks) > 1 {
+			_dat.GetObjectAttributesMocks = _dat.GetObjectAttributesMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectAttributes_Do(fn func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectAttributes: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.AbortMultipartUploadOverride != nil {
-		return _dat.AbortMultipartUploadOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectAttributesMocks = []func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error){}
+	} else if len(_dat.GetObjectAttributesMocks) < 2 {
+		_dat.GetObjectAttributesMocks = []func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectAttributesMocks = _dat.GetObjectAttributesMocks[:len(_dat.GetObjectAttributesMocks)-1]
+		_dat.GetObjectAttributesMocks = append(_dat.GetObjectAttributesMocks, fn)
+		_dat.GetObjectAttributesMocks = append(_dat.GetObjectAttributesMocks, fn)
 	}
-	return _recv.Client.AbortMultipartUpload(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectAttributes_Stub() {
+	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (r0 *s3.GetObjectAttributesOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectAttributes_Return(r0 *s3.GetObjectAttributesOutput, r1 error) {
+	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectAttributes_Calls() []_s3Client_GetObjectAttributes_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectAttributes: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectAttributesCalls
+}
+
+func (_recv *s3Client) GetObjectLegalHold(ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectLegalHold: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectLegalHoldCalls = append(_dat.GetObjectLegalHoldCalls, _s3Client_GetObjectLegalHold_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectLegalHold
+	if len(_dat.GetObjectLegalHoldMocks) > 0 {
+		_fn = _dat.GetObjectLegalHoldMocks[0]
+		if len(_dat.GetObjectLegalHoldMocks) > 1 {
+			_dat.GetObjectLegalHoldMocks = _dat.GetObjectLegalHoldMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectLegalHold_Do(fn func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectLegalHold: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectLegalHoldMocks = []func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error){}
+	} else if len(_dat.GetObjectLegalHoldMocks) < 2 {
+		_dat.GetObjectLegalHoldMocks = []func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectLegalHoldMocks = _dat.GetObjectLegalHoldMocks[:len(_dat.GetObjectLegalHoldMocks)-1]
+		_dat.GetObjectLegalHoldMocks = append(_dat.GetObjectLegalHoldMocks, fn)
+		_dat.GetObjectLegalHoldMocks = append(_dat.GetObjectLegalHoldMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectLegalHold_Stub() {
+	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.GetObjectLegalHoldOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectLegalHold_Return(r0 *s3.GetObjectLegalHoldOutput, r1 error) {
+	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectLegalHold_Calls() []_s3Client_GetObjectLegalHold_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectLegalHold: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectLegalHoldCalls
+}
+
+func (_recv *s3Client) GetObjectLockConfiguration(ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectLockConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectLockConfigurationCalls = append(_dat.GetObjectLockConfigurationCalls, _s3Client_GetObjectLockConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectLockConfiguration
+	if len(_dat.GetObjectLockConfigurationMocks) > 0 {
+		_fn = _dat.GetObjectLockConfigurationMocks[0]
+		if len(_dat.GetObjectLockConfigurationMocks) > 1 {
+			_dat.GetObjectLockConfigurationMocks = _dat.GetObjectLockConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectLockConfiguration_Do(fn func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectLockConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectLockConfigurationMocks = []func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error){}
+	} else if len(_dat.GetObjectLockConfigurationMocks) < 2 {
+		_dat.GetObjectLockConfigurationMocks = []func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectLockConfigurationMocks = _dat.GetObjectLockConfigurationMocks[:len(_dat.GetObjectLockConfigurationMocks)-1]
+		_dat.GetObjectLockConfigurationMocks = append(_dat.GetObjectLockConfigurationMocks, fn)
+		_dat.GetObjectLockConfigurationMocks = append(_dat.GetObjectLockConfigurationMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectLockConfiguration_Stub() {
+	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetObjectLockConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectLockConfiguration_Return(r0 *s3.GetObjectLockConfigurationOutput, r1 error) {
+	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectLockConfiguration_Calls() []_s3Client_GetObjectLockConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectLockConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectLockConfigurationCalls
+}
+
+func (_recv *s3Client) GetObjectRetention(ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectRetention: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectRetentionCalls = append(_dat.GetObjectRetentionCalls, _s3Client_GetObjectRetention_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectRetention
+	if len(_dat.GetObjectRetentionMocks) > 0 {
+		_fn = _dat.GetObjectRetentionMocks[0]
+		if len(_dat.GetObjectRetentionMocks) > 1 {
+			_dat.GetObjectRetentionMocks = _dat.GetObjectRetentionMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectRetention_Do(fn func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectRetention: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectRetentionMocks = []func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error){}
+	} else if len(_dat.GetObjectRetentionMocks) < 2 {
+		_dat.GetObjectRetentionMocks = []func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectRetentionMocks = _dat.GetObjectRetentionMocks[:len(_dat.GetObjectRetentionMocks)-1]
+		_dat.GetObjectRetentionMocks = append(_dat.GetObjectRetentionMocks, fn)
+		_dat.GetObjectRetentionMocks = append(_dat.GetObjectRetentionMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectRetention_Stub() {
+	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.GetObjectRetentionOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectRetention_Return(r0 *s3.GetObjectRetentionOutput, r1 error) {
+	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectRetention_Calls() []_s3Client_GetObjectRetention_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectRetention: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectRetentionCalls
+}
+
+func (_recv *s3Client) GetObjectTagging(ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectTaggingCalls = append(_dat.GetObjectTaggingCalls, _s3Client_GetObjectTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectTagging
+	if len(_dat.GetObjectTaggingMocks) > 0 {
+		_fn = _dat.GetObjectTaggingMocks[0]
+		if len(_dat.GetObjectTaggingMocks) > 1 {
+			_dat.GetObjectTaggingMocks = _dat.GetObjectTaggingMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectTagging_Do(fn func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectTaggingMocks = []func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error){}
+	} else if len(_dat.GetObjectTaggingMocks) < 2 {
+		_dat.GetObjectTaggingMocks = []func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectTaggingMocks = _dat.GetObjectTaggingMocks[:len(_dat.GetObjectTaggingMocks)-1]
+		_dat.GetObjectTaggingMocks = append(_dat.GetObjectTaggingMocks, fn)
+		_dat.GetObjectTaggingMocks = append(_dat.GetObjectTaggingMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectTagging_Stub() {
+	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.GetObjectTaggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectTagging_Return(r0 *s3.GetObjectTaggingOutput, r1 error) {
+	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectTagging_Calls() []_s3Client_GetObjectTagging_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectTaggingCalls
+}
+
+func (_recv *s3Client) GetObjectTorrent(ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetObjectTorrent: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetObjectTorrentCalls = append(_dat.GetObjectTorrentCalls, _s3Client_GetObjectTorrent_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetObjectTorrent
+	if len(_dat.GetObjectTorrentMocks) > 0 {
+		_fn = _dat.GetObjectTorrentMocks[0]
+		if len(_dat.GetObjectTorrentMocks) > 1 {
+			_dat.GetObjectTorrentMocks = _dat.GetObjectTorrentMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetObjectTorrent_Do(fn func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetObjectTorrent: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectTorrentMocks = []func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error){}
+	} else if len(_dat.GetObjectTorrentMocks) < 2 {
+		_dat.GetObjectTorrentMocks = []func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectTorrentMocks = _dat.GetObjectTorrentMocks[:len(_dat.GetObjectTorrentMocks)-1]
+		_dat.GetObjectTorrentMocks = append(_dat.GetObjectTorrentMocks, fn)
+		_dat.GetObjectTorrentMocks = append(_dat.GetObjectTorrentMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetObjectTorrent_Stub() {
+	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (r0 *s3.GetObjectTorrentOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectTorrent_Return(r0 *s3.GetObjectTorrentOutput, r1 error) {
+	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetObjectTorrent_Calls() []_s3Client_GetObjectTorrent_Call {
+	if _recv == nil {
+		panic("s3Client.GetObjectTorrent: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectTorrentCalls
+}
+
+func (_recv *s3Client) GetPublicAccessBlock(ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetPublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetPublicAccessBlockCalls = append(_dat.GetPublicAccessBlockCalls, _s3Client_GetPublicAccessBlock_Call{ctx, params, optFns})
+	_fn := _recv.Client.GetPublicAccessBlock
+	if len(_dat.GetPublicAccessBlockMocks) > 0 {
+		_fn = _dat.GetPublicAccessBlockMocks[0]
+		if len(_dat.GetPublicAccessBlockMocks) > 1 {
+			_dat.GetPublicAccessBlockMocks = _dat.GetPublicAccessBlockMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetPublicAccessBlock_Do(fn func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetPublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetPublicAccessBlockMocks = []func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error){}
+	} else if len(_dat.GetPublicAccessBlockMocks) < 2 {
+		_dat.GetPublicAccessBlockMocks = []func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.GetPublicAccessBlockMocks = _dat.GetPublicAccessBlockMocks[:len(_dat.GetPublicAccessBlockMocks)-1]
+		_dat.GetPublicAccessBlockMocks = append(_dat.GetPublicAccessBlockMocks, fn)
+		_dat.GetPublicAccessBlockMocks = append(_dat.GetPublicAccessBlockMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _GetPublicAccessBlock_Stub() {
+	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.GetPublicAccessBlockOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetPublicAccessBlock_Return(r0 *s3.GetPublicAccessBlockOutput, r1 error) {
+	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _GetPublicAccessBlock_Calls() []_s3Client_GetPublicAccessBlock_Call {
+	if _recv == nil {
+		panic("s3Client.GetPublicAccessBlock: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetPublicAccessBlockCalls
+}
+
+func (_recv *s3Client) HeadBucket(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error) {
+	if _recv == nil {
+		panic("s3Client.HeadBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.HeadBucketCalls = append(_dat.HeadBucketCalls, _s3Client_HeadBucket_Call{ctx, params, optFns})
+	_fn := _recv.Client.HeadBucket
+	if len(_dat.HeadBucketMocks) > 0 {
+		_fn = _dat.HeadBucketMocks[0]
+		if len(_dat.HeadBucketMocks) > 1 {
+			_dat.HeadBucketMocks = _dat.HeadBucketMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _HeadBucket_Do(fn func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.HeadBucket: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.HeadBucketMocks = []func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error){}
+	} else if len(_dat.HeadBucketMocks) < 2 {
+		_dat.HeadBucketMocks = []func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error){fn, fn}
+	} else {
+		_dat.HeadBucketMocks = _dat.HeadBucketMocks[:len(_dat.HeadBucketMocks)-1]
+		_dat.HeadBucketMocks = append(_dat.HeadBucketMocks, fn)
+		_dat.HeadBucketMocks = append(_dat.HeadBucketMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _HeadBucket_Stub() {
+	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (r0 *s3.HeadBucketOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _HeadBucket_Return(r0 *s3.HeadBucketOutput, r1 error) {
+	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _AbortMultipartUpload_Patch(fn func (ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)) {
+func (_recv *s3Client) _HeadBucket_Calls() []_s3Client_HeadBucket_Call {
 	if _recv == nil {
-		panic("S3Client.AbortMultipartUpload: nil pointer receiver")
+		panic("s3Client.HeadBucket: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.AbortMultipartUploadOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.HeadBucketCalls
 }
 
-func (_recv *S3Client) CompleteMultipartUpload(ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) {
+func (_recv *s3Client) HeadObject(ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error) {
 	if _recv == nil {
-		panic("S3Client.CompleteMultipartUpload: nil pointer receiver")
+		panic("s3Client.HeadObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.CompleteMultipartUploadOverride != nil {
-		return _dat.CompleteMultipartUploadOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.HeadObjectCalls = append(_dat.HeadObjectCalls, _s3Client_HeadObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.HeadObject
+	if len(_dat.HeadObjectMocks) > 0 {
+		_fn = _dat.HeadObjectMocks[0]
+		if len(_dat.HeadObjectMocks) > 1 {
+			_dat.HeadObjectMocks = _dat.HeadObjectMocks[1:]
+		}
 	}
-	return _recv.Client.CompleteMultipartUpload(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _CompleteMultipartUpload_Patch(fn func (ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)) {
+func (_recv *s3Client) _HeadObject_Do(fn func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.CompleteMultipartUpload: nil pointer receiver")
+		panic("s3Client.HeadObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.HeadObjectMocks = []func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error){}
+	} else if len(_dat.HeadObjectMocks) < 2 {
+		_dat.HeadObjectMocks = []func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error){fn, fn}
+	} else {
+		_dat.HeadObjectMocks = _dat.HeadObjectMocks[:len(_dat.HeadObjectMocks)-1]
+		_dat.HeadObjectMocks = append(_dat.HeadObjectMocks, fn)
+		_dat.HeadObjectMocks = append(_dat.HeadObjectMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.CompleteMultipartUploadOverride = fn
 }
 
-func (_recv *S3Client) CopyObject(ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error) {
-	if _recv == nil {
-		panic("S3Client.CopyObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.CopyObjectOverride != nil {
-		return _dat.CopyObjectOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.CopyObject(ctx, params, optFns...)
+func (_recv *s3Client) _HeadObject_Stub() {
+	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (r0 *s3.HeadObjectOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _CopyObject_Patch(fn func (ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.CopyObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.CopyObjectOverride = fn
+func (_recv *s3Client) _HeadObject_Return(r0 *s3.HeadObjectOutput, r1 error) {
+	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) CreateBucket(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error) {
+func (_recv *s3Client) _HeadObject_Calls() []_s3Client_HeadObject_Call {
 	if _recv == nil {
-		panic("S3Client.CreateBucket: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.CreateBucketOverride != nil {
-		return _dat.CreateBucketOverride(ctx, params, optFns...)
+		panic("s3Client.HeadObject: nil pointer receiver")
 	}
-	return _recv.Client.CreateBucket(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.HeadObjectCalls
 }
 
-func (_recv *S3Client) _CreateBucket_Patch(fn func (ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error)) {
+func (_recv *s3Client) ListBucketAnalyticsConfigurations(ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.CreateBucket: nil pointer receiver")
+		panic("s3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.CreateBucketOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListBucketAnalyticsConfigurationsCalls = append(_dat.ListBucketAnalyticsConfigurationsCalls, _s3Client_ListBucketAnalyticsConfigurations_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListBucketAnalyticsConfigurations
+	if len(_dat.ListBucketAnalyticsConfigurationsMocks) > 0 {
+		_fn = _dat.ListBucketAnalyticsConfigurationsMocks[0]
+		if len(_dat.ListBucketAnalyticsConfigurationsMocks) > 1 {
+			_dat.ListBucketAnalyticsConfigurationsMocks = _dat.ListBucketAnalyticsConfigurationsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) CreateMultipartUpload(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) {
+func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Do(fn func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.CreateMultipartUpload: nil pointer receiver")
+		panic("s3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.CreateMultipartUploadOverride != nil {
-		return _dat.CreateMultipartUploadOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketAnalyticsConfigurationsMocks = []func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketAnalyticsConfigurationsMocks) < 2 {
+		_dat.ListBucketAnalyticsConfigurationsMocks = []func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketAnalyticsConfigurationsMocks = _dat.ListBucketAnalyticsConfigurationsMocks[:len(_dat.ListBucketAnalyticsConfigurationsMocks)-1]
+		_dat.ListBucketAnalyticsConfigurationsMocks = append(_dat.ListBucketAnalyticsConfigurationsMocks, fn)
+		_dat.ListBucketAnalyticsConfigurationsMocks = append(_dat.ListBucketAnalyticsConfigurationsMocks, fn)
 	}
-	return _recv.Client.CreateMultipartUpload(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _CreateMultipartUpload_Patch(fn func (ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.CreateMultipartUpload: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.CreateMultipartUploadOverride = fn
+func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Stub() {
+	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteBucket(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucket: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketOverride != nil {
-		return _dat.DeleteBucketOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucket(ctx, params, optFns...)
+func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Return(r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) {
+	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucket_Patch(fn func (ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)) {
+func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Calls() []_s3Client_ListBucketAnalyticsConfigurations_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteBucket: nil pointer receiver")
+		panic("s3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketAnalyticsConfigurationsCalls
 }
 
-func (_recv *S3Client) DeleteBucketAnalyticsConfiguration(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) {
+func (_recv *s3Client) ListBucketIntelligentTieringConfigurations(ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
+		panic("s3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketAnalyticsConfigurationOverride != nil {
-		return _dat.DeleteBucketAnalyticsConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListBucketIntelligentTieringConfigurationsCalls = append(_dat.ListBucketIntelligentTieringConfigurationsCalls, _s3Client_ListBucketIntelligentTieringConfigurations_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListBucketIntelligentTieringConfigurations
+	if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) > 0 {
+		_fn = _dat.ListBucketIntelligentTieringConfigurationsMocks[0]
+		if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) > 1 {
+			_dat.ListBucketIntelligentTieringConfigurationsMocks = _dat.ListBucketIntelligentTieringConfigurationsMocks[1:]
+		}
 	}
-	return _recv.Client.DeleteBucketAnalyticsConfiguration(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteBucketAnalyticsConfiguration_Patch(fn func (ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)) {
+func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Do(fn func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
+		panic("s3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketAnalyticsConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = []func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) < 2 {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = []func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = _dat.ListBucketIntelligentTieringConfigurationsMocks[:len(_dat.ListBucketIntelligentTieringConfigurationsMocks)-1]
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = append(_dat.ListBucketIntelligentTieringConfigurationsMocks, fn)
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = append(_dat.ListBucketIntelligentTieringConfigurationsMocks, fn)
+	}
 }
 
-func (_recv *S3Client) DeleteBucketCors(ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketCors: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketCorsOverride != nil {
-		return _dat.DeleteBucketCorsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketCors(ctx, params, optFns...)
+func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Stub() {
+	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucketCors_Patch(fn func (ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketCors: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketCorsOverride = fn
+func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Return(r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) {
+	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteBucketEncryption(ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) {
+func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Calls() []_s3Client_ListBucketIntelligentTieringConfigurations_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketEncryption: nil pointer receiver")
+		panic("s3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketEncryptionOverride != nil {
-		return _dat.DeleteBucketEncryptionOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketEncryption(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketIntelligentTieringConfigurationsCalls
 }
 
-func (_recv *S3Client) _DeleteBucketEncryption_Patch(fn func (ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)) {
+func (_recv *s3Client) ListBucketInventoryConfigurations(ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketEncryption: nil pointer receiver")
+		panic("s3Client.ListBucketInventoryConfigurations: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListBucketInventoryConfigurationsCalls = append(_dat.ListBucketInventoryConfigurationsCalls, _s3Client_ListBucketInventoryConfigurations_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListBucketInventoryConfigurations
+	if len(_dat.ListBucketInventoryConfigurationsMocks) > 0 {
+		_fn = _dat.ListBucketInventoryConfigurationsMocks[0]
+		if len(_dat.ListBucketInventoryConfigurationsMocks) > 1 {
+			_dat.ListBucketInventoryConfigurationsMocks = _dat.ListBucketInventoryConfigurationsMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketEncryptionOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) DeleteBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) {
+func (_recv *s3Client) _ListBucketInventoryConfigurations_Do(fn func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
+		panic("s3Client.ListBucketInventoryConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketIntelligentTieringConfigurationOverride != nil {
-		return _dat.DeleteBucketIntelligentTieringConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketInventoryConfigurationsMocks = []func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketInventoryConfigurationsMocks) < 2 {
+		_dat.ListBucketInventoryConfigurationsMocks = []func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketInventoryConfigurationsMocks = _dat.ListBucketInventoryConfigurationsMocks[:len(_dat.ListBucketInventoryConfigurationsMocks)-1]
+		_dat.ListBucketInventoryConfigurationsMocks = append(_dat.ListBucketInventoryConfigurationsMocks, fn)
+		_dat.ListBucketInventoryConfigurationsMocks = append(_dat.ListBucketInventoryConfigurationsMocks, fn)
 	}
-	return _recv.Client.DeleteBucketIntelligentTieringConfiguration(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteBucketIntelligentTieringConfiguration_Patch(fn func (ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketIntelligentTieringConfigurationOverride = fn
+func (_recv *s3Client) _ListBucketInventoryConfigurations_Stub() {
+	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteBucketInventoryConfiguration(ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketInventoryConfigurationOverride != nil {
-		return _dat.DeleteBucketInventoryConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketInventoryConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _ListBucketInventoryConfigurations_Return(r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) {
+	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucketInventoryConfiguration_Patch(fn func (ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)) {
+func (_recv *s3Client) _ListBucketInventoryConfigurations_Calls() []_s3Client_ListBucketInventoryConfigurations_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
+		panic("s3Client.ListBucketInventoryConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketInventoryConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketInventoryConfigurationsCalls
 }
 
-func (_recv *S3Client) DeleteBucketLifecycle(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) {
+func (_recv *s3Client) ListBucketMetricsConfigurations(ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketLifecycle: nil pointer receiver")
+		panic("s3Client.ListBucketMetricsConfigurations: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketLifecycleOverride != nil {
-		return _dat.DeleteBucketLifecycleOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListBucketMetricsConfigurationsCalls = append(_dat.ListBucketMetricsConfigurationsCalls, _s3Client_ListBucketMetricsConfigurations_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListBucketMetricsConfigurations
+	if len(_dat.ListBucketMetricsConfigurationsMocks) > 0 {
+		_fn = _dat.ListBucketMetricsConfigurationsMocks[0]
+		if len(_dat.ListBucketMetricsConfigurationsMocks) > 1 {
+			_dat.ListBucketMetricsConfigurationsMocks = _dat.ListBucketMetricsConfigurationsMocks[1:]
+		}
 	}
-	return _recv.Client.DeleteBucketLifecycle(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteBucketLifecycle_Patch(fn func (ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)) {
+func (_recv *s3Client) _ListBucketMetricsConfigurations_Do(fn func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketLifecycle: nil pointer receiver")
+		panic("s3Client.ListBucketMetricsConfigurations: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketMetricsConfigurationsMocks = []func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketMetricsConfigurationsMocks) < 2 {
+		_dat.ListBucketMetricsConfigurationsMocks = []func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketMetricsConfigurationsMocks = _dat.ListBucketMetricsConfigurationsMocks[:len(_dat.ListBucketMetricsConfigurationsMocks)-1]
+		_dat.ListBucketMetricsConfigurationsMocks = append(_dat.ListBucketMetricsConfigurationsMocks, fn)
+		_dat.ListBucketMetricsConfigurationsMocks = append(_dat.ListBucketMetricsConfigurationsMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketLifecycleOverride = fn
 }
 
-func (_recv *S3Client) DeleteBucketMetricsConfiguration(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketMetricsConfigurationOverride != nil {
-		return _dat.DeleteBucketMetricsConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketMetricsConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _ListBucketMetricsConfigurations_Stub() {
+	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucketMetricsConfiguration_Patch(fn func (ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketMetricsConfigurationOverride = fn
+func (_recv *s3Client) _ListBucketMetricsConfigurations_Return(r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) {
+	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteBucketOwnershipControls(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) {
+func (_recv *s3Client) _ListBucketMetricsConfigurations_Calls() []_s3Client_ListBucketMetricsConfigurations_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketOwnershipControls: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketOwnershipControlsOverride != nil {
-		return _dat.DeleteBucketOwnershipControlsOverride(ctx, params, optFns...)
+		panic("s3Client.ListBucketMetricsConfigurations: nil pointer receiver")
 	}
-	return _recv.Client.DeleteBucketOwnershipControls(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketMetricsConfigurationsCalls
 }
 
-func (_recv *S3Client) _DeleteBucketOwnershipControls_Patch(fn func (ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)) {
+func (_recv *s3Client) ListBuckets(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketOwnershipControls: nil pointer receiver")
+		panic("s3Client.ListBuckets: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketOwnershipControlsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListBucketsCalls = append(_dat.ListBucketsCalls, _s3Client_ListBuckets_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListBuckets
+	if len(_dat.ListBucketsMocks) > 0 {
+		_fn = _dat.ListBucketsMocks[0]
+		if len(_dat.ListBucketsMocks) > 1 {
+			_dat.ListBucketsMocks = _dat.ListBucketsMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) DeleteBucketPolicy(ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) {
+func (_recv *s3Client) _ListBuckets_Do(fn func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketPolicy: nil pointer receiver")
+		panic("s3Client.ListBuckets: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketPolicyOverride != nil {
-		return _dat.DeleteBucketPolicyOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketsMocks = []func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error){}
+	} else if len(_dat.ListBucketsMocks) < 2 {
+		_dat.ListBucketsMocks = []func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketsMocks = _dat.ListBucketsMocks[:len(_dat.ListBucketsMocks)-1]
+		_dat.ListBucketsMocks = append(_dat.ListBucketsMocks, fn)
+		_dat.ListBucketsMocks = append(_dat.ListBucketsMocks, fn)
 	}
-	return _recv.Client.DeleteBucketPolicy(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteBucketPolicy_Patch(fn func (ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketPolicy: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketPolicyOverride = fn
+func (_recv *s3Client) _ListBuckets_Stub() {
+	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (r0 *s3.ListBucketsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteBucketReplication(ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketReplication: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketReplicationOverride != nil {
-		return _dat.DeleteBucketReplicationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketReplication(ctx, params, optFns...)
+func (_recv *s3Client) _ListBuckets_Return(r0 *s3.ListBucketsOutput, r1 error) {
+	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucketReplication_Patch(fn func (ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)) {
+func (_recv *s3Client) _ListBuckets_Calls() []_s3Client_ListBuckets_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketReplication: nil pointer receiver")
+		panic("s3Client.ListBuckets: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketReplicationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketsCalls
 }
 
-func (_recv *S3Client) DeleteBucketTagging(ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) {
+func (_recv *s3Client) ListMultipartUploads(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketTagging: nil pointer receiver")
+		panic("s3Client.ListMultipartUploads: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketTaggingOverride != nil {
-		return _dat.DeleteBucketTaggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListMultipartUploadsCalls = append(_dat.ListMultipartUploadsCalls, _s3Client_ListMultipartUploads_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListMultipartUploads
+	if len(_dat.ListMultipartUploadsMocks) > 0 {
+		_fn = _dat.ListMultipartUploadsMocks[0]
+		if len(_dat.ListMultipartUploadsMocks) > 1 {
+			_dat.ListMultipartUploadsMocks = _dat.ListMultipartUploadsMocks[1:]
+		}
 	}
-	return _recv.Client.DeleteBucketTagging(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteBucketTagging_Patch(fn func (ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)) {
+func (_recv *s3Client) _ListMultipartUploads_Do(fn func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteBucketTagging: nil pointer receiver")
+		panic("s3Client.ListMultipartUploads: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketTaggingOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListMultipartUploadsMocks = []func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error){}
+	} else if len(_dat.ListMultipartUploadsMocks) < 2 {
+		_dat.ListMultipartUploadsMocks = []func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error){fn, fn}
+	} else {
+		_dat.ListMultipartUploadsMocks = _dat.ListMultipartUploadsMocks[:len(_dat.ListMultipartUploadsMocks)-1]
+		_dat.ListMultipartUploadsMocks = append(_dat.ListMultipartUploadsMocks, fn)
+		_dat.ListMultipartUploadsMocks = append(_dat.ListMultipartUploadsMocks, fn)
+	}
 }
 
-func (_recv *S3Client) DeleteBucketWebsite(ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketWebsite: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteBucketWebsiteOverride != nil {
-		return _dat.DeleteBucketWebsiteOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteBucketWebsite(ctx, params, optFns...)
+func (_recv *s3Client) _ListMultipartUploads_Stub() {
+	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (r0 *s3.ListMultipartUploadsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteBucketWebsite_Patch(fn func (ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteBucketWebsite: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteBucketWebsiteOverride = fn
+func (_recv *s3Client) _ListMultipartUploads_Return(r0 *s3.ListMultipartUploadsOutput, r1 error) {
+	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteObject(ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) {
+func (_recv *s3Client) _ListMultipartUploads_Calls() []_s3Client_ListMultipartUploads_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteObject: nil pointer receiver")
+		panic("s3Client.ListMultipartUploads: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteObjectOverride != nil {
-		return _dat.DeleteObjectOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteObject(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListMultipartUploadsCalls
 }
 
-func (_recv *S3Client) _DeleteObject_Patch(fn func (ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)) {
+func (_recv *s3Client) ListObjectVersions(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeleteObject: nil pointer receiver")
+		panic("s3Client.ListObjectVersions: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListObjectVersionsCalls = append(_dat.ListObjectVersionsCalls, _s3Client_ListObjectVersions_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListObjectVersions
+	if len(_dat.ListObjectVersionsMocks) > 0 {
+		_fn = _dat.ListObjectVersionsMocks[0]
+		if len(_dat.ListObjectVersionsMocks) > 1 {
+			_dat.ListObjectVersionsMocks = _dat.ListObjectVersionsMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteObjectOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) DeleteObjectTagging(ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) {
+func (_recv *s3Client) _ListObjectVersions_Do(fn func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeleteObjectTagging: nil pointer receiver")
+		panic("s3Client.ListObjectVersions: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteObjectTaggingOverride != nil {
-		return _dat.DeleteObjectTaggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectVersionsMocks = []func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error){}
+	} else if len(_dat.ListObjectVersionsMocks) < 2 {
+		_dat.ListObjectVersionsMocks = []func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error){fn, fn}
+	} else {
+		_dat.ListObjectVersionsMocks = _dat.ListObjectVersionsMocks[:len(_dat.ListObjectVersionsMocks)-1]
+		_dat.ListObjectVersionsMocks = append(_dat.ListObjectVersionsMocks, fn)
+		_dat.ListObjectVersionsMocks = append(_dat.ListObjectVersionsMocks, fn)
 	}
-	return _recv.Client.DeleteObjectTagging(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeleteObjectTagging_Patch(fn func (ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.DeleteObjectTagging: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteObjectTaggingOverride = fn
+func (_recv *s3Client) _ListObjectVersions_Stub() {
+	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (r0 *s3.ListObjectVersionsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) DeleteObjects(ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.DeleteObjects: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeleteObjectsOverride != nil {
-		return _dat.DeleteObjectsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.DeleteObjects(ctx, params, optFns...)
+func (_recv *s3Client) _ListObjectVersions_Return(r0 *s3.ListObjectVersionsOutput, r1 error) {
+	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _DeleteObjects_Patch(fn func (ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)) {
+func (_recv *s3Client) _ListObjectVersions_Calls() []_s3Client_ListObjectVersions_Call {
 	if _recv == nil {
-		panic("S3Client.DeleteObjects: nil pointer receiver")
+		panic("s3Client.ListObjectVersions: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeleteObjectsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectVersionsCalls
 }
 
-func (_recv *S3Client) DeletePublicAccessBlock(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) {
+func (_recv *s3Client) ListObjects(ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.DeletePublicAccessBlock: nil pointer receiver")
+		panic("s3Client.ListObjects: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.DeletePublicAccessBlockOverride != nil {
-		return _dat.DeletePublicAccessBlockOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListObjectsCalls = append(_dat.ListObjectsCalls, _s3Client_ListObjects_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListObjects
+	if len(_dat.ListObjectsMocks) > 0 {
+		_fn = _dat.ListObjectsMocks[0]
+		if len(_dat.ListObjectsMocks) > 1 {
+			_dat.ListObjectsMocks = _dat.ListObjectsMocks[1:]
+		}
 	}
-	return _recv.Client.DeletePublicAccessBlock(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _DeletePublicAccessBlock_Patch(fn func (ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)) {
+func (_recv *s3Client) _ListObjects_Do(fn func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.DeletePublicAccessBlock: nil pointer receiver")
+		panic("s3Client.ListObjects: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectsMocks = []func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error){}
+	} else if len(_dat.ListObjectsMocks) < 2 {
+		_dat.ListObjectsMocks = []func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error){fn, fn}
+	} else {
+		_dat.ListObjectsMocks = _dat.ListObjectsMocks[:len(_dat.ListObjectsMocks)-1]
+		_dat.ListObjectsMocks = append(_dat.ListObjectsMocks, fn)
+		_dat.ListObjectsMocks = append(_dat.ListObjectsMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.DeletePublicAccessBlockOverride = fn
 }
 
-func (_recv *S3Client) GetBucketAccelerateConfiguration(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketAccelerateConfigurationOverride != nil {
-		return _dat.GetBucketAccelerateConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketAccelerateConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _ListObjects_Stub() {
+	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (r0 *s3.ListObjectsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketAccelerateConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketAccelerateConfigurationOverride = fn
+func (_recv *s3Client) _ListObjects_Return(r0 *s3.ListObjectsOutput, r1 error) {
+	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketAcl(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
+func (_recv *s3Client) _ListObjects_Calls() []_s3Client_ListObjects_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketAcl: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketAclOverride != nil {
-		return _dat.GetBucketAclOverride(ctx, params, optFns...)
+		panic("s3Client.ListObjects: nil pointer receiver")
 	}
-	return _recv.Client.GetBucketAcl(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectsCalls
 }
 
-func (_recv *S3Client) _GetBucketAcl_Patch(fn func (ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)) {
+func (_recv *s3Client) ListObjectsV2(ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketAcl: nil pointer receiver")
+		panic("s3Client.ListObjectsV2: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketAclOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListObjectsV2Calls = append(_dat.ListObjectsV2Calls, _s3Client_ListObjectsV2_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListObjectsV2
+	if len(_dat.ListObjectsV2Mocks) > 0 {
+		_fn = _dat.ListObjectsV2Mocks[0]
+		if len(_dat.ListObjectsV2Mocks) > 1 {
+			_dat.ListObjectsV2Mocks = _dat.ListObjectsV2Mocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetBucketAnalyticsConfiguration(ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
+func (_recv *s3Client) _ListObjectsV2_Do(fn func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
+		panic("s3Client.ListObjectsV2: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketAnalyticsConfigurationOverride != nil {
-		return _dat.GetBucketAnalyticsConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectsV2Mocks = []func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error){}
+	} else if len(_dat.ListObjectsV2Mocks) < 2 {
+		_dat.ListObjectsV2Mocks = []func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error){fn, fn}
+	} else {
+		_dat.ListObjectsV2Mocks = _dat.ListObjectsV2Mocks[:len(_dat.ListObjectsV2Mocks)-1]
+		_dat.ListObjectsV2Mocks = append(_dat.ListObjectsV2Mocks, fn)
+		_dat.ListObjectsV2Mocks = append(_dat.ListObjectsV2Mocks, fn)
 	}
-	return _recv.Client.GetBucketAnalyticsConfiguration(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketAnalyticsConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketAnalyticsConfigurationOverride = fn
+func (_recv *s3Client) _ListObjectsV2_Stub() {
+	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (r0 *s3.ListObjectsV2Output, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketCors(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketCors: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketCorsOverride != nil {
-		return _dat.GetBucketCorsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketCors(ctx, params, optFns...)
+func (_recv *s3Client) _ListObjectsV2_Return(r0 *s3.ListObjectsV2Output, r1 error) {
+	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketCors_Patch(fn func (ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)) {
+func (_recv *s3Client) _ListObjectsV2_Calls() []_s3Client_ListObjectsV2_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketCors: nil pointer receiver")
+		panic("s3Client.ListObjectsV2: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketCorsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectsV2Calls
 }
 
-func (_recv *S3Client) GetBucketEncryption(ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
+func (_recv *s3Client) ListParts(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketEncryption: nil pointer receiver")
+		panic("s3Client.ListParts: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketEncryptionOverride != nil {
-		return _dat.GetBucketEncryptionOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListPartsCalls = append(_dat.ListPartsCalls, _s3Client_ListParts_Call{ctx, params, optFns})
+	_fn := _recv.Client.ListParts
+	if len(_dat.ListPartsMocks) > 0 {
+		_fn = _dat.ListPartsMocks[0]
+		if len(_dat.ListPartsMocks) > 1 {
+			_dat.ListPartsMocks = _dat.ListPartsMocks[1:]
+		}
 	}
-	return _recv.Client.GetBucketEncryption(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketEncryption_Patch(fn func (ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)) {
+func (_recv *s3Client) _ListParts_Do(fn func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketEncryption: nil pointer receiver")
+		panic("s3Client.ListParts: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketEncryptionOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListPartsMocks = []func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error){}
+	} else if len(_dat.ListPartsMocks) < 2 {
+		_dat.ListPartsMocks = []func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error){fn, fn}
+	} else {
+		_dat.ListPartsMocks = _dat.ListPartsMocks[:len(_dat.ListPartsMocks)-1]
+		_dat.ListPartsMocks = append(_dat.ListPartsMocks, fn)
+		_dat.ListPartsMocks = append(_dat.ListPartsMocks, fn)
+	}
 }
 
-func (_recv *S3Client) GetBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketIntelligentTieringConfigurationOverride != nil {
-		return _dat.GetBucketIntelligentTieringConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketIntelligentTieringConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _ListParts_Stub() {
+	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (r0 *s3.ListPartsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketIntelligentTieringConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketIntelligentTieringConfigurationOverride = fn
+func (_recv *s3Client) _ListParts_Return(r0 *s3.ListPartsOutput, r1 error) {
+	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketInventoryConfiguration(ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
+func (_recv *s3Client) _ListParts_Calls() []_s3Client_ListParts_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketInventoryConfiguration: nil pointer receiver")
+		panic("s3Client.ListParts: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketInventoryConfigurationOverride != nil {
-		return _dat.GetBucketInventoryConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketInventoryConfiguration(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListPartsCalls
 }
 
-func (_recv *S3Client) _GetBucketInventoryConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)) {
+func (_recv *s3Client) PutBucketAccelerateConfiguration(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketInventoryConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketAccelerateConfigurationCalls = append(_dat.PutBucketAccelerateConfigurationCalls, _s3Client_PutBucketAccelerateConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketAccelerateConfiguration
+	if len(_dat.PutBucketAccelerateConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketAccelerateConfigurationMocks[0]
+		if len(_dat.PutBucketAccelerateConfigurationMocks) > 1 {
+			_dat.PutBucketAccelerateConfigurationMocks = _dat.PutBucketAccelerateConfigurationMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketInventoryConfigurationOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetBucketLifecycleConfiguration(ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketAccelerateConfiguration_Do(fn func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketLifecycleConfigurationOverride != nil {
-		return _dat.GetBucketLifecycleConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAccelerateConfigurationMocks = []func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error){}
+	} else if len(_dat.PutBucketAccelerateConfigurationMocks) < 2 {
+		_dat.PutBucketAccelerateConfigurationMocks = []func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAccelerateConfigurationMocks = _dat.PutBucketAccelerateConfigurationMocks[:len(_dat.PutBucketAccelerateConfigurationMocks)-1]
+		_dat.PutBucketAccelerateConfigurationMocks = append(_dat.PutBucketAccelerateConfigurationMocks, fn)
+		_dat.PutBucketAccelerateConfigurationMocks = append(_dat.PutBucketAccelerateConfigurationMocks, fn)
 	}
-	return _recv.Client.GetBucketLifecycleConfiguration(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketLifecycleConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketLifecycleConfigurationOverride = fn
+func (_recv *s3Client) _PutBucketAccelerateConfiguration_Stub() {
+	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketLocation(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketLocation: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketLocationOverride != nil {
-		return _dat.GetBucketLocationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketLocation(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketAccelerateConfiguration_Return(r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) {
+	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketLocation_Patch(fn func (ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)) {
+func (_recv *s3Client) _PutBucketAccelerateConfiguration_Calls() []_s3Client_PutBucketAccelerateConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketLocation: nil pointer receiver")
+		panic("s3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketLocationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAccelerateConfigurationCalls
 }
 
-func (_recv *S3Client) GetBucketLogging(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
+func (_recv *s3Client) PutBucketAcl(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketLogging: nil pointer receiver")
+		panic("s3Client.PutBucketAcl: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketLoggingOverride != nil {
-		return _dat.GetBucketLoggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketAclCalls = append(_dat.PutBucketAclCalls, _s3Client_PutBucketAcl_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketAcl
+	if len(_dat.PutBucketAclMocks) > 0 {
+		_fn = _dat.PutBucketAclMocks[0]
+		if len(_dat.PutBucketAclMocks) > 1 {
+			_dat.PutBucketAclMocks = _dat.PutBucketAclMocks[1:]
+		}
 	}
-	return _recv.Client.GetBucketLogging(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketLogging_Patch(fn func (ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)) {
+func (_recv *s3Client) _PutBucketAcl_Do(fn func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketLogging: nil pointer receiver")
+		panic("s3Client.PutBucketAcl: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAclMocks = []func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error){}
+	} else if len(_dat.PutBucketAclMocks) < 2 {
+		_dat.PutBucketAclMocks = []func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAclMocks = _dat.PutBucketAclMocks[:len(_dat.PutBucketAclMocks)-1]
+		_dat.PutBucketAclMocks = append(_dat.PutBucketAclMocks, fn)
+		_dat.PutBucketAclMocks = append(_dat.PutBucketAclMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketLoggingOverride = fn
 }
 
-func (_recv *S3Client) GetBucketMetricsConfiguration(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketMetricsConfigurationOverride != nil {
-		return _dat.GetBucketMetricsConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketMetricsConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketAcl_Stub() {
+	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (r0 *s3.PutBucketAclOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketMetricsConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketMetricsConfigurationOverride = fn
+func (_recv *s3Client) _PutBucketAcl_Return(r0 *s3.PutBucketAclOutput, r1 error) {
+	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketNotificationConfiguration(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketAcl_Calls() []_s3Client_PutBucketAcl_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketNotificationConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketNotificationConfigurationOverride != nil {
-		return _dat.GetBucketNotificationConfigurationOverride(ctx, params, optFns...)
+		panic("s3Client.PutBucketAcl: nil pointer receiver")
 	}
-	return _recv.Client.GetBucketNotificationConfiguration(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAclCalls
 }
 
-func (_recv *S3Client) _GetBucketNotificationConfiguration_Patch(fn func (ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)) {
+func (_recv *s3Client) PutBucketAnalyticsConfiguration(ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketNotificationConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketNotificationConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketAnalyticsConfigurationCalls = append(_dat.PutBucketAnalyticsConfigurationCalls, _s3Client_PutBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketAnalyticsConfiguration
+	if len(_dat.PutBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketAnalyticsConfigurationMocks[0]
+		if len(_dat.PutBucketAnalyticsConfigurationMocks) > 1 {
+			_dat.PutBucketAnalyticsConfigurationMocks = _dat.PutBucketAnalyticsConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetBucketOwnershipControls(ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
+func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Do(fn func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketOwnershipControls: nil pointer receiver")
+		panic("s3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketOwnershipControlsOverride != nil {
-		return _dat.GetBucketOwnershipControlsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.PutBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.PutBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAnalyticsConfigurationMocks = _dat.PutBucketAnalyticsConfigurationMocks[:len(_dat.PutBucketAnalyticsConfigurationMocks)-1]
+		_dat.PutBucketAnalyticsConfigurationMocks = append(_dat.PutBucketAnalyticsConfigurationMocks, fn)
+		_dat.PutBucketAnalyticsConfigurationMocks = append(_dat.PutBucketAnalyticsConfigurationMocks, fn)
 	}
-	return _recv.Client.GetBucketOwnershipControls(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketOwnershipControls_Patch(fn func (ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketOwnershipControls: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketOwnershipControlsOverride = fn
+func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Stub() {
+	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketPolicy(ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketPolicy: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketPolicyOverride != nil {
-		return _dat.GetBucketPolicyOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketPolicy(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Return(r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) {
+	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketPolicy_Patch(fn func (ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)) {
+func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Calls() []_s3Client_PutBucketAnalyticsConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketPolicy: nil pointer receiver")
+		panic("s3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketPolicyOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAnalyticsConfigurationCalls
 }
 
-func (_recv *S3Client) GetBucketPolicyStatus(ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
+func (_recv *s3Client) PutBucketCors(ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketPolicyStatus: nil pointer receiver")
+		panic("s3Client.PutBucketCors: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketPolicyStatusOverride != nil {
-		return _dat.GetBucketPolicyStatusOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketCorsCalls = append(_dat.PutBucketCorsCalls, _s3Client_PutBucketCors_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketCors
+	if len(_dat.PutBucketCorsMocks) > 0 {
+		_fn = _dat.PutBucketCorsMocks[0]
+		if len(_dat.PutBucketCorsMocks) > 1 {
+			_dat.PutBucketCorsMocks = _dat.PutBucketCorsMocks[1:]
+		}
 	}
-	return _recv.Client.GetBucketPolicyStatus(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketPolicyStatus_Patch(fn func (ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)) {
+func (_recv *s3Client) _PutBucketCors_Do(fn func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketPolicyStatus: nil pointer receiver")
+		panic("s3Client.PutBucketCors: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketPolicyStatusOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketCorsMocks = []func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error){}
+	} else if len(_dat.PutBucketCorsMocks) < 2 {
+		_dat.PutBucketCorsMocks = []func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketCorsMocks = _dat.PutBucketCorsMocks[:len(_dat.PutBucketCorsMocks)-1]
+		_dat.PutBucketCorsMocks = append(_dat.PutBucketCorsMocks, fn)
+		_dat.PutBucketCorsMocks = append(_dat.PutBucketCorsMocks, fn)
+	}
 }
 
-func (_recv *S3Client) GetBucketReplication(ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketReplication: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketReplicationOverride != nil {
-		return _dat.GetBucketReplicationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketReplication(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketCors_Stub() {
+	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (r0 *s3.PutBucketCorsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketReplication_Patch(fn func (ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketReplication: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketReplicationOverride = fn
+func (_recv *s3Client) _PutBucketCors_Return(r0 *s3.PutBucketCorsOutput, r1 error) {
+	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketRequestPayment(ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
+func (_recv *s3Client) _PutBucketCors_Calls() []_s3Client_PutBucketCors_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketRequestPayment: nil pointer receiver")
+		panic("s3Client.PutBucketCors: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketRequestPaymentOverride != nil {
-		return _dat.GetBucketRequestPaymentOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketRequestPayment(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketCorsCalls
 }
 
-func (_recv *S3Client) _GetBucketRequestPayment_Patch(fn func (ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)) {
+func (_recv *s3Client) PutBucketEncryption(ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketRequestPayment: nil pointer receiver")
+		panic("s3Client.PutBucketEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketEncryptionCalls = append(_dat.PutBucketEncryptionCalls, _s3Client_PutBucketEncryption_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketEncryption
+	if len(_dat.PutBucketEncryptionMocks) > 0 {
+		_fn = _dat.PutBucketEncryptionMocks[0]
+		if len(_dat.PutBucketEncryptionMocks) > 1 {
+			_dat.PutBucketEncryptionMocks = _dat.PutBucketEncryptionMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketRequestPaymentOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetBucketTagging(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
+func (_recv *s3Client) _PutBucketEncryption_Do(fn func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketTagging: nil pointer receiver")
+		panic("s3Client.PutBucketEncryption: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketTaggingOverride != nil {
-		return _dat.GetBucketTaggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketEncryptionMocks = []func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error){}
+	} else if len(_dat.PutBucketEncryptionMocks) < 2 {
+		_dat.PutBucketEncryptionMocks = []func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketEncryptionMocks = _dat.PutBucketEncryptionMocks[:len(_dat.PutBucketEncryptionMocks)-1]
+		_dat.PutBucketEncryptionMocks = append(_dat.PutBucketEncryptionMocks, fn)
+		_dat.PutBucketEncryptionMocks = append(_dat.PutBucketEncryptionMocks, fn)
 	}
-	return _recv.Client.GetBucketTagging(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketTagging_Patch(fn func (ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetBucketTagging: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketTaggingOverride = fn
+func (_recv *s3Client) _PutBucketEncryption_Stub() {
+	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.PutBucketEncryptionOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetBucketVersioning(ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetBucketVersioning: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketVersioningOverride != nil {
-		return _dat.GetBucketVersioningOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetBucketVersioning(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketEncryption_Return(r0 *s3.PutBucketEncryptionOutput, r1 error) {
+	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetBucketVersioning_Patch(fn func (ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)) {
+func (_recv *s3Client) _PutBucketEncryption_Calls() []_s3Client_PutBucketEncryption_Call {
 	if _recv == nil {
-		panic("S3Client.GetBucketVersioning: nil pointer receiver")
+		panic("s3Client.PutBucketEncryption: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketVersioningOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketEncryptionCalls
 }
 
-func (_recv *S3Client) GetBucketWebsite(ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
+func (_recv *s3Client) PutBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetBucketWebsite: nil pointer receiver")
+		panic("s3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetBucketWebsiteOverride != nil {
-		return _dat.GetBucketWebsiteOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketIntelligentTieringConfigurationCalls = append(_dat.PutBucketIntelligentTieringConfigurationCalls, _s3Client_PutBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketIntelligentTieringConfiguration
+	if len(_dat.PutBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketIntelligentTieringConfigurationMocks[0]
+		if len(_dat.PutBucketIntelligentTieringConfigurationMocks) > 1 {
+			_dat.PutBucketIntelligentTieringConfigurationMocks = _dat.PutBucketIntelligentTieringConfigurationMocks[1:]
+		}
 	}
-	return _recv.Client.GetBucketWebsite(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetBucketWebsite_Patch(fn func (ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)) {
+func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Do(fn func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetBucketWebsite: nil pointer receiver")
+		panic("s3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.PutBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = _dat.PutBucketIntelligentTieringConfigurationMocks[:len(_dat.PutBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.PutBucketIntelligentTieringConfigurationMocks = append(_dat.PutBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.PutBucketIntelligentTieringConfigurationMocks = append(_dat.PutBucketIntelligentTieringConfigurationMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetBucketWebsiteOverride = fn
 }
 
-func (_recv *S3Client) GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectOverride != nil {
-		return _dat.GetObjectOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetObject(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Stub() {
+	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetObject_Patch(fn func (ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectOverride = fn
+func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Return(r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) {
+	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetObjectAcl(ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
+func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Calls() []_s3Client_PutBucketIntelligentTieringConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.GetObjectAcl: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectAclOverride != nil {
-		return _dat.GetObjectAclOverride(ctx, params, optFns...)
+		panic("s3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
 	}
-	return _recv.Client.GetObjectAcl(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketIntelligentTieringConfigurationCalls
 }
 
-func (_recv *S3Client) _GetObjectAcl_Patch(fn func (ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)) {
+func (_recv *s3Client) PutBucketInventoryConfiguration(ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetObjectAcl: nil pointer receiver")
+		panic("s3Client.PutBucketInventoryConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectAclOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketInventoryConfigurationCalls = append(_dat.PutBucketInventoryConfigurationCalls, _s3Client_PutBucketInventoryConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketInventoryConfiguration
+	if len(_dat.PutBucketInventoryConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketInventoryConfigurationMocks[0]
+		if len(_dat.PutBucketInventoryConfigurationMocks) > 1 {
+			_dat.PutBucketInventoryConfigurationMocks = _dat.PutBucketInventoryConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetObjectAttributes(ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
+func (_recv *s3Client) _PutBucketInventoryConfiguration_Do(fn func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetObjectAttributes: nil pointer receiver")
+		panic("s3Client.PutBucketInventoryConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectAttributesOverride != nil {
-		return _dat.GetObjectAttributesOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketInventoryConfigurationMocks = []func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.PutBucketInventoryConfigurationMocks) < 2 {
+		_dat.PutBucketInventoryConfigurationMocks = []func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketInventoryConfigurationMocks = _dat.PutBucketInventoryConfigurationMocks[:len(_dat.PutBucketInventoryConfigurationMocks)-1]
+		_dat.PutBucketInventoryConfigurationMocks = append(_dat.PutBucketInventoryConfigurationMocks, fn)
+		_dat.PutBucketInventoryConfigurationMocks = append(_dat.PutBucketInventoryConfigurationMocks, fn)
 	}
-	return _recv.Client.GetObjectAttributes(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetObjectAttributes_Patch(fn func (ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetObjectAttributes: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectAttributesOverride = fn
+func (_recv *s3Client) _PutBucketInventoryConfiguration_Stub() {
+	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetObjectLegalHold(ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetObjectLegalHold: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectLegalHoldOverride != nil {
-		return _dat.GetObjectLegalHoldOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetObjectLegalHold(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketInventoryConfiguration_Return(r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) {
+	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetObjectLegalHold_Patch(fn func (ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)) {
+func (_recv *s3Client) _PutBucketInventoryConfiguration_Calls() []_s3Client_PutBucketInventoryConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.GetObjectLegalHold: nil pointer receiver")
+		panic("s3Client.PutBucketInventoryConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectLegalHoldOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketInventoryConfigurationCalls
 }
 
-func (_recv *S3Client) GetObjectLockConfiguration(ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
+func (_recv *s3Client) PutBucketLifecycleConfiguration(ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetObjectLockConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectLockConfigurationOverride != nil {
-		return _dat.GetObjectLockConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketLifecycleConfigurationCalls = append(_dat.PutBucketLifecycleConfigurationCalls, _s3Client_PutBucketLifecycleConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketLifecycleConfiguration
+	if len(_dat.PutBucketLifecycleConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketLifecycleConfigurationMocks[0]
+		if len(_dat.PutBucketLifecycleConfigurationMocks) > 1 {
+			_dat.PutBucketLifecycleConfigurationMocks = _dat.PutBucketLifecycleConfigurationMocks[1:]
+		}
 	}
-	return _recv.Client.GetObjectLockConfiguration(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetObjectLockConfiguration_Patch(fn func (ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)) {
+func (_recv *s3Client) _PutBucketLifecycleConfiguration_Do(fn func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetObjectLockConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectLockConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketLifecycleConfigurationMocks = []func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error){}
+	} else if len(_dat.PutBucketLifecycleConfigurationMocks) < 2 {
+		_dat.PutBucketLifecycleConfigurationMocks = []func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketLifecycleConfigurationMocks = _dat.PutBucketLifecycleConfigurationMocks[:len(_dat.PutBucketLifecycleConfigurationMocks)-1]
+		_dat.PutBucketLifecycleConfigurationMocks = append(_dat.PutBucketLifecycleConfigurationMocks, fn)
+		_dat.PutBucketLifecycleConfigurationMocks = append(_dat.PutBucketLifecycleConfigurationMocks, fn)
+	}
 }
 
-func (_recv *S3Client) GetObjectRetention(ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetObjectRetention: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectRetentionOverride != nil {
-		return _dat.GetObjectRetentionOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetObjectRetention(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketLifecycleConfiguration_Stub() {
+	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetObjectRetention_Patch(fn func (ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetObjectRetention: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectRetentionOverride = fn
+func (_recv *s3Client) _PutBucketLifecycleConfiguration_Return(r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) {
+	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetObjectTagging(ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
+func (_recv *s3Client) _PutBucketLifecycleConfiguration_Calls() []_s3Client_PutBucketLifecycleConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.GetObjectTagging: nil pointer receiver")
+		panic("s3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectTaggingOverride != nil {
-		return _dat.GetObjectTaggingOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetObjectTagging(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketLifecycleConfigurationCalls
 }
 
-func (_recv *S3Client) _GetObjectTagging_Patch(fn func (ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)) {
+func (_recv *s3Client) PutBucketLogging(ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) {
 	if _recv == nil {
-		panic("S3Client.GetObjectTagging: nil pointer receiver")
+		panic("s3Client.PutBucketLogging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketLoggingCalls = append(_dat.PutBucketLoggingCalls, _s3Client_PutBucketLogging_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketLogging
+	if len(_dat.PutBucketLoggingMocks) > 0 {
+		_fn = _dat.PutBucketLoggingMocks[0]
+		if len(_dat.PutBucketLoggingMocks) > 1 {
+			_dat.PutBucketLoggingMocks = _dat.PutBucketLoggingMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectTaggingOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) GetObjectTorrent(ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
+func (_recv *s3Client) _PutBucketLogging_Do(fn func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.GetObjectTorrent: nil pointer receiver")
+		panic("s3Client.PutBucketLogging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetObjectTorrentOverride != nil {
-		return _dat.GetObjectTorrentOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketLoggingMocks = []func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error){}
+	} else if len(_dat.PutBucketLoggingMocks) < 2 {
+		_dat.PutBucketLoggingMocks = []func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketLoggingMocks = _dat.PutBucketLoggingMocks[:len(_dat.PutBucketLoggingMocks)-1]
+		_dat.PutBucketLoggingMocks = append(_dat.PutBucketLoggingMocks, fn)
+		_dat.PutBucketLoggingMocks = append(_dat.PutBucketLoggingMocks, fn)
 	}
-	return _recv.Client.GetObjectTorrent(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _GetObjectTorrent_Patch(fn func (ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.GetObjectTorrent: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetObjectTorrentOverride = fn
+func (_recv *s3Client) _PutBucketLogging_Stub() {
+	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketLoggingOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) GetPublicAccessBlock(ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
-	if _recv == nil {
-		panic("S3Client.GetPublicAccessBlock: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.GetPublicAccessBlockOverride != nil {
-		return _dat.GetPublicAccessBlockOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.GetPublicAccessBlock(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketLogging_Return(r0 *s3.PutBucketLoggingOutput, r1 error) {
+	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _GetPublicAccessBlock_Patch(fn func (ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)) {
+func (_recv *s3Client) _PutBucketLogging_Calls() []_s3Client_PutBucketLogging_Call {
 	if _recv == nil {
-		panic("S3Client.GetPublicAccessBlock: nil pointer receiver")
+		panic("s3Client.PutBucketLogging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.GetPublicAccessBlockOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketLoggingCalls
 }
 
-func (_recv *S3Client) HeadBucket(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error) {
+func (_recv *s3Client) PutBucketMetricsConfiguration(ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.HeadBucket: nil pointer receiver")
+		panic("s3Client.PutBucketMetricsConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.HeadBucketOverride != nil {
-		return _dat.HeadBucketOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketMetricsConfigurationCalls = append(_dat.PutBucketMetricsConfigurationCalls, _s3Client_PutBucketMetricsConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketMetricsConfiguration
+	if len(_dat.PutBucketMetricsConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketMetricsConfigurationMocks[0]
+		if len(_dat.PutBucketMetricsConfigurationMocks) > 1 {
+			_dat.PutBucketMetricsConfigurationMocks = _dat.PutBucketMetricsConfigurationMocks[1:]
+		}
 	}
-	return _recv.Client.HeadBucket(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _HeadBucket_Patch(fn func (ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error)) {
+func (_recv *s3Client) _PutBucketMetricsConfiguration_Do(fn func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.HeadBucket: nil pointer receiver")
+		panic("s3Client.PutBucketMetricsConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketMetricsConfigurationMocks = []func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.PutBucketMetricsConfigurationMocks) < 2 {
+		_dat.PutBucketMetricsConfigurationMocks = []func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketMetricsConfigurationMocks = _dat.PutBucketMetricsConfigurationMocks[:len(_dat.PutBucketMetricsConfigurationMocks)-1]
+		_dat.PutBucketMetricsConfigurationMocks = append(_dat.PutBucketMetricsConfigurationMocks, fn)
+		_dat.PutBucketMetricsConfigurationMocks = append(_dat.PutBucketMetricsConfigurationMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.HeadBucketOverride = fn
 }
 
-func (_recv *S3Client) HeadObject(ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error) {
-	if _recv == nil {
-		panic("S3Client.HeadObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.HeadObjectOverride != nil {
-		return _dat.HeadObjectOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.HeadObject(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketMetricsConfiguration_Stub() {
+	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _HeadObject_Patch(fn func (ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.HeadObject: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.HeadObjectOverride = fn
+func (_recv *s3Client) _PutBucketMetricsConfiguration_Return(r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) {
+	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) ListBucketAnalyticsConfigurations(ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
+func (_recv *s3Client) _PutBucketMetricsConfiguration_Calls() []_s3Client_PutBucketMetricsConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListBucketAnalyticsConfigurationsOverride != nil {
-		return _dat.ListBucketAnalyticsConfigurationsOverride(ctx, params, optFns...)
+		panic("s3Client.PutBucketMetricsConfiguration: nil pointer receiver")
 	}
-	return _recv.Client.ListBucketAnalyticsConfigurations(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketMetricsConfigurationCalls
 }
 
-func (_recv *S3Client) _ListBucketAnalyticsConfigurations_Patch(fn func (ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)) {
+func (_recv *s3Client) PutBucketNotificationConfiguration(ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
+		panic("s3Client.PutBucketNotificationConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListBucketAnalyticsConfigurationsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketNotificationConfigurationCalls = append(_dat.PutBucketNotificationConfigurationCalls, _s3Client_PutBucketNotificationConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketNotificationConfiguration
+	if len(_dat.PutBucketNotificationConfigurationMocks) > 0 {
+		_fn = _dat.PutBucketNotificationConfigurationMocks[0]
+		if len(_dat.PutBucketNotificationConfigurationMocks) > 1 {
+			_dat.PutBucketNotificationConfigurationMocks = _dat.PutBucketNotificationConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) ListBucketIntelligentTieringConfigurations(ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
+func (_recv *s3Client) _PutBucketNotificationConfiguration_Do(fn func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
+		panic("s3Client.PutBucketNotificationConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListBucketIntelligentTieringConfigurationsOverride != nil {
-		return _dat.ListBucketIntelligentTieringConfigurationsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketNotificationConfigurationMocks = []func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error){}
+	} else if len(_dat.PutBucketNotificationConfigurationMocks) < 2 {
+		_dat.PutBucketNotificationConfigurationMocks = []func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketNotificationConfigurationMocks = _dat.PutBucketNotificationConfigurationMocks[:len(_dat.PutBucketNotificationConfigurationMocks)-1]
+		_dat.PutBucketNotificationConfigurationMocks = append(_dat.PutBucketNotificationConfigurationMocks, fn)
+		_dat.PutBucketNotificationConfigurationMocks = append(_dat.PutBucketNotificationConfigurationMocks, fn)
 	}
-	return _recv.Client.ListBucketIntelligentTieringConfigurations(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _ListBucketIntelligentTieringConfigurations_Patch(fn func (ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListBucketIntelligentTieringConfigurationsOverride = fn
+func (_recv *s3Client) _PutBucketNotificationConfiguration_Stub() {
+	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) ListBucketInventoryConfigurations(ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.ListBucketInventoryConfigurations: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListBucketInventoryConfigurationsOverride != nil {
-		return _dat.ListBucketInventoryConfigurationsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.ListBucketInventoryConfigurations(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketNotificationConfiguration_Return(r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) {
+	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _ListBucketInventoryConfigurations_Patch(fn func (ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)) {
+func (_recv *s3Client) _PutBucketNotificationConfiguration_Calls() []_s3Client_PutBucketNotificationConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.ListBucketInventoryConfigurations: nil pointer receiver")
+		panic("s3Client.PutBucketNotificationConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListBucketInventoryConfigurationsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketNotificationConfigurationCalls
 }
 
-func (_recv *S3Client) ListBucketMetricsConfigurations(ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
+func (_recv *s3Client) PutBucketOwnershipControls(ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) {
 	if _recv == nil {
-		panic("S3Client.ListBucketMetricsConfigurations: nil pointer receiver")
+		panic("s3Client.PutBucketOwnershipControls: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListBucketMetricsConfigurationsOverride != nil {
-		return _dat.ListBucketMetricsConfigurationsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketOwnershipControlsCalls = append(_dat.PutBucketOwnershipControlsCalls, _s3Client_PutBucketOwnershipControls_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketOwnershipControls
+	if len(_dat.PutBucketOwnershipControlsMocks) > 0 {
+		_fn = _dat.PutBucketOwnershipControlsMocks[0]
+		if len(_dat.PutBucketOwnershipControlsMocks) > 1 {
+			_dat.PutBucketOwnershipControlsMocks = _dat.PutBucketOwnershipControlsMocks[1:]
+		}
 	}
-	return _recv.Client.ListBucketMetricsConfigurations(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _ListBucketMetricsConfigurations_Patch(fn func (ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)) {
+func (_recv *s3Client) _PutBucketOwnershipControls_Do(fn func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.ListBucketMetricsConfigurations: nil pointer receiver")
+		panic("s3Client.PutBucketOwnershipControls: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListBucketMetricsConfigurationsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketOwnershipControlsMocks = []func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.PutBucketOwnershipControlsMocks) < 2 {
+		_dat.PutBucketOwnershipControlsMocks = []func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketOwnershipControlsMocks = _dat.PutBucketOwnershipControlsMocks[:len(_dat.PutBucketOwnershipControlsMocks)-1]
+		_dat.PutBucketOwnershipControlsMocks = append(_dat.PutBucketOwnershipControlsMocks, fn)
+		_dat.PutBucketOwnershipControlsMocks = append(_dat.PutBucketOwnershipControlsMocks, fn)
+	}
 }
 
-func (_recv *S3Client) ListBuckets(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.ListBuckets: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListBucketsOverride != nil {
-		return _dat.ListBucketsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.ListBuckets(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketOwnershipControls_Stub() {
+	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.PutBucketOwnershipControlsOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _ListBuckets_Patch(fn func (ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.ListBuckets: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListBucketsOverride = fn
+func (_recv *s3Client) _PutBucketOwnershipControls_Return(r0 *s3.PutBucketOwnershipControlsOutput, r1 error) {
+	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) ListMultipartUploads(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
+func (_recv *s3Client) _PutBucketOwnershipControls_Calls() []_s3Client_PutBucketOwnershipControls_Call {
 	if _recv == nil {
-		panic("S3Client.ListMultipartUploads: nil pointer receiver")
+		panic("s3Client.PutBucketOwnershipControls: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListMultipartUploadsOverride != nil {
-		return _dat.ListMultipartUploadsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.ListMultipartUploads(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketOwnershipControlsCalls
 }
 
-func (_recv *S3Client) _ListMultipartUploads_Patch(fn func (ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)) {
+func (_recv *s3Client) PutBucketPolicy(ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) {
 	if _recv == nil {
-		panic("S3Client.ListMultipartUploads: nil pointer receiver")
+		panic("s3Client.PutBucketPolicy: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketPolicyCalls = append(_dat.PutBucketPolicyCalls, _s3Client_PutBucketPolicy_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketPolicy
+	if len(_dat.PutBucketPolicyMocks) > 0 {
+		_fn = _dat.PutBucketPolicyMocks[0]
+		if len(_dat.PutBucketPolicyMocks) > 1 {
+			_dat.PutBucketPolicyMocks = _dat.PutBucketPolicyMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListMultipartUploadsOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) ListObjectVersions(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
+func (_recv *s3Client) _PutBucketPolicy_Do(fn func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.ListObjectVersions: nil pointer receiver")
+		panic("s3Client.PutBucketPolicy: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListObjectVersionsOverride != nil {
-		return _dat.ListObjectVersionsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketPolicyMocks = []func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error){}
+	} else if len(_dat.PutBucketPolicyMocks) < 2 {
+		_dat.PutBucketPolicyMocks = []func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketPolicyMocks = _dat.PutBucketPolicyMocks[:len(_dat.PutBucketPolicyMocks)-1]
+		_dat.PutBucketPolicyMocks = append(_dat.PutBucketPolicyMocks, fn)
+		_dat.PutBucketPolicyMocks = append(_dat.PutBucketPolicyMocks, fn)
 	}
-	return _recv.Client.ListObjectVersions(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _ListObjectVersions_Patch(fn func (ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.ListObjectVersions: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListObjectVersionsOverride = fn
+func (_recv *s3Client) _PutBucketPolicy_Stub() {
+	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.PutBucketPolicyOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) ListObjects(ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.ListObjects: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListObjectsOverride != nil {
-		return _dat.ListObjectsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.ListObjects(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketPolicy_Return(r0 *s3.PutBucketPolicyOutput, r1 error) {
+	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _ListObjects_Patch(fn func (ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error)) {
+func (_recv *s3Client) _PutBucketPolicy_Calls() []_s3Client_PutBucketPolicy_Call {
 	if _recv == nil {
-		panic("S3Client.ListObjects: nil pointer receiver")
+		panic("s3Client.PutBucketPolicy: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListObjectsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketPolicyCalls
 }
 
-func (_recv *S3Client) ListObjectsV2(ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
+func (_recv *s3Client) PutBucketReplication(ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.ListObjectsV2: nil pointer receiver")
+		panic("s3Client.PutBucketReplication: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListObjectsV2Override != nil {
-		return _dat.ListObjectsV2Override(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketReplicationCalls = append(_dat.PutBucketReplicationCalls, _s3Client_PutBucketReplication_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketReplication
+	if len(_dat.PutBucketReplicationMocks) > 0 {
+		_fn = _dat.PutBucketReplicationMocks[0]
+		if len(_dat.PutBucketReplicationMocks) > 1 {
+			_dat.PutBucketReplicationMocks = _dat.PutBucketReplicationMocks[1:]
+		}
 	}
-	return _recv.Client.ListObjectsV2(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _ListObjectsV2_Patch(fn func (ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)) {
+func (_recv *s3Client) _PutBucketReplication_Do(fn func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.ListObjectsV2: nil pointer receiver")
+		panic("s3Client.PutBucketReplication: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketReplicationMocks = []func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error){}
+	} else if len(_dat.PutBucketReplicationMocks) < 2 {
+		_dat.PutBucketReplicationMocks = []func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketReplicationMocks = _dat.PutBucketReplicationMocks[:len(_dat.PutBucketReplicationMocks)-1]
+		_dat.PutBucketReplicationMocks = append(_dat.PutBucketReplicationMocks, fn)
+		_dat.PutBucketReplicationMocks = append(_dat.PutBucketReplicationMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListObjectsV2Override = fn
 }
 
-func (_recv *S3Client) ListParts(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
-	if _recv == nil {
-		panic("S3Client.ListParts: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.ListPartsOverride != nil {
-		return _dat.ListPartsOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.ListParts(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketReplication_Stub() {
+	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.PutBucketReplicationOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _ListParts_Patch(fn func (ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.ListParts: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.ListPartsOverride = fn
+func (_recv *s3Client) _PutBucketReplication_Return(r0 *s3.PutBucketReplicationOutput, r1 error) {
+	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketAccelerateConfiguration(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketReplication_Calls() []_s3Client_PutBucketReplication_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketAccelerateConfigurationOverride != nil {
-		return _dat.PutBucketAccelerateConfigurationOverride(ctx, params, optFns...)
+		panic("s3Client.PutBucketReplication: nil pointer receiver")
 	}
-	return _recv.Client.PutBucketAccelerateConfiguration(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketReplicationCalls
 }
 
-func (_recv *S3Client) _PutBucketAccelerateConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)) {
+func (_recv *s3Client) PutBucketRequestPayment(ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketRequestPayment: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketAccelerateConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketRequestPaymentCalls = append(_dat.PutBucketRequestPaymentCalls, _s3Client_PutBucketRequestPayment_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketRequestPayment
+	if len(_dat.PutBucketRequestPaymentMocks) > 0 {
+		_fn = _dat.PutBucketRequestPaymentMocks[0]
+		if len(_dat.PutBucketRequestPaymentMocks) > 1 {
+			_dat.PutBucketRequestPaymentMocks = _dat.PutBucketRequestPaymentMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutBucketAcl(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) {
+func (_recv *s3Client) _PutBucketRequestPayment_Do(fn func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketAcl: nil pointer receiver")
+		panic("s3Client.PutBucketRequestPayment: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketAclOverride != nil {
-		return _dat.PutBucketAclOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketRequestPaymentMocks = []func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error){}
+	} else if len(_dat.PutBucketRequestPaymentMocks) < 2 {
+		_dat.PutBucketRequestPaymentMocks = []func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketRequestPaymentMocks = _dat.PutBucketRequestPaymentMocks[:len(_dat.PutBucketRequestPaymentMocks)-1]
+		_dat.PutBucketRequestPaymentMocks = append(_dat.PutBucketRequestPaymentMocks, fn)
+		_dat.PutBucketRequestPaymentMocks = append(_dat.PutBucketRequestPaymentMocks, fn)
 	}
-	return _recv.Client.PutBucketAcl(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketAcl_Patch(fn func (ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.PutBucketAcl: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketAclOverride = fn
+func (_recv *s3Client) _PutBucketRequestPayment_Stub() {
+	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.PutBucketRequestPaymentOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketAnalyticsConfiguration(ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketAnalyticsConfigurationOverride != nil {
-		return _dat.PutBucketAnalyticsConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketAnalyticsConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketRequestPayment_Return(r0 *s3.PutBucketRequestPaymentOutput, r1 error) {
+	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketAnalyticsConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)) {
+func (_recv *s3Client) _PutBucketRequestPayment_Calls() []_s3Client_PutBucketRequestPayment_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketRequestPayment: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketAnalyticsConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketRequestPaymentCalls
 }
 
-func (_recv *S3Client) PutBucketCors(ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) {
+func (_recv *s3Client) PutBucketTagging(ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketCors: nil pointer receiver")
+		panic("s3Client.PutBucketTagging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketCorsOverride != nil {
-		return _dat.PutBucketCorsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketTaggingCalls = append(_dat.PutBucketTaggingCalls, _s3Client_PutBucketTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketTagging
+	if len(_dat.PutBucketTaggingMocks) > 0 {
+		_fn = _dat.PutBucketTaggingMocks[0]
+		if len(_dat.PutBucketTaggingMocks) > 1 {
+			_dat.PutBucketTaggingMocks = _dat.PutBucketTaggingMocks[1:]
+		}
 	}
-	return _recv.Client.PutBucketCors(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketCors_Patch(fn func (ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)) {
+func (_recv *s3Client) _PutBucketTagging_Do(fn func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketCors: nil pointer receiver")
+		panic("s3Client.PutBucketTagging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketCorsOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketTaggingMocks = []func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error){}
+	} else if len(_dat.PutBucketTaggingMocks) < 2 {
+		_dat.PutBucketTaggingMocks = []func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketTaggingMocks = _dat.PutBucketTaggingMocks[:len(_dat.PutBucketTaggingMocks)-1]
+		_dat.PutBucketTaggingMocks = append(_dat.PutBucketTaggingMocks, fn)
+		_dat.PutBucketTaggingMocks = append(_dat.PutBucketTaggingMocks, fn)
+	}
 }
 
-func (_recv *S3Client) PutBucketEncryption(ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketEncryption: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketEncryptionOverride != nil {
-		return _dat.PutBucketEncryptionOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketEncryption(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketTagging_Stub() {
+	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketTaggingOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketEncryption_Patch(fn func (ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.PutBucketEncryption: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketEncryptionOverride = fn
+func (_recv *s3Client) _PutBucketTagging_Return(r0 *s3.PutBucketTaggingOutput, r1 error) {
+	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketTagging_Calls() []_s3Client_PutBucketTagging_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketTagging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketIntelligentTieringConfigurationOverride != nil {
-		return _dat.PutBucketIntelligentTieringConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketIntelligentTieringConfiguration(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketTaggingCalls
 }
 
-func (_recv *S3Client) _PutBucketIntelligentTieringConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)) {
+func (_recv *s3Client) PutBucketVersioning(ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketVersioning: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketVersioningCalls = append(_dat.PutBucketVersioningCalls, _s3Client_PutBucketVersioning_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketVersioning
+	if len(_dat.PutBucketVersioningMocks) > 0 {
+		_fn = _dat.PutBucketVersioningMocks[0]
+		if len(_dat.PutBucketVersioningMocks) > 1 {
+			_dat.PutBucketVersioningMocks = _dat.PutBucketVersioningMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketIntelligentTieringConfigurationOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutBucketInventoryConfiguration(ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketVersioning_Do(fn func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketInventoryConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketVersioning: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketInventoryConfigurationOverride != nil {
-		return _dat.PutBucketInventoryConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketVersioningMocks = []func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error){}
+	} else if len(_dat.PutBucketVersioningMocks) < 2 {
+		_dat.PutBucketVersioningMocks = []func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketVersioningMocks = _dat.PutBucketVersioningMocks[:len(_dat.PutBucketVersioningMocks)-1]
+		_dat.PutBucketVersioningMocks = append(_dat.PutBucketVersioningMocks, fn)
+		_dat.PutBucketVersioningMocks = append(_dat.PutBucketVersioningMocks, fn)
 	}
-	return _recv.Client.PutBucketInventoryConfiguration(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketInventoryConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.PutBucketInventoryConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketInventoryConfigurationOverride = fn
+func (_recv *s3Client) _PutBucketVersioning_Stub() {
+	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.PutBucketVersioningOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketLifecycleConfiguration(ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketLifecycleConfigurationOverride != nil {
-		return _dat.PutBucketLifecycleConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketLifecycleConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketVersioning_Return(r0 *s3.PutBucketVersioningOutput, r1 error) {
+	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketLifecycleConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)) {
+func (_recv *s3Client) _PutBucketVersioning_Calls() []_s3Client_PutBucketVersioning_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
+		panic("s3Client.PutBucketVersioning: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketLifecycleConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketVersioningCalls
 }
 
-func (_recv *S3Client) PutBucketLogging(ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) {
+func (_recv *s3Client) PutBucketWebsite(ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketLogging: nil pointer receiver")
+		panic("s3Client.PutBucketWebsite: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketLoggingOverride != nil {
-		return _dat.PutBucketLoggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketWebsiteCalls = append(_dat.PutBucketWebsiteCalls, _s3Client_PutBucketWebsite_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutBucketWebsite
+	if len(_dat.PutBucketWebsiteMocks) > 0 {
+		_fn = _dat.PutBucketWebsiteMocks[0]
+		if len(_dat.PutBucketWebsiteMocks) > 1 {
+			_dat.PutBucketWebsiteMocks = _dat.PutBucketWebsiteMocks[1:]
+		}
 	}
-	return _recv.Client.PutBucketLogging(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketLogging_Patch(fn func (ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)) {
+func (_recv *s3Client) _PutBucketWebsite_Do(fn func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketLogging: nil pointer receiver")
+		panic("s3Client.PutBucketWebsite: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketWebsiteMocks = []func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error){}
+	} else if len(_dat.PutBucketWebsiteMocks) < 2 {
+		_dat.PutBucketWebsiteMocks = []func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketWebsiteMocks = _dat.PutBucketWebsiteMocks[:len(_dat.PutBucketWebsiteMocks)-1]
+		_dat.PutBucketWebsiteMocks = append(_dat.PutBucketWebsiteMocks, fn)
+		_dat.PutBucketWebsiteMocks = append(_dat.PutBucketWebsiteMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketLoggingOverride = fn
 }
 
-func (_recv *S3Client) PutBucketMetricsConfiguration(ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketMetricsConfigurationOverride != nil {
-		return _dat.PutBucketMetricsConfigurationOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketMetricsConfiguration(ctx, params, optFns...)
+func (_recv *s3Client) _PutBucketWebsite_Stub() {
+	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.PutBucketWebsiteOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketMetricsConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.PutBucketMetricsConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketMetricsConfigurationOverride = fn
+func (_recv *s3Client) _PutBucketWebsite_Return(r0 *s3.PutBucketWebsiteOutput, r1 error) {
+	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketNotificationConfiguration(ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) {
+func (_recv *s3Client) _PutBucketWebsite_Calls() []_s3Client_PutBucketWebsite_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketNotificationConfiguration: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketNotificationConfigurationOverride != nil {
-		return _dat.PutBucketNotificationConfigurationOverride(ctx, params, optFns...)
+		panic("s3Client.PutBucketWebsite: nil pointer receiver")
 	}
-	return _recv.Client.PutBucketNotificationConfiguration(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketWebsiteCalls
 }
 
-func (_recv *S3Client) _PutBucketNotificationConfiguration_Patch(fn func (ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)) {
+func (_recv *s3Client) PutObject(ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketNotificationConfiguration: nil pointer receiver")
+		panic("s3Client.PutObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketNotificationConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectCalls = append(_dat.PutObjectCalls, _s3Client_PutObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObject
+	if len(_dat.PutObjectMocks) > 0 {
+		_fn = _dat.PutObjectMocks[0]
+		if len(_dat.PutObjectMocks) > 1 {
+			_dat.PutObjectMocks = _dat.PutObjectMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutBucketOwnershipControls(ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) {
+func (_recv *s3Client) _PutObject_Do(fn func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketOwnershipControls: nil pointer receiver")
+		panic("s3Client.PutObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketOwnershipControlsOverride != nil {
-		return _dat.PutBucketOwnershipControlsOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectMocks = []func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error){}
+	} else if len(_dat.PutObjectMocks) < 2 {
+		_dat.PutObjectMocks = []func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectMocks = _dat.PutObjectMocks[:len(_dat.PutObjectMocks)-1]
+		_dat.PutObjectMocks = append(_dat.PutObjectMocks, fn)
+		_dat.PutObjectMocks = append(_dat.PutObjectMocks, fn)
 	}
-	return _recv.Client.PutBucketOwnershipControls(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketOwnershipControls_Patch(fn func (ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)) {
-	if _recv == nil {
-		panic("S3Client.PutBucketOwnershipControls: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketOwnershipControlsOverride = fn
+func (_recv *s3Client) _PutObject_Stub() {
+	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (r0 *s3.PutObjectOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketPolicy(ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketPolicy: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketPolicyOverride != nil {
-		return _dat.PutBucketPolicyOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketPolicy(ctx, params, optFns...)
+func (_recv *s3Client) _PutObject_Return(r0 *s3.PutObjectOutput, r1 error) {
+	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketPolicy_Patch(fn func (ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)) {
+func (_recv *s3Client) _PutObject_Calls() []_s3Client_PutObject_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketPolicy: nil pointer receiver")
+		panic("s3Client.PutObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketPolicyOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectCalls
 }
 
-func (_recv *S3Client) PutBucketReplication(ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) {
+func (_recv *s3Client) PutObjectAcl(ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketReplication: nil pointer receiver")
+		panic("s3Client.PutObjectAcl: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketReplicationOverride != nil {
-		return _dat.PutBucketReplicationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectAclCalls = append(_dat.PutObjectAclCalls, _s3Client_PutObjectAcl_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObjectAcl
+	if len(_dat.PutObjectAclMocks) > 0 {
+		_fn = _dat.PutObjectAclMocks[0]
+		if len(_dat.PutObjectAclMocks) > 1 {
+			_dat.PutObjectAclMocks = _dat.PutObjectAclMocks[1:]
+		}
 	}
-	return _recv.Client.PutBucketReplication(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketReplication_Patch(fn func (ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)) {
+func (_recv *s3Client) _PutObjectAcl_Do(fn func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketReplication: nil pointer receiver")
+		panic("s3Client.PutObjectAcl: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketReplicationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectAclMocks = []func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error){}
+	} else if len(_dat.PutObjectAclMocks) < 2 {
+		_dat.PutObjectAclMocks = []func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectAclMocks = _dat.PutObjectAclMocks[:len(_dat.PutObjectAclMocks)-1]
+		_dat.PutObjectAclMocks = append(_dat.PutObjectAclMocks, fn)
+		_dat.PutObjectAclMocks = append(_dat.PutObjectAclMocks, fn)
+	}
 }
 
-func (_recv *S3Client) PutBucketRequestPayment(ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) {
-	if _recv == nil {
-		panic("S3Client.PutBucketRequestPayment: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketRequestPaymentOverride != nil {
-		return _dat.PutBucketRequestPaymentOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutBucketRequestPayment(ctx, params, optFns...)
+func (_recv *s3Client) _PutObjectAcl_Stub() {
+	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (r0 *s3.PutObjectAclOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketRequestPayment_Patch(fn func (ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)) {
+func (_recv *s3Client) _PutObjectAcl_Return(r0 *s3.PutObjectAclOutput, r1 error) {
+	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutObjectAcl_Calls() []_s3Client_PutObjectAcl_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketRequestPayment: nil pointer receiver")
+		panic("s3Client.PutObjectAcl: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketRequestPaymentOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectAclCalls
 }
 
-func (_recv *S3Client) PutBucketTagging(ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) {
+func (_recv *s3Client) PutObjectLegalHold(ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketTagging: nil pointer receiver")
+		panic("s3Client.PutObjectLegalHold: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketTaggingOverride != nil {
-		return _dat.PutBucketTaggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectLegalHoldCalls = append(_dat.PutObjectLegalHoldCalls, _s3Client_PutObjectLegalHold_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObjectLegalHold
+	if len(_dat.PutObjectLegalHoldMocks) > 0 {
+		_fn = _dat.PutObjectLegalHoldMocks[0]
+		if len(_dat.PutObjectLegalHoldMocks) > 1 {
+			_dat.PutObjectLegalHoldMocks = _dat.PutObjectLegalHoldMocks[1:]
+		}
 	}
-	return _recv.Client.PutBucketTagging(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutBucketTagging_Patch(fn func (ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)) {
+func (_recv *s3Client) _PutObjectLegalHold_Do(fn func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketTagging: nil pointer receiver")
+		panic("s3Client.PutObjectLegalHold: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketTaggingOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectLegalHoldMocks = []func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error){}
+	} else if len(_dat.PutObjectLegalHoldMocks) < 2 {
+		_dat.PutObjectLegalHoldMocks = []func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectLegalHoldMocks = _dat.PutObjectLegalHoldMocks[:len(_dat.PutObjectLegalHoldMocks)-1]
+		_dat.PutObjectLegalHoldMocks = append(_dat.PutObjectLegalHoldMocks, fn)
+		_dat.PutObjectLegalHoldMocks = append(_dat.PutObjectLegalHoldMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _PutObjectLegalHold_Stub() {
+	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.PutObjectLegalHoldOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutObjectLegalHold_Return(r0 *s3.PutObjectLegalHoldOutput, r1 error) {
+	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutBucketVersioning(ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) {
+func (_recv *s3Client) _PutObjectLegalHold_Calls() []_s3Client_PutObjectLegalHold_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketVersioning: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketVersioningOverride != nil {
-		return _dat.PutBucketVersioningOverride(ctx, params, optFns...)
+		panic("s3Client.PutObjectLegalHold: nil pointer receiver")
 	}
-	return _recv.Client.PutBucketVersioning(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectLegalHoldCalls
 }
 
-func (_recv *S3Client) _PutBucketVersioning_Patch(fn func (ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)) {
+func (_recv *s3Client) PutObjectLockConfiguration(ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutBucketVersioning: nil pointer receiver")
+		panic("s3Client.PutObjectLockConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketVersioningOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectLockConfigurationCalls = append(_dat.PutObjectLockConfigurationCalls, _s3Client_PutObjectLockConfiguration_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObjectLockConfiguration
+	if len(_dat.PutObjectLockConfigurationMocks) > 0 {
+		_fn = _dat.PutObjectLockConfigurationMocks[0]
+		if len(_dat.PutObjectLockConfigurationMocks) > 1 {
+			_dat.PutObjectLockConfigurationMocks = _dat.PutObjectLockConfigurationMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutBucketWebsite(ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) {
+func (_recv *s3Client) _PutObjectLockConfiguration_Do(fn func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutBucketWebsite: nil pointer receiver")
+		panic("s3Client.PutObjectLockConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutBucketWebsiteOverride != nil {
-		return _dat.PutBucketWebsiteOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectLockConfigurationMocks = []func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error){}
+	} else if len(_dat.PutObjectLockConfigurationMocks) < 2 {
+		_dat.PutObjectLockConfigurationMocks = []func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectLockConfigurationMocks = _dat.PutObjectLockConfigurationMocks[:len(_dat.PutObjectLockConfigurationMocks)-1]
+		_dat.PutObjectLockConfigurationMocks = append(_dat.PutObjectLockConfigurationMocks, fn)
+		_dat.PutObjectLockConfigurationMocks = append(_dat.PutObjectLockConfigurationMocks, fn)
 	}
-	return _recv.Client.PutBucketWebsite(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _PutObjectLockConfiguration_Stub() {
+	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutObjectLockConfigurationOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutObjectLockConfiguration_Return(r0 *s3.PutObjectLockConfigurationOutput, r1 error) {
+	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutBucketWebsite_Patch(fn func (ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)) {
+func (_recv *s3Client) _PutObjectLockConfiguration_Calls() []_s3Client_PutObjectLockConfiguration_Call {
 	if _recv == nil {
-		panic("S3Client.PutBucketWebsite: nil pointer receiver")
+		panic("s3Client.PutObjectLockConfiguration: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutBucketWebsiteOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectLockConfigurationCalls
 }
 
-func (_recv *S3Client) PutObject(ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error) {
+func (_recv *s3Client) PutObjectRetention(ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutObject: nil pointer receiver")
+		panic("s3Client.PutObjectRetention: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectOverride != nil {
-		return _dat.PutObjectOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectRetentionCalls = append(_dat.PutObjectRetentionCalls, _s3Client_PutObjectRetention_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObjectRetention
+	if len(_dat.PutObjectRetentionMocks) > 0 {
+		_fn = _dat.PutObjectRetentionMocks[0]
+		if len(_dat.PutObjectRetentionMocks) > 1 {
+			_dat.PutObjectRetentionMocks = _dat.PutObjectRetentionMocks[1:]
+		}
 	}
-	return _recv.Client.PutObject(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutObject_Patch(fn func (ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error)) {
+func (_recv *s3Client) _PutObjectRetention_Do(fn func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutObject: nil pointer receiver")
+		panic("s3Client.PutObjectRetention: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectRetentionMocks = []func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error){}
+	} else if len(_dat.PutObjectRetentionMocks) < 2 {
+		_dat.PutObjectRetentionMocks = []func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectRetentionMocks = _dat.PutObjectRetentionMocks[:len(_dat.PutObjectRetentionMocks)-1]
+		_dat.PutObjectRetentionMocks = append(_dat.PutObjectRetentionMocks, fn)
+		_dat.PutObjectRetentionMocks = append(_dat.PutObjectRetentionMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectOverride = fn
+}
+
+func (_recv *s3Client) _PutObjectRetention_Stub() {
+	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.PutObjectRetentionOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutObjectAcl(ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) {
+func (_recv *s3Client) _PutObjectRetention_Return(r0 *s3.PutObjectRetentionOutput, r1 error) {
+	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutObjectRetention_Calls() []_s3Client_PutObjectRetention_Call {
 	if _recv == nil {
-		panic("S3Client.PutObjectAcl: nil pointer receiver")
+		panic("s3Client.PutObjectRetention: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectAclOverride != nil {
-		return _dat.PutObjectAclOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.PutObjectAcl(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectRetentionCalls
 }
 
-func (_recv *S3Client) _PutObjectAcl_Patch(fn func (ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)) {
+func (_recv *s3Client) PutObjectTagging(ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutObjectAcl: nil pointer receiver")
+		panic("s3Client.PutObjectTagging: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutObjectTaggingCalls = append(_dat.PutObjectTaggingCalls, _s3Client_PutObjectTagging_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutObjectTagging
+	if len(_dat.PutObjectTaggingMocks) > 0 {
+		_fn = _dat.PutObjectTaggingMocks[0]
+		if len(_dat.PutObjectTaggingMocks) > 1 {
+			_dat.PutObjectTaggingMocks = _dat.PutObjectTaggingMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectAclOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutObjectLegalHold(ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) {
+func (_recv *s3Client) _PutObjectTagging_Do(fn func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutObjectLegalHold: nil pointer receiver")
+		panic("s3Client.PutObjectTagging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectLegalHoldOverride != nil {
-		return _dat.PutObjectLegalHoldOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectTaggingMocks = []func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error){}
+	} else if len(_dat.PutObjectTaggingMocks) < 2 {
+		_dat.PutObjectTaggingMocks = []func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectTaggingMocks = _dat.PutObjectTaggingMocks[:len(_dat.PutObjectTaggingMocks)-1]
+		_dat.PutObjectTaggingMocks = append(_dat.PutObjectTaggingMocks, fn)
+		_dat.PutObjectTaggingMocks = append(_dat.PutObjectTaggingMocks, fn)
 	}
-	return _recv.Client.PutObjectLegalHold(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _PutObjectTagging_Stub() {
+	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.PutObjectTaggingOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutObjectTagging_Return(r0 *s3.PutObjectTaggingOutput, r1 error) {
+	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutObjectLegalHold_Patch(fn func (ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)) {
+func (_recv *s3Client) _PutObjectTagging_Calls() []_s3Client_PutObjectTagging_Call {
 	if _recv == nil {
-		panic("S3Client.PutObjectLegalHold: nil pointer receiver")
+		panic("s3Client.PutObjectTagging: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectLegalHoldOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectTaggingCalls
 }
 
-func (_recv *S3Client) PutObjectLockConfiguration(ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) {
+func (_recv *s3Client) PutPublicAccessBlock(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutObjectLockConfiguration: nil pointer receiver")
+		panic("s3Client.PutPublicAccessBlock: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectLockConfigurationOverride != nil {
-		return _dat.PutObjectLockConfigurationOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutPublicAccessBlockCalls = append(_dat.PutPublicAccessBlockCalls, _s3Client_PutPublicAccessBlock_Call{ctx, params, optFns})
+	_fn := _recv.Client.PutPublicAccessBlock
+	if len(_dat.PutPublicAccessBlockMocks) > 0 {
+		_fn = _dat.PutPublicAccessBlockMocks[0]
+		if len(_dat.PutPublicAccessBlockMocks) > 1 {
+			_dat.PutPublicAccessBlockMocks = _dat.PutPublicAccessBlockMocks[1:]
+		}
 	}
-	return _recv.Client.PutObjectLockConfiguration(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutObjectLockConfiguration_Patch(fn func (ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)) {
+func (_recv *s3Client) _PutPublicAccessBlock_Do(fn func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutObjectLockConfiguration: nil pointer receiver")
+		panic("s3Client.PutPublicAccessBlock: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectLockConfigurationOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutPublicAccessBlockMocks = []func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error){}
+	} else if len(_dat.PutPublicAccessBlockMocks) < 2 {
+		_dat.PutPublicAccessBlockMocks = []func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.PutPublicAccessBlockMocks = _dat.PutPublicAccessBlockMocks[:len(_dat.PutPublicAccessBlockMocks)-1]
+		_dat.PutPublicAccessBlockMocks = append(_dat.PutPublicAccessBlockMocks, fn)
+		_dat.PutPublicAccessBlockMocks = append(_dat.PutPublicAccessBlockMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _PutPublicAccessBlock_Stub() {
+	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.PutPublicAccessBlockOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _PutPublicAccessBlock_Return(r0 *s3.PutPublicAccessBlockOutput, r1 error) {
+	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) PutObjectRetention(ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) {
+func (_recv *s3Client) _PutPublicAccessBlock_Calls() []_s3Client_PutPublicAccessBlock_Call {
 	if _recv == nil {
-		panic("S3Client.PutObjectRetention: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectRetentionOverride != nil {
-		return _dat.PutObjectRetentionOverride(ctx, params, optFns...)
+		panic("s3Client.PutPublicAccessBlock: nil pointer receiver")
 	}
-	return _recv.Client.PutObjectRetention(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutPublicAccessBlockCalls
 }
 
-func (_recv *S3Client) _PutObjectRetention_Patch(fn func (ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)) {
+func (_recv *s3Client) RestoreObject(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutObjectRetention: nil pointer receiver")
+		panic("s3Client.RestoreObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectRetentionOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.RestoreObjectCalls = append(_dat.RestoreObjectCalls, _s3Client_RestoreObject_Call{ctx, params, optFns})
+	_fn := _recv.Client.RestoreObject
+	if len(_dat.RestoreObjectMocks) > 0 {
+		_fn = _dat.RestoreObjectMocks[0]
+		if len(_dat.RestoreObjectMocks) > 1 {
+			_dat.RestoreObjectMocks = _dat.RestoreObjectMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) PutObjectTagging(ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) {
+func (_recv *s3Client) _RestoreObject_Do(fn func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutObjectTagging: nil pointer receiver")
+		panic("s3Client.RestoreObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutObjectTaggingOverride != nil {
-		return _dat.PutObjectTaggingOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.RestoreObjectMocks = []func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error){}
+	} else if len(_dat.RestoreObjectMocks) < 2 {
+		_dat.RestoreObjectMocks = []func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error){fn, fn}
+	} else {
+		_dat.RestoreObjectMocks = _dat.RestoreObjectMocks[:len(_dat.RestoreObjectMocks)-1]
+		_dat.RestoreObjectMocks = append(_dat.RestoreObjectMocks, fn)
+		_dat.RestoreObjectMocks = append(_dat.RestoreObjectMocks, fn)
 	}
-	return _recv.Client.PutObjectTagging(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _RestoreObject_Stub() {
+	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (r0 *s3.RestoreObjectOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _RestoreObject_Return(r0 *s3.RestoreObjectOutput, r1 error) {
+	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _PutObjectTagging_Patch(fn func (ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)) {
+func (_recv *s3Client) _RestoreObject_Calls() []_s3Client_RestoreObject_Call {
 	if _recv == nil {
-		panic("S3Client.PutObjectTagging: nil pointer receiver")
+		panic("s3Client.RestoreObject: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutObjectTaggingOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.RestoreObjectCalls
 }
 
-func (_recv *S3Client) PutPublicAccessBlock(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) {
+func (_recv *s3Client) SelectObjectContent(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) {
 	if _recv == nil {
-		panic("S3Client.PutPublicAccessBlock: nil pointer receiver")
+		panic("s3Client.SelectObjectContent: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.PutPublicAccessBlockOverride != nil {
-		return _dat.PutPublicAccessBlockOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.SelectObjectContentCalls = append(_dat.SelectObjectContentCalls, _s3Client_SelectObjectContent_Call{ctx, params, optFns})
+	_fn := _recv.Client.SelectObjectContent
+	if len(_dat.SelectObjectContentMocks) > 0 {
+		_fn = _dat.SelectObjectContentMocks[0]
+		if len(_dat.SelectObjectContentMocks) > 1 {
+			_dat.SelectObjectContentMocks = _dat.SelectObjectContentMocks[1:]
+		}
 	}
-	return _recv.Client.PutPublicAccessBlock(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _PutPublicAccessBlock_Patch(fn func (ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)) {
+func (_recv *s3Client) _SelectObjectContent_Do(fn func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.PutPublicAccessBlock: nil pointer receiver")
+		panic("s3Client.SelectObjectContent: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.SelectObjectContentMocks = []func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error){}
+	} else if len(_dat.SelectObjectContentMocks) < 2 {
+		_dat.SelectObjectContentMocks = []func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error){fn, fn}
+	} else {
+		_dat.SelectObjectContentMocks = _dat.SelectObjectContentMocks[:len(_dat.SelectObjectContentMocks)-1]
+		_dat.SelectObjectContentMocks = append(_dat.SelectObjectContentMocks, fn)
+		_dat.SelectObjectContentMocks = append(_dat.SelectObjectContentMocks, fn)
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.PutPublicAccessBlockOverride = fn
+}
+
+func (_recv *s3Client) _SelectObjectContent_Stub() {
+	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (r0 *s3.SelectObjectContentOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _SelectObjectContent_Return(r0 *s3.SelectObjectContentOutput, r1 error) {
+	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) RestoreObject(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) {
+func (_recv *s3Client) _SelectObjectContent_Calls() []_s3Client_SelectObjectContent_Call {
 	if _recv == nil {
-		panic("S3Client.RestoreObject: nil pointer receiver")
+		panic("s3Client.SelectObjectContent: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.RestoreObjectOverride != nil {
-		return _dat.RestoreObjectOverride(ctx, params, optFns...)
-	}
-	return _recv.Client.RestoreObject(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.SelectObjectContentCalls
 }
 
-func (_recv *S3Client) _RestoreObject_Patch(fn func (ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)) {
+func (_recv *s3Client) UploadPart(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error) {
 	if _recv == nil {
-		panic("S3Client.RestoreObject: nil pointer receiver")
+		panic("s3Client.UploadPart: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.UploadPartCalls = append(_dat.UploadPartCalls, _s3Client_UploadPart_Call{ctx, params, optFns})
+	_fn := _recv.Client.UploadPart
+	if len(_dat.UploadPartMocks) > 0 {
+		_fn = _dat.UploadPartMocks[0]
+		if len(_dat.UploadPartMocks) > 1 {
+			_dat.UploadPartMocks = _dat.UploadPartMocks[1:]
+		}
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.RestoreObjectOverride = fn
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) SelectObjectContent(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) {
+func (_recv *s3Client) _UploadPart_Do(fn func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.SelectObjectContent: nil pointer receiver")
+		panic("s3Client.UploadPart: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.SelectObjectContentOverride != nil {
-		return _dat.SelectObjectContentOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UploadPartMocks = []func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error){}
+	} else if len(_dat.UploadPartMocks) < 2 {
+		_dat.UploadPartMocks = []func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error){fn, fn}
+	} else {
+		_dat.UploadPartMocks = _dat.UploadPartMocks[:len(_dat.UploadPartMocks)-1]
+		_dat.UploadPartMocks = append(_dat.UploadPartMocks, fn)
+		_dat.UploadPartMocks = append(_dat.UploadPartMocks, fn)
 	}
-	return _recv.Client.SelectObjectContent(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _UploadPart_Stub() {
+	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (r0 *s3.UploadPartOutput, r1 error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _SelectObjectContent_Patch(fn func (ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)) {
+func (_recv *s3Client) _UploadPart_Return(r0 *s3.UploadPartOutput, r1 error) {
+	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _UploadPart_Calls() []_s3Client_UploadPart_Call {
 	if _recv == nil {
-		panic("S3Client.SelectObjectContent: nil pointer receiver")
+		panic("s3Client.UploadPart: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.SelectObjectContentOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UploadPartCalls
 }
 
-func (_recv *S3Client) UploadPart(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error) {
+func (_recv *s3Client) UploadPartCopy(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) {
 	if _recv == nil {
-		panic("S3Client.UploadPart: nil pointer receiver")
+		panic("s3Client.UploadPartCopy: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.UploadPartOverride != nil {
-		return _dat.UploadPartOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.UploadPartCopyCalls = append(_dat.UploadPartCopyCalls, _s3Client_UploadPartCopy_Call{ctx, params, optFns})
+	_fn := _recv.Client.UploadPartCopy
+	if len(_dat.UploadPartCopyMocks) > 0 {
+		_fn = _dat.UploadPartCopyMocks[0]
+		if len(_dat.UploadPartCopyMocks) > 1 {
+			_dat.UploadPartCopyMocks = _dat.UploadPartCopyMocks[1:]
+		}
 	}
-	return _recv.Client.UploadPart(ctx, params, optFns...)
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) _UploadPart_Patch(fn func (ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error)) {
+func (_recv *s3Client) _UploadPartCopy_Do(fn func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.UploadPart: nil pointer receiver")
+		panic("s3Client.UploadPartCopy: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.UploadPartOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UploadPartCopyMocks = []func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error){}
+	} else if len(_dat.UploadPartCopyMocks) < 2 {
+		_dat.UploadPartCopyMocks = []func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error){fn, fn}
+	} else {
+		_dat.UploadPartCopyMocks = _dat.UploadPartCopyMocks[:len(_dat.UploadPartCopyMocks)-1]
+		_dat.UploadPartCopyMocks = append(_dat.UploadPartCopyMocks, fn)
+		_dat.UploadPartCopyMocks = append(_dat.UploadPartCopyMocks, fn)
+	}
+}
+
+func (_recv *s3Client) _UploadPartCopy_Stub() {
+	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (r0 *s3.UploadPartCopyOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _UploadPartCopy_Return(r0 *s3.UploadPartCopyOutput, r1 error) {
+	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) UploadPartCopy(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) {
+func (_recv *s3Client) _UploadPartCopy_Calls() []_s3Client_UploadPartCopy_Call {
 	if _recv == nil {
-		panic("S3Client.UploadPartCopy: nil pointer receiver")
-	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.UploadPartCopyOverride != nil {
-		return _dat.UploadPartCopyOverride(ctx, params, optFns...)
+		panic("s3Client.UploadPartCopy: nil pointer receiver")
 	}
-	return _recv.Client.UploadPartCopy(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UploadPartCopyCalls
 }
 
-func (_recv *S3Client) _UploadPartCopy_Patch(fn func (ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)) {
+func (_recv *s3Client) WriteGetObjectResponse(ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) {
 	if _recv == nil {
-		panic("S3Client.UploadPartCopy: nil pointer receiver")
+		panic("s3Client.WriteGetObjectResponse: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.UploadPartCopyOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.WriteGetObjectResponseCalls = append(_dat.WriteGetObjectResponseCalls, _s3Client_WriteGetObjectResponse_Call{ctx, params, optFns})
+	_fn := _recv.Client.WriteGetObjectResponse
+	if len(_dat.WriteGetObjectResponseMocks) > 0 {
+		_fn = _dat.WriteGetObjectResponseMocks[0]
+		if len(_dat.WriteGetObjectResponseMocks) > 1 {
+			_dat.WriteGetObjectResponseMocks = _dat.WriteGetObjectResponseMocks[1:]
+		}
+	}
+	_dat.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
 }
 
-func (_recv *S3Client) WriteGetObjectResponse(ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) {
+func (_recv *s3Client) _WriteGetObjectResponse_Do(fn func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)) {
 	if _recv == nil {
-		panic("S3Client.WriteGetObjectResponse: nil pointer receiver")
+		panic("s3Client.WriteGetObjectResponse: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	if _dat.WriteGetObjectResponseOverride != nil {
-		return _dat.WriteGetObjectResponseOverride(ctx, params, optFns...)
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.WriteGetObjectResponseMocks = []func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error){}
+	} else if len(_dat.WriteGetObjectResponseMocks) < 2 {
+		_dat.WriteGetObjectResponseMocks = []func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error){fn, fn}
+	} else {
+		_dat.WriteGetObjectResponseMocks = _dat.WriteGetObjectResponseMocks[:len(_dat.WriteGetObjectResponseMocks)-1]
+		_dat.WriteGetObjectResponseMocks = append(_dat.WriteGetObjectResponseMocks, fn)
+		_dat.WriteGetObjectResponseMocks = append(_dat.WriteGetObjectResponseMocks, fn)
 	}
-	return _recv.Client.WriteGetObjectResponse(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _WriteGetObjectResponse_Stub() {
+	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (r0 *s3.WriteGetObjectResponseOutput, r1 error) {
+		return r0, r1
+	})
+}
+
+func (_recv *s3Client) _WriteGetObjectResponse_Return(r0 *s3.WriteGetObjectResponseOutput, r1 error) {
+	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) {
+		return r0, r1
+	})
 }
 
-func (_recv *S3Client) _WriteGetObjectResponse_Patch(fn func (ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)) {
+func (_recv *s3Client) _WriteGetObjectResponse_Calls() []_s3Client_WriteGetObjectResponse_Call {
 	if _recv == nil {
-		panic("S3Client.WriteGetObjectResponse: nil pointer receiver")
+		panic("s3Client.WriteGetObjectResponse: nil pointer receiver")
 	}
-	_ptr := uintptr(unsafe.Pointer(_recv))
-	_val, _ := _S3Client.LoadOrStore(_ptr, new(_S3ClientData))
-	_dat := _val.(*_S3ClientData)
-	_dat.WriteGetObjectResponseOverride = fn
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.WriteGetObjectResponseCalls
 }
 
