@@ -8,8 +8,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.40.0
 	github.com/aws/smithy-go v1.14.2
 	gotest.tools/v3 v3.5.1
-	labs.lesiw.io/ops v0.0.0-20240728191215-eec8c4bbe3a4
-	lesiw.io/ops v0.7.0
 )
 
 require (
@@ -30,11 +28,4 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.23.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	golang.org/x/mod v0.19.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/tools v0.23.0 // indirect
-	lesiw.io/clerk v0.1.0 // indirect
-	lesiw.io/cmdio v0.0.0-20240723224912-c34a917524ae // indirect
-	lesiw.io/flag v0.7.0 // indirect
-	lesiw.io/moxie v0.5.0 // indirect
 )
