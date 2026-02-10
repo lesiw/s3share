@@ -3,11 +3,12 @@
 package main
 
 import (
-	context "context"
+	"context"
 	s3 "github.com/aws/aws-sdk-go-v2/service/s3"
-	runtime "runtime"
-	sync "sync"
-	unsafe "unsafe"
+	"runtime"
+	"sync"
+	"testing"
+	"unsafe"
 )
 
 var _s3Client = new(sync.Map)
@@ -23,8 +24,14 @@ type _s3ClientData struct {
 	CopyObjectCalls []_s3Client_CopyObject_Call
 	CreateBucketMocks []func(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error)
 	CreateBucketCalls []_s3Client_CreateBucket_Call
+	CreateBucketMetadataConfigurationMocks []func(ctx context.Context, params *s3.CreateBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error)
+	CreateBucketMetadataConfigurationCalls []_s3Client_CreateBucketMetadataConfiguration_Call
+	CreateBucketMetadataTableConfigurationMocks []func(ctx context.Context, params *s3.CreateBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error)
+	CreateBucketMetadataTableConfigurationCalls []_s3Client_CreateBucketMetadataTableConfiguration_Call
 	CreateMultipartUploadMocks []func(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)
 	CreateMultipartUploadCalls []_s3Client_CreateMultipartUpload_Call
+	CreateSessionMocks []func(ctx context.Context, params *s3.CreateSessionInput, optFns ...func(*s3.Options)) (*s3.CreateSessionOutput, error)
+	CreateSessionCalls []_s3Client_CreateSession_Call
 	DeleteBucketMocks []func(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)
 	DeleteBucketCalls []_s3Client_DeleteBucket_Call
 	DeleteBucketAnalyticsConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)
@@ -39,6 +46,10 @@ type _s3ClientData struct {
 	DeleteBucketInventoryConfigurationCalls []_s3Client_DeleteBucketInventoryConfiguration_Call
 	DeleteBucketLifecycleMocks []func(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)
 	DeleteBucketLifecycleCalls []_s3Client_DeleteBucketLifecycle_Call
+	DeleteBucketMetadataConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error)
+	DeleteBucketMetadataConfigurationCalls []_s3Client_DeleteBucketMetadataConfiguration_Call
+	DeleteBucketMetadataTableConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error)
+	DeleteBucketMetadataTableConfigurationCalls []_s3Client_DeleteBucketMetadataTableConfiguration_Call
 	DeleteBucketMetricsConfigurationMocks []func(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)
 	DeleteBucketMetricsConfigurationCalls []_s3Client_DeleteBucketMetricsConfiguration_Call
 	DeleteBucketOwnershipControlsMocks []func(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)
@@ -59,6 +70,8 @@ type _s3ClientData struct {
 	DeleteObjectsCalls []_s3Client_DeleteObjects_Call
 	DeletePublicAccessBlockMocks []func(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)
 	DeletePublicAccessBlockCalls []_s3Client_DeletePublicAccessBlock_Call
+	GetBucketAbacMocks []func(ctx context.Context, params *s3.GetBucketAbacInput, optFns ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error)
+	GetBucketAbacCalls []_s3Client_GetBucketAbac_Call
 	GetBucketAccelerateConfigurationMocks []func(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)
 	GetBucketAccelerateConfigurationCalls []_s3Client_GetBucketAccelerateConfiguration_Call
 	GetBucketAclMocks []func(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)
@@ -79,6 +92,10 @@ type _s3ClientData struct {
 	GetBucketLocationCalls []_s3Client_GetBucketLocation_Call
 	GetBucketLoggingMocks []func(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)
 	GetBucketLoggingCalls []_s3Client_GetBucketLogging_Call
+	GetBucketMetadataConfigurationMocks []func(ctx context.Context, params *s3.GetBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error)
+	GetBucketMetadataConfigurationCalls []_s3Client_GetBucketMetadataConfiguration_Call
+	GetBucketMetadataTableConfigurationMocks []func(ctx context.Context, params *s3.GetBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error)
+	GetBucketMetadataTableConfigurationCalls []_s3Client_GetBucketMetadataTableConfiguration_Call
 	GetBucketMetricsConfigurationMocks []func(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)
 	GetBucketMetricsConfigurationCalls []_s3Client_GetBucketMetricsConfiguration_Call
 	GetBucketNotificationConfigurationMocks []func(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)
@@ -131,6 +148,8 @@ type _s3ClientData struct {
 	ListBucketMetricsConfigurationsCalls []_s3Client_ListBucketMetricsConfigurations_Call
 	ListBucketsMocks []func(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
 	ListBucketsCalls []_s3Client_ListBuckets_Call
+	ListDirectoryBucketsMocks []func(ctx context.Context, params *s3.ListDirectoryBucketsInput, optFns ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error)
+	ListDirectoryBucketsCalls []_s3Client_ListDirectoryBuckets_Call
 	ListMultipartUploadsMocks []func(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)
 	ListMultipartUploadsCalls []_s3Client_ListMultipartUploads_Call
 	ListObjectVersionsMocks []func(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)
@@ -141,6 +160,10 @@ type _s3ClientData struct {
 	ListObjectsV2Calls []_s3Client_ListObjectsV2_Call
 	ListPartsMocks []func(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error)
 	ListPartsCalls []_s3Client_ListParts_Call
+	OptionsMocks []func() s3.Options
+	OptionsCalls []_s3Client_Options_Call
+	PutBucketAbacMocks []func(ctx context.Context, params *s3.PutBucketAbacInput, optFns ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error)
+	PutBucketAbacCalls []_s3Client_PutBucketAbac_Call
 	PutBucketAccelerateConfigurationMocks []func(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)
 	PutBucketAccelerateConfigurationCalls []_s3Client_PutBucketAccelerateConfiguration_Call
 	PutBucketAclMocks []func(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)
@@ -191,10 +214,18 @@ type _s3ClientData struct {
 	PutObjectTaggingCalls []_s3Client_PutObjectTagging_Call
 	PutPublicAccessBlockMocks []func(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)
 	PutPublicAccessBlockCalls []_s3Client_PutPublicAccessBlock_Call
+	RenameObjectMocks []func(ctx context.Context, params *s3.RenameObjectInput, optFns ...func(*s3.Options)) (*s3.RenameObjectOutput, error)
+	RenameObjectCalls []_s3Client_RenameObject_Call
 	RestoreObjectMocks []func(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)
 	RestoreObjectCalls []_s3Client_RestoreObject_Call
 	SelectObjectContentMocks []func(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)
 	SelectObjectContentCalls []_s3Client_SelectObjectContent_Call
+	UpdateBucketMetadataInventoryTableConfigurationMocks []func(ctx context.Context, params *s3.UpdateBucketMetadataInventoryTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error)
+	UpdateBucketMetadataInventoryTableConfigurationCalls []_s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call
+	UpdateBucketMetadataJournalTableConfigurationMocks []func(ctx context.Context, params *s3.UpdateBucketMetadataJournalTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error)
+	UpdateBucketMetadataJournalTableConfigurationCalls []_s3Client_UpdateBucketMetadataJournalTableConfiguration_Call
+	UpdateObjectEncryptionMocks []func(ctx context.Context, params *s3.UpdateObjectEncryptionInput, optFns ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error)
+	UpdateObjectEncryptionCalls []_s3Client_UpdateObjectEncryption_Call
 	UploadPartMocks []func(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error)
 	UploadPartCalls []_s3Client_UploadPart_Call
 	UploadPartCopyMocks []func(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)
@@ -204,570 +235,552 @@ type _s3ClientData struct {
 }
 
 func _s3ClientPtrData(t *s3Client) *_s3ClientData {
-	ptr := uintptr(unsafe.Pointer(t))
+	var ptr uintptr
+	if t != nil {
+		ptr = uintptr(unsafe.Pointer(t))
+	}
 	val, loaded := _s3Client.LoadOrStore(ptr, new(_s3ClientData))
-	if !loaded {
+	if !loaded && t != nil {
 		val.(*_s3ClientData).once.Do(func() { runtime.SetFinalizer(t, func(_ *s3Client) { _s3Client.Delete(ptr) })})
 	}
 	return val.(*_s3ClientData)
 }
 
 type _s3Client_AbortMultipartUpload_Call struct {
-	ctx context.Context
-	params *s3.AbortMultipartUploadInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.AbortMultipartUploadInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_CompleteMultipartUpload_Call struct {
-	ctx context.Context
-	params *s3.CompleteMultipartUploadInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.CompleteMultipartUploadInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_CopyObject_Call struct {
-	ctx context.Context
-	params *s3.CopyObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.CopyObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_CreateBucket_Call struct {
-	ctx context.Context
-	params *s3.CreateBucketInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.CreateBucketInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_CreateBucketMetadataConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.CreateBucketMetadataConfigurationInput
+	OptFns []func(*s3.Options)
+}
+type _s3Client_CreateBucketMetadataTableConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.CreateBucketMetadataTableConfigurationInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_CreateMultipartUpload_Call struct {
-	ctx context.Context
-	params *s3.CreateMultipartUploadInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.CreateMultipartUploadInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_CreateSession_Call struct {
+	Ctx context.Context
+	Params *s3.CreateSessionInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_DeleteBucket_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketAnalyticsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketAnalyticsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketAnalyticsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketCors_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketCorsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketCorsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketEncryption_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketEncryptionInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketEncryptionInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketIntelligentTieringConfiguration_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketIntelligentTieringConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketIntelligentTieringConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketInventoryConfiguration_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketInventoryConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketInventoryConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketLifecycle_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketLifecycleInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketLifecycleInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_DeleteBucketMetadataConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.DeleteBucketMetadataConfigurationInput
+	OptFns []func(*s3.Options)
+}
+type _s3Client_DeleteBucketMetadataTableConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.DeleteBucketMetadataTableConfigurationInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_DeleteBucketMetricsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketMetricsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketMetricsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketOwnershipControls_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketOwnershipControlsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketOwnershipControlsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketPolicy_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketPolicyInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketPolicyInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketReplication_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketReplicationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketReplicationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketTagging_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteBucketWebsite_Call struct {
-	ctx context.Context
-	params *s3.DeleteBucketWebsiteInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteBucketWebsiteInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteObject_Call struct {
-	ctx context.Context
-	params *s3.DeleteObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteObjectTagging_Call struct {
-	ctx context.Context
-	params *s3.DeleteObjectTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteObjectTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeleteObjects_Call struct {
-	ctx context.Context
-	params *s3.DeleteObjectsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeleteObjectsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_DeletePublicAccessBlock_Call struct {
-	ctx context.Context
-	params *s3.DeletePublicAccessBlockInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.DeletePublicAccessBlockInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_GetBucketAbac_Call struct {
+	Ctx context.Context
+	Params *s3.GetBucketAbacInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_GetBucketAccelerateConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketAccelerateConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketAccelerateConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketAcl_Call struct {
-	ctx context.Context
-	params *s3.GetBucketAclInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketAclInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketAnalyticsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketAnalyticsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketAnalyticsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketCors_Call struct {
-	ctx context.Context
-	params *s3.GetBucketCorsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketCorsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketEncryption_Call struct {
-	ctx context.Context
-	params *s3.GetBucketEncryptionInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketEncryptionInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketIntelligentTieringConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketIntelligentTieringConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketIntelligentTieringConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketInventoryConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketInventoryConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketInventoryConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketLifecycleConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketLifecycleConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketLifecycleConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketLocation_Call struct {
-	ctx context.Context
-	params *s3.GetBucketLocationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketLocationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketLogging_Call struct {
-	ctx context.Context
-	params *s3.GetBucketLoggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketLoggingInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_GetBucketMetadataConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.GetBucketMetadataConfigurationInput
+	OptFns []func(*s3.Options)
+}
+type _s3Client_GetBucketMetadataTableConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.GetBucketMetadataTableConfigurationInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_GetBucketMetricsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketMetricsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketMetricsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketNotificationConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetBucketNotificationConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketNotificationConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketOwnershipControls_Call struct {
-	ctx context.Context
-	params *s3.GetBucketOwnershipControlsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketOwnershipControlsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketPolicy_Call struct {
-	ctx context.Context
-	params *s3.GetBucketPolicyInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketPolicyInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketPolicyStatus_Call struct {
-	ctx context.Context
-	params *s3.GetBucketPolicyStatusInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketPolicyStatusInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketReplication_Call struct {
-	ctx context.Context
-	params *s3.GetBucketReplicationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketReplicationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketRequestPayment_Call struct {
-	ctx context.Context
-	params *s3.GetBucketRequestPaymentInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketRequestPaymentInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketTagging_Call struct {
-	ctx context.Context
-	params *s3.GetBucketTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketVersioning_Call struct {
-	ctx context.Context
-	params *s3.GetBucketVersioningInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketVersioningInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetBucketWebsite_Call struct {
-	ctx context.Context
-	params *s3.GetBucketWebsiteInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetBucketWebsiteInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObject_Call struct {
-	ctx context.Context
-	params *s3.GetObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectAcl_Call struct {
-	ctx context.Context
-	params *s3.GetObjectAclInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectAclInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectAttributes_Call struct {
-	ctx context.Context
-	params *s3.GetObjectAttributesInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectAttributesInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectLegalHold_Call struct {
-	ctx context.Context
-	params *s3.GetObjectLegalHoldInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectLegalHoldInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectLockConfiguration_Call struct {
-	ctx context.Context
-	params *s3.GetObjectLockConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectLockConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectRetention_Call struct {
-	ctx context.Context
-	params *s3.GetObjectRetentionInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectRetentionInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectTagging_Call struct {
-	ctx context.Context
-	params *s3.GetObjectTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetObjectTorrent_Call struct {
-	ctx context.Context
-	params *s3.GetObjectTorrentInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetObjectTorrentInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_GetPublicAccessBlock_Call struct {
-	ctx context.Context
-	params *s3.GetPublicAccessBlockInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.GetPublicAccessBlockInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_HeadBucket_Call struct {
-	ctx context.Context
-	params *s3.HeadBucketInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.HeadBucketInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_HeadObject_Call struct {
-	ctx context.Context
-	params *s3.HeadObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.HeadObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListBucketAnalyticsConfigurations_Call struct {
-	ctx context.Context
-	params *s3.ListBucketAnalyticsConfigurationsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListBucketAnalyticsConfigurationsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListBucketIntelligentTieringConfigurations_Call struct {
-	ctx context.Context
-	params *s3.ListBucketIntelligentTieringConfigurationsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListBucketIntelligentTieringConfigurationsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListBucketInventoryConfigurations_Call struct {
-	ctx context.Context
-	params *s3.ListBucketInventoryConfigurationsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListBucketInventoryConfigurationsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListBucketMetricsConfigurations_Call struct {
-	ctx context.Context
-	params *s3.ListBucketMetricsConfigurationsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListBucketMetricsConfigurationsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListBuckets_Call struct {
-	ctx context.Context
-	params *s3.ListBucketsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListBucketsInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_ListDirectoryBuckets_Call struct {
+	Ctx context.Context
+	Params *s3.ListDirectoryBucketsInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_ListMultipartUploads_Call struct {
-	ctx context.Context
-	params *s3.ListMultipartUploadsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListMultipartUploadsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListObjectVersions_Call struct {
-	ctx context.Context
-	params *s3.ListObjectVersionsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListObjectVersionsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListObjects_Call struct {
-	ctx context.Context
-	params *s3.ListObjectsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListObjectsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListObjectsV2_Call struct {
-	ctx context.Context
-	params *s3.ListObjectsV2Input
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListObjectsV2Input
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_ListParts_Call struct {
-	ctx context.Context
-	params *s3.ListPartsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.ListPartsInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_Options_Call struct {}
+type _s3Client_PutBucketAbac_Call struct {
+	Ctx context.Context
+	Params *s3.PutBucketAbacInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_PutBucketAccelerateConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketAccelerateConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketAccelerateConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketAcl_Call struct {
-	ctx context.Context
-	params *s3.PutBucketAclInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketAclInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketAnalyticsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketAnalyticsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketAnalyticsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketCors_Call struct {
-	ctx context.Context
-	params *s3.PutBucketCorsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketCorsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketEncryption_Call struct {
-	ctx context.Context
-	params *s3.PutBucketEncryptionInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketEncryptionInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketIntelligentTieringConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketIntelligentTieringConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketIntelligentTieringConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketInventoryConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketInventoryConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketInventoryConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketLifecycleConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketLifecycleConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketLifecycleConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketLogging_Call struct {
-	ctx context.Context
-	params *s3.PutBucketLoggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketLoggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketMetricsConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketMetricsConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketMetricsConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketNotificationConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutBucketNotificationConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketNotificationConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketOwnershipControls_Call struct {
-	ctx context.Context
-	params *s3.PutBucketOwnershipControlsInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketOwnershipControlsInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketPolicy_Call struct {
-	ctx context.Context
-	params *s3.PutBucketPolicyInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketPolicyInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketReplication_Call struct {
-	ctx context.Context
-	params *s3.PutBucketReplicationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketReplicationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketRequestPayment_Call struct {
-	ctx context.Context
-	params *s3.PutBucketRequestPaymentInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketRequestPaymentInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketTagging_Call struct {
-	ctx context.Context
-	params *s3.PutBucketTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketVersioning_Call struct {
-	ctx context.Context
-	params *s3.PutBucketVersioningInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketVersioningInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutBucketWebsite_Call struct {
-	ctx context.Context
-	params *s3.PutBucketWebsiteInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutBucketWebsiteInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObject_Call struct {
-	ctx context.Context
-	params *s3.PutObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObjectAcl_Call struct {
-	ctx context.Context
-	params *s3.PutObjectAclInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectAclInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObjectLegalHold_Call struct {
-	ctx context.Context
-	params *s3.PutObjectLegalHoldInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectLegalHoldInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObjectLockConfiguration_Call struct {
-	ctx context.Context
-	params *s3.PutObjectLockConfigurationInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectLockConfigurationInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObjectRetention_Call struct {
-	ctx context.Context
-	params *s3.PutObjectRetentionInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectRetentionInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutObjectTagging_Call struct {
-	ctx context.Context
-	params *s3.PutObjectTaggingInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutObjectTaggingInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_PutPublicAccessBlock_Call struct {
-	ctx context.Context
-	params *s3.PutPublicAccessBlockInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.PutPublicAccessBlockInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_RenameObject_Call struct {
+	Ctx context.Context
+	Params *s3.RenameObjectInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_RestoreObject_Call struct {
-	ctx context.Context
-	params *s3.RestoreObjectInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.RestoreObjectInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_SelectObjectContent_Call struct {
-	ctx context.Context
-	params *s3.SelectObjectContentInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.SelectObjectContentInput
+	OptFns []func(*s3.Options)
 }
-
+type _s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.UpdateBucketMetadataInventoryTableConfigurationInput
+	OptFns []func(*s3.Options)
+}
+type _s3Client_UpdateBucketMetadataJournalTableConfiguration_Call struct {
+	Ctx context.Context
+	Params *s3.UpdateBucketMetadataJournalTableConfigurationInput
+	OptFns []func(*s3.Options)
+}
+type _s3Client_UpdateObjectEncryption_Call struct {
+	Ctx context.Context
+	Params *s3.UpdateObjectEncryptionInput
+	OptFns []func(*s3.Options)
+}
 type _s3Client_UploadPart_Call struct {
-	ctx context.Context
-	params *s3.UploadPartInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.UploadPartInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_UploadPartCopy_Call struct {
-	ctx context.Context
-	params *s3.UploadPartCopyInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.UploadPartCopyInput
+	OptFns []func(*s3.Options)
 }
-
 type _s3Client_WriteGetObjectResponse_Call struct {
-	ctx context.Context
-	params *s3.WriteGetObjectResponseInput
-	optFns []func(*s3.Options)
+	Ctx context.Context
+	Params *s3.WriteGetObjectResponseInput
+	OptFns []func(*s3.Options)
 }
 
 func (_recv *s3Client) AbortMultipartUpload(ctx context.Context, params *s3.AbortMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) {
@@ -777,14 +790,25 @@ func (_recv *s3Client) AbortMultipartUpload(ctx context.Context, params *s3.Abor
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.AbortMultipartUploadCalls = append(_dat.AbortMultipartUploadCalls, _s3Client_AbortMultipartUpload_Call{ctx, params, optFns})
-	_fn := _recv.Client.AbortMultipartUpload
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.AbortMultipartUploadCalls = append(_all.AbortMultipartUploadCalls, _s3Client_AbortMultipartUpload_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)
 	if len(_dat.AbortMultipartUploadMocks) > 0 {
 		_fn = _dat.AbortMultipartUploadMocks[0]
 		if len(_dat.AbortMultipartUploadMocks) > 1 {
 			_dat.AbortMultipartUploadMocks = _dat.AbortMultipartUploadMocks[1:]
 		}
+	} else if len(_all.AbortMultipartUploadMocks) > 0 {
+		_fn = _all.AbortMultipartUploadMocks[0]
+		if len(_all.AbortMultipartUploadMocks) > 1 {
+			_all.AbortMultipartUploadMocks = _all.AbortMultipartUploadMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.AbortMultipartUpload
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -806,16 +830,43 @@ func (_recv *s3Client) _AbortMultipartUpload_Do(fn func(context.Context, *s3.Abo
 	}
 }
 
-func (_recv *s3Client) _AbortMultipartUpload_Stub() {
-	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.AbortMultipartUploadOutput, r1 error) {
-		return r0, r1
+func (s3Client) _AbortMultipartUpload_DoAll(t *testing.T, fn func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.AbortMultipartUploadMocks = []func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error){}
+	} else if len(_dat.AbortMultipartUploadMocks) < 2 {
+		_dat.AbortMultipartUploadMocks = []func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.AbortMultipartUploadMocks = _dat.AbortMultipartUploadMocks[:len(_dat.AbortMultipartUploadMocks)-1]
+		_dat.AbortMultipartUploadMocks = append(_dat.AbortMultipartUploadMocks, fn)
+		_dat.AbortMultipartUploadMocks = append(_dat.AbortMultipartUploadMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.AbortMultipartUploadMocks = []func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _AbortMultipartUpload_Stub() {
+	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.AbortMultipartUploadOutput, r1 error) { return })
+}
+
+func (s3Client) _AbortMultipartUpload_StubAll(t *testing.T) {
+	new(s3Client)._AbortMultipartUpload_DoAll(t, func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.AbortMultipartUploadOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _AbortMultipartUpload_Return(r0 *s3.AbortMultipartUploadOutput, r1 error) {
-	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) {
-		return r0, r1
-	})
+	_recv._AbortMultipartUpload_Do(func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _AbortMultipartUpload_ReturnAll(t *testing.T, r0 *s3.AbortMultipartUploadOutput, r1 error) {
+	new(s3Client)._AbortMultipartUpload_DoAll(t, func(context.Context, *s3.AbortMultipartUploadInput, ...func(*s3.Options)) (*s3.AbortMultipartUploadOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _AbortMultipartUpload_Calls() []_s3Client_AbortMultipartUpload_Call {
@@ -828,6 +879,26 @@ func (_recv *s3Client) _AbortMultipartUpload_Calls() []_s3Client_AbortMultipartU
 	return _dat.AbortMultipartUploadCalls
 }
 
+func (s3Client) _AbortMultipartUpload_AllCalls() []_s3Client_AbortMultipartUpload_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.AbortMultipartUploadCalls
+}
+
+func (s3Client) _AbortMultipartUpload_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.AbortMultipartUploadCalls = []_s3Client_AbortMultipartUpload_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.AbortMultipartUploadCalls = []_s3Client_AbortMultipartUpload_Call{}
+	})
+}
+
+
 func (_recv *s3Client) CompleteMultipartUpload(ctx context.Context, params *s3.CompleteMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) {
 	if _recv == nil {
 		panic("s3Client.CompleteMultipartUpload: nil pointer receiver")
@@ -835,14 +906,25 @@ func (_recv *s3Client) CompleteMultipartUpload(ctx context.Context, params *s3.C
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.CompleteMultipartUploadCalls = append(_dat.CompleteMultipartUploadCalls, _s3Client_CompleteMultipartUpload_Call{ctx, params, optFns})
-	_fn := _recv.Client.CompleteMultipartUpload
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CompleteMultipartUploadCalls = append(_all.CompleteMultipartUploadCalls, _s3Client_CompleteMultipartUpload_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)
 	if len(_dat.CompleteMultipartUploadMocks) > 0 {
 		_fn = _dat.CompleteMultipartUploadMocks[0]
 		if len(_dat.CompleteMultipartUploadMocks) > 1 {
 			_dat.CompleteMultipartUploadMocks = _dat.CompleteMultipartUploadMocks[1:]
 		}
+	} else if len(_all.CompleteMultipartUploadMocks) > 0 {
+		_fn = _all.CompleteMultipartUploadMocks[0]
+		if len(_all.CompleteMultipartUploadMocks) > 1 {
+			_all.CompleteMultipartUploadMocks = _all.CompleteMultipartUploadMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CompleteMultipartUpload
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -864,16 +946,43 @@ func (_recv *s3Client) _CompleteMultipartUpload_Do(fn func(context.Context, *s3.
 	}
 }
 
-func (_recv *s3Client) _CompleteMultipartUpload_Stub() {
-	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CompleteMultipartUploadOutput, r1 error) {
-		return r0, r1
+func (s3Client) _CompleteMultipartUpload_DoAll(t *testing.T, fn func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CompleteMultipartUploadMocks = []func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error){}
+	} else if len(_dat.CompleteMultipartUploadMocks) < 2 {
+		_dat.CompleteMultipartUploadMocks = []func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.CompleteMultipartUploadMocks = _dat.CompleteMultipartUploadMocks[:len(_dat.CompleteMultipartUploadMocks)-1]
+		_dat.CompleteMultipartUploadMocks = append(_dat.CompleteMultipartUploadMocks, fn)
+		_dat.CompleteMultipartUploadMocks = append(_dat.CompleteMultipartUploadMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CompleteMultipartUploadMocks = []func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _CompleteMultipartUpload_Stub() {
+	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CompleteMultipartUploadOutput, r1 error) { return })
+}
+
+func (s3Client) _CompleteMultipartUpload_StubAll(t *testing.T) {
+	new(s3Client)._CompleteMultipartUpload_DoAll(t, func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CompleteMultipartUploadOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _CompleteMultipartUpload_Return(r0 *s3.CompleteMultipartUploadOutput, r1 error) {
-	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) {
-		return r0, r1
-	})
+	_recv._CompleteMultipartUpload_Do(func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CompleteMultipartUpload_ReturnAll(t *testing.T, r0 *s3.CompleteMultipartUploadOutput, r1 error) {
+	new(s3Client)._CompleteMultipartUpload_DoAll(t, func(context.Context, *s3.CompleteMultipartUploadInput, ...func(*s3.Options)) (*s3.CompleteMultipartUploadOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _CompleteMultipartUpload_Calls() []_s3Client_CompleteMultipartUpload_Call {
@@ -886,6 +995,26 @@ func (_recv *s3Client) _CompleteMultipartUpload_Calls() []_s3Client_CompleteMult
 	return _dat.CompleteMultipartUploadCalls
 }
 
+func (s3Client) _CompleteMultipartUpload_AllCalls() []_s3Client_CompleteMultipartUpload_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CompleteMultipartUploadCalls
+}
+
+func (s3Client) _CompleteMultipartUpload_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CompleteMultipartUploadCalls = []_s3Client_CompleteMultipartUpload_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CompleteMultipartUploadCalls = []_s3Client_CompleteMultipartUpload_Call{}
+	})
+}
+
+
 func (_recv *s3Client) CopyObject(ctx context.Context, params *s3.CopyObjectInput, optFns ...func(*s3.Options)) (*s3.CopyObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.CopyObject: nil pointer receiver")
@@ -893,14 +1022,25 @@ func (_recv *s3Client) CopyObject(ctx context.Context, params *s3.CopyObjectInpu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.CopyObjectCalls = append(_dat.CopyObjectCalls, _s3Client_CopyObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.CopyObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CopyObjectCalls = append(_all.CopyObjectCalls, _s3Client_CopyObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error)
 	if len(_dat.CopyObjectMocks) > 0 {
 		_fn = _dat.CopyObjectMocks[0]
 		if len(_dat.CopyObjectMocks) > 1 {
 			_dat.CopyObjectMocks = _dat.CopyObjectMocks[1:]
 		}
+	} else if len(_all.CopyObjectMocks) > 0 {
+		_fn = _all.CopyObjectMocks[0]
+		if len(_all.CopyObjectMocks) > 1 {
+			_all.CopyObjectMocks = _all.CopyObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CopyObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -922,16 +1062,43 @@ func (_recv *s3Client) _CopyObject_Do(fn func(context.Context, *s3.CopyObjectInp
 	}
 }
 
-func (_recv *s3Client) _CopyObject_Stub() {
-	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (r0 *s3.CopyObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _CopyObject_DoAll(t *testing.T, fn func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CopyObjectMocks = []func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error){}
+	} else if len(_dat.CopyObjectMocks) < 2 {
+		_dat.CopyObjectMocks = []func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error){fn, fn}
+	} else {
+		_dat.CopyObjectMocks = _dat.CopyObjectMocks[:len(_dat.CopyObjectMocks)-1]
+		_dat.CopyObjectMocks = append(_dat.CopyObjectMocks, fn)
+		_dat.CopyObjectMocks = append(_dat.CopyObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CopyObjectMocks = []func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _CopyObject_Stub() {
+	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (r0 *s3.CopyObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _CopyObject_StubAll(t *testing.T) {
+	new(s3Client)._CopyObject_DoAll(t, func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (r0 *s3.CopyObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _CopyObject_Return(r0 *s3.CopyObjectOutput, r1 error) {
-	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._CopyObject_Do(func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CopyObject_ReturnAll(t *testing.T, r0 *s3.CopyObjectOutput, r1 error) {
+	new(s3Client)._CopyObject_DoAll(t, func(context.Context, *s3.CopyObjectInput, ...func(*s3.Options)) (*s3.CopyObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _CopyObject_Calls() []_s3Client_CopyObject_Call {
@@ -944,6 +1111,26 @@ func (_recv *s3Client) _CopyObject_Calls() []_s3Client_CopyObject_Call {
 	return _dat.CopyObjectCalls
 }
 
+func (s3Client) _CopyObject_AllCalls() []_s3Client_CopyObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CopyObjectCalls
+}
+
+func (s3Client) _CopyObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CopyObjectCalls = []_s3Client_CopyObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CopyObjectCalls = []_s3Client_CopyObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) CreateBucket(ctx context.Context, params *s3.CreateBucketInput, optFns ...func(*s3.Options)) (*s3.CreateBucketOutput, error) {
 	if _recv == nil {
 		panic("s3Client.CreateBucket: nil pointer receiver")
@@ -951,14 +1138,25 @@ func (_recv *s3Client) CreateBucket(ctx context.Context, params *s3.CreateBucket
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.CreateBucketCalls = append(_dat.CreateBucketCalls, _s3Client_CreateBucket_Call{ctx, params, optFns})
-	_fn := _recv.Client.CreateBucket
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CreateBucketCalls = append(_all.CreateBucketCalls, _s3Client_CreateBucket_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error)
 	if len(_dat.CreateBucketMocks) > 0 {
 		_fn = _dat.CreateBucketMocks[0]
 		if len(_dat.CreateBucketMocks) > 1 {
 			_dat.CreateBucketMocks = _dat.CreateBucketMocks[1:]
 		}
+	} else if len(_all.CreateBucketMocks) > 0 {
+		_fn = _all.CreateBucketMocks[0]
+		if len(_all.CreateBucketMocks) > 1 {
+			_all.CreateBucketMocks = _all.CreateBucketMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CreateBucket
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -980,16 +1178,43 @@ func (_recv *s3Client) _CreateBucket_Do(fn func(context.Context, *s3.CreateBucke
 	}
 }
 
-func (_recv *s3Client) _CreateBucket_Stub() {
-	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (r0 *s3.CreateBucketOutput, r1 error) {
-		return r0, r1
+func (s3Client) _CreateBucket_DoAll(t *testing.T, fn func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMocks = []func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error){}
+	} else if len(_dat.CreateBucketMocks) < 2 {
+		_dat.CreateBucketMocks = []func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMocks = _dat.CreateBucketMocks[:len(_dat.CreateBucketMocks)-1]
+		_dat.CreateBucketMocks = append(_dat.CreateBucketMocks, fn)
+		_dat.CreateBucketMocks = append(_dat.CreateBucketMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CreateBucketMocks = []func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _CreateBucket_Stub() {
+	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (r0 *s3.CreateBucketOutput, r1 error) { return })
+}
+
+func (s3Client) _CreateBucket_StubAll(t *testing.T) {
+	new(s3Client)._CreateBucket_DoAll(t, func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (r0 *s3.CreateBucketOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _CreateBucket_Return(r0 *s3.CreateBucketOutput, r1 error) {
-	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error) {
-		return r0, r1
-	})
+	_recv._CreateBucket_Do(func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CreateBucket_ReturnAll(t *testing.T, r0 *s3.CreateBucketOutput, r1 error) {
+	new(s3Client)._CreateBucket_DoAll(t, func(context.Context, *s3.CreateBucketInput, ...func(*s3.Options)) (*s3.CreateBucketOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _CreateBucket_Calls() []_s3Client_CreateBucket_Call {
@@ -1002,6 +1227,258 @@ func (_recv *s3Client) _CreateBucket_Calls() []_s3Client_CreateBucket_Call {
 	return _dat.CreateBucketCalls
 }
 
+func (s3Client) _CreateBucket_AllCalls() []_s3Client_CreateBucket_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketCalls
+}
+
+func (s3Client) _CreateBucket_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CreateBucketCalls = []_s3Client_CreateBucket_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CreateBucketCalls = []_s3Client_CreateBucket_Call{}
+	})
+}
+
+
+func (_recv *s3Client) CreateBucketMetadataConfiguration(ctx context.Context, params *s3.CreateBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CreateBucketMetadataConfigurationCalls = append(_dat.CreateBucketMetadataConfigurationCalls, _s3Client_CreateBucketMetadataConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CreateBucketMetadataConfigurationCalls = append(_all.CreateBucketMetadataConfigurationCalls, _s3Client_CreateBucketMetadataConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error)
+	if len(_dat.CreateBucketMetadataConfigurationMocks) > 0 {
+		_fn = _dat.CreateBucketMetadataConfigurationMocks[0]
+		if len(_dat.CreateBucketMetadataConfigurationMocks) > 1 {
+			_dat.CreateBucketMetadataConfigurationMocks = _dat.CreateBucketMetadataConfigurationMocks[1:]
+		}
+	} else if len(_all.CreateBucketMetadataConfigurationMocks) > 0 {
+		_fn = _all.CreateBucketMetadataConfigurationMocks[0]
+		if len(_all.CreateBucketMetadataConfigurationMocks) > 1 {
+			_all.CreateBucketMetadataConfigurationMocks = _all.CreateBucketMetadataConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CreateBucketMetadataConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CreateBucketMetadataConfiguration_Do(fn func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMetadataConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.CreateBucketMetadataConfigurationMocks) < 2 {
+		_dat.CreateBucketMetadataConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMetadataConfigurationMocks = _dat.CreateBucketMetadataConfigurationMocks[:len(_dat.CreateBucketMetadataConfigurationMocks)-1]
+		_dat.CreateBucketMetadataConfigurationMocks = append(_dat.CreateBucketMetadataConfigurationMocks, fn)
+		_dat.CreateBucketMetadataConfigurationMocks = append(_dat.CreateBucketMetadataConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _CreateBucketMetadataConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMetadataConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.CreateBucketMetadataConfigurationMocks) < 2 {
+		_dat.CreateBucketMetadataConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMetadataConfigurationMocks = _dat.CreateBucketMetadataConfigurationMocks[:len(_dat.CreateBucketMetadataConfigurationMocks)-1]
+		_dat.CreateBucketMetadataConfigurationMocks = append(_dat.CreateBucketMetadataConfigurationMocks, fn)
+		_dat.CreateBucketMetadataConfigurationMocks = append(_dat.CreateBucketMetadataConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CreateBucketMetadataConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _CreateBucketMetadataConfiguration_Stub() {
+	_recv._CreateBucketMetadataConfiguration_Do(func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.CreateBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _CreateBucketMetadataConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._CreateBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.CreateBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _CreateBucketMetadataConfiguration_Return(r0 *s3.CreateBucketMetadataConfigurationOutput, r1 error) {
+	_recv._CreateBucketMetadataConfiguration_Do(func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CreateBucketMetadataConfiguration_ReturnAll(t *testing.T, r0 *s3.CreateBucketMetadataConfigurationOutput, r1 error) {
+	new(s3Client)._CreateBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.CreateBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _CreateBucketMetadataConfiguration_Calls() []_s3Client_CreateBucketMetadataConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _CreateBucketMetadataConfiguration_AllCalls() []_s3Client_CreateBucketMetadataConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _CreateBucketMetadataConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CreateBucketMetadataConfigurationCalls = []_s3Client_CreateBucketMetadataConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CreateBucketMetadataConfigurationCalls = []_s3Client_CreateBucketMetadataConfiguration_Call{}
+	})
+}
+
+
+func (_recv *s3Client) CreateBucketMetadataTableConfiguration(ctx context.Context, params *s3.CreateBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CreateBucketMetadataTableConfigurationCalls = append(_dat.CreateBucketMetadataTableConfigurationCalls, _s3Client_CreateBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CreateBucketMetadataTableConfigurationCalls = append(_all.CreateBucketMetadataTableConfigurationCalls, _s3Client_CreateBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error)
+	if len(_dat.CreateBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _dat.CreateBucketMetadataTableConfigurationMocks[0]
+		if len(_dat.CreateBucketMetadataTableConfigurationMocks) > 1 {
+			_dat.CreateBucketMetadataTableConfigurationMocks = _dat.CreateBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else if len(_all.CreateBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _all.CreateBucketMetadataTableConfigurationMocks[0]
+		if len(_all.CreateBucketMetadataTableConfigurationMocks) > 1 {
+			_all.CreateBucketMetadataTableConfigurationMocks = _all.CreateBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CreateBucketMetadataTableConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CreateBucketMetadataTableConfiguration_Do(fn func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.CreateBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.CreateBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMetadataTableConfigurationMocks = _dat.CreateBucketMetadataTableConfigurationMocks[:len(_dat.CreateBucketMetadataTableConfigurationMocks)-1]
+		_dat.CreateBucketMetadataTableConfigurationMocks = append(_dat.CreateBucketMetadataTableConfigurationMocks, fn)
+		_dat.CreateBucketMetadataTableConfigurationMocks = append(_dat.CreateBucketMetadataTableConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _CreateBucketMetadataTableConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.CreateBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.CreateBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.CreateBucketMetadataTableConfigurationMocks = _dat.CreateBucketMetadataTableConfigurationMocks[:len(_dat.CreateBucketMetadataTableConfigurationMocks)-1]
+		_dat.CreateBucketMetadataTableConfigurationMocks = append(_dat.CreateBucketMetadataTableConfigurationMocks, fn)
+		_dat.CreateBucketMetadataTableConfigurationMocks = append(_dat.CreateBucketMetadataTableConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CreateBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _CreateBucketMetadataTableConfiguration_Stub() {
+	_recv._CreateBucketMetadataTableConfiguration_Do(func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.CreateBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _CreateBucketMetadataTableConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._CreateBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.CreateBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _CreateBucketMetadataTableConfiguration_Return(r0 *s3.CreateBucketMetadataTableConfigurationOutput, r1 error) {
+	_recv._CreateBucketMetadataTableConfiguration_Do(func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CreateBucketMetadataTableConfiguration_ReturnAll(t *testing.T, r0 *s3.CreateBucketMetadataTableConfigurationOutput, r1 error) {
+	new(s3Client)._CreateBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.CreateBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.CreateBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _CreateBucketMetadataTableConfiguration_Calls() []_s3Client_CreateBucketMetadataTableConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.CreateBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _CreateBucketMetadataTableConfiguration_AllCalls() []_s3Client_CreateBucketMetadataTableConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _CreateBucketMetadataTableConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CreateBucketMetadataTableConfigurationCalls = []_s3Client_CreateBucketMetadataTableConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CreateBucketMetadataTableConfigurationCalls = []_s3Client_CreateBucketMetadataTableConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) CreateMultipartUpload(ctx context.Context, params *s3.CreateMultipartUploadInput, optFns ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) {
 	if _recv == nil {
 		panic("s3Client.CreateMultipartUpload: nil pointer receiver")
@@ -1009,14 +1486,25 @@ func (_recv *s3Client) CreateMultipartUpload(ctx context.Context, params *s3.Cre
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.CreateMultipartUploadCalls = append(_dat.CreateMultipartUploadCalls, _s3Client_CreateMultipartUpload_Call{ctx, params, optFns})
-	_fn := _recv.Client.CreateMultipartUpload
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CreateMultipartUploadCalls = append(_all.CreateMultipartUploadCalls, _s3Client_CreateMultipartUpload_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)
 	if len(_dat.CreateMultipartUploadMocks) > 0 {
 		_fn = _dat.CreateMultipartUploadMocks[0]
 		if len(_dat.CreateMultipartUploadMocks) > 1 {
 			_dat.CreateMultipartUploadMocks = _dat.CreateMultipartUploadMocks[1:]
 		}
+	} else if len(_all.CreateMultipartUploadMocks) > 0 {
+		_fn = _all.CreateMultipartUploadMocks[0]
+		if len(_all.CreateMultipartUploadMocks) > 1 {
+			_all.CreateMultipartUploadMocks = _all.CreateMultipartUploadMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CreateMultipartUpload
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1038,16 +1526,43 @@ func (_recv *s3Client) _CreateMultipartUpload_Do(fn func(context.Context, *s3.Cr
 	}
 }
 
-func (_recv *s3Client) _CreateMultipartUpload_Stub() {
-	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CreateMultipartUploadOutput, r1 error) {
-		return r0, r1
+func (s3Client) _CreateMultipartUpload_DoAll(t *testing.T, fn func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateMultipartUploadMocks = []func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error){}
+	} else if len(_dat.CreateMultipartUploadMocks) < 2 {
+		_dat.CreateMultipartUploadMocks = []func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error){fn, fn}
+	} else {
+		_dat.CreateMultipartUploadMocks = _dat.CreateMultipartUploadMocks[:len(_dat.CreateMultipartUploadMocks)-1]
+		_dat.CreateMultipartUploadMocks = append(_dat.CreateMultipartUploadMocks, fn)
+		_dat.CreateMultipartUploadMocks = append(_dat.CreateMultipartUploadMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CreateMultipartUploadMocks = []func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _CreateMultipartUpload_Stub() {
+	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CreateMultipartUploadOutput, r1 error) { return })
+}
+
+func (s3Client) _CreateMultipartUpload_StubAll(t *testing.T) {
+	new(s3Client)._CreateMultipartUpload_DoAll(t, func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (r0 *s3.CreateMultipartUploadOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _CreateMultipartUpload_Return(r0 *s3.CreateMultipartUploadOutput, r1 error) {
-	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) {
-		return r0, r1
-	})
+	_recv._CreateMultipartUpload_Do(func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CreateMultipartUpload_ReturnAll(t *testing.T, r0 *s3.CreateMultipartUploadOutput, r1 error) {
+	new(s3Client)._CreateMultipartUpload_DoAll(t, func(context.Context, *s3.CreateMultipartUploadInput, ...func(*s3.Options)) (*s3.CreateMultipartUploadOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _CreateMultipartUpload_Calls() []_s3Client_CreateMultipartUpload_Call {
@@ -1060,6 +1575,142 @@ func (_recv *s3Client) _CreateMultipartUpload_Calls() []_s3Client_CreateMultipar
 	return _dat.CreateMultipartUploadCalls
 }
 
+func (s3Client) _CreateMultipartUpload_AllCalls() []_s3Client_CreateMultipartUpload_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateMultipartUploadCalls
+}
+
+func (s3Client) _CreateMultipartUpload_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CreateMultipartUploadCalls = []_s3Client_CreateMultipartUpload_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CreateMultipartUploadCalls = []_s3Client_CreateMultipartUpload_Call{}
+	})
+}
+
+
+func (_recv *s3Client) CreateSession(ctx context.Context, params *s3.CreateSessionInput, optFns ...func(*s3.Options)) (*s3.CreateSessionOutput, error) {
+	if _recv == nil {
+		panic("s3Client.CreateSession: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.CreateSessionCalls = append(_dat.CreateSessionCalls, _s3Client_CreateSession_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.CreateSessionCalls = append(_all.CreateSessionCalls, _s3Client_CreateSession_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error)
+	if len(_dat.CreateSessionMocks) > 0 {
+		_fn = _dat.CreateSessionMocks[0]
+		if len(_dat.CreateSessionMocks) > 1 {
+			_dat.CreateSessionMocks = _dat.CreateSessionMocks[1:]
+		}
+	} else if len(_all.CreateSessionMocks) > 0 {
+		_fn = _all.CreateSessionMocks[0]
+		if len(_all.CreateSessionMocks) > 1 {
+			_all.CreateSessionMocks = _all.CreateSessionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.CreateSession
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _CreateSession_Do(fn func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.CreateSession: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateSessionMocks = []func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error){}
+	} else if len(_dat.CreateSessionMocks) < 2 {
+		_dat.CreateSessionMocks = []func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error){fn, fn}
+	} else {
+		_dat.CreateSessionMocks = _dat.CreateSessionMocks[:len(_dat.CreateSessionMocks)-1]
+		_dat.CreateSessionMocks = append(_dat.CreateSessionMocks, fn)
+		_dat.CreateSessionMocks = append(_dat.CreateSessionMocks, fn)
+	}
+}
+
+func (s3Client) _CreateSession_DoAll(t *testing.T, fn func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.CreateSessionMocks = []func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error){}
+	} else if len(_dat.CreateSessionMocks) < 2 {
+		_dat.CreateSessionMocks = []func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error){fn, fn}
+	} else {
+		_dat.CreateSessionMocks = _dat.CreateSessionMocks[:len(_dat.CreateSessionMocks)-1]
+		_dat.CreateSessionMocks = append(_dat.CreateSessionMocks, fn)
+		_dat.CreateSessionMocks = append(_dat.CreateSessionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.CreateSessionMocks = []func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _CreateSession_Stub() {
+	_recv._CreateSession_Do(func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (r0 *s3.CreateSessionOutput, r1 error) { return })
+}
+
+func (s3Client) _CreateSession_StubAll(t *testing.T) {
+	new(s3Client)._CreateSession_DoAll(t, func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (r0 *s3.CreateSessionOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _CreateSession_Return(r0 *s3.CreateSessionOutput, r1 error) {
+	_recv._CreateSession_Do(func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _CreateSession_ReturnAll(t *testing.T, r0 *s3.CreateSessionOutput, r1 error) {
+	new(s3Client)._CreateSession_DoAll(t, func(context.Context, *s3.CreateSessionInput, ...func(*s3.Options)) (*s3.CreateSessionOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _CreateSession_Calls() []_s3Client_CreateSession_Call {
+	if _recv == nil {
+		panic("s3Client.CreateSession: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateSessionCalls
+}
+
+func (s3Client) _CreateSession_AllCalls() []_s3Client_CreateSession_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.CreateSessionCalls
+}
+
+func (s3Client) _CreateSession_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.CreateSessionCalls = []_s3Client_CreateSession_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.CreateSessionCalls = []_s3Client_CreateSession_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucket(ctx context.Context, params *s3.DeleteBucketInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucket: nil pointer receiver")
@@ -1067,14 +1718,25 @@ func (_recv *s3Client) DeleteBucket(ctx context.Context, params *s3.DeleteBucket
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketCalls = append(_dat.DeleteBucketCalls, _s3Client_DeleteBucket_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucket
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketCalls = append(_all.DeleteBucketCalls, _s3Client_DeleteBucket_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)
 	if len(_dat.DeleteBucketMocks) > 0 {
 		_fn = _dat.DeleteBucketMocks[0]
 		if len(_dat.DeleteBucketMocks) > 1 {
 			_dat.DeleteBucketMocks = _dat.DeleteBucketMocks[1:]
 		}
+	} else if len(_all.DeleteBucketMocks) > 0 {
+		_fn = _all.DeleteBucketMocks[0]
+		if len(_all.DeleteBucketMocks) > 1 {
+			_all.DeleteBucketMocks = _all.DeleteBucketMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucket
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1096,16 +1758,43 @@ func (_recv *s3Client) _DeleteBucket_Do(fn func(context.Context, *s3.DeleteBucke
 	}
 }
 
-func (_recv *s3Client) _DeleteBucket_Stub() {
-	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucket_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMocks = []func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error){}
+	} else if len(_dat.DeleteBucketMocks) < 2 {
+		_dat.DeleteBucketMocks = []func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMocks = _dat.DeleteBucketMocks[:len(_dat.DeleteBucketMocks)-1]
+		_dat.DeleteBucketMocks = append(_dat.DeleteBucketMocks, fn)
+		_dat.DeleteBucketMocks = append(_dat.DeleteBucketMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketMocks = []func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucket_Stub() {
+	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucket_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucket_DoAll(t, func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucket_Return(r0 *s3.DeleteBucketOutput, r1 error) {
-	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucket_Do(func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucket_ReturnAll(t *testing.T, r0 *s3.DeleteBucketOutput, r1 error) {
+	new(s3Client)._DeleteBucket_DoAll(t, func(context.Context, *s3.DeleteBucketInput, ...func(*s3.Options)) (*s3.DeleteBucketOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucket_Calls() []_s3Client_DeleteBucket_Call {
@@ -1118,6 +1807,26 @@ func (_recv *s3Client) _DeleteBucket_Calls() []_s3Client_DeleteBucket_Call {
 	return _dat.DeleteBucketCalls
 }
 
+func (s3Client) _DeleteBucket_AllCalls() []_s3Client_DeleteBucket_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketCalls
+}
+
+func (s3Client) _DeleteBucket_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketCalls = []_s3Client_DeleteBucket_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketCalls = []_s3Client_DeleteBucket_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketAnalyticsConfiguration(ctx context.Context, params *s3.DeleteBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketAnalyticsConfiguration: nil pointer receiver")
@@ -1125,14 +1834,25 @@ func (_recv *s3Client) DeleteBucketAnalyticsConfiguration(ctx context.Context, p
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketAnalyticsConfigurationCalls = append(_dat.DeleteBucketAnalyticsConfigurationCalls, _s3Client_DeleteBucketAnalyticsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketAnalyticsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketAnalyticsConfigurationCalls = append(_all.DeleteBucketAnalyticsConfigurationCalls, _s3Client_DeleteBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)
 	if len(_dat.DeleteBucketAnalyticsConfigurationMocks) > 0 {
 		_fn = _dat.DeleteBucketAnalyticsConfigurationMocks[0]
 		if len(_dat.DeleteBucketAnalyticsConfigurationMocks) > 1 {
 			_dat.DeleteBucketAnalyticsConfigurationMocks = _dat.DeleteBucketAnalyticsConfigurationMocks[1:]
 		}
+	} else if len(_all.DeleteBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketAnalyticsConfigurationMocks[0]
+		if len(_all.DeleteBucketAnalyticsConfigurationMocks) > 1 {
+			_all.DeleteBucketAnalyticsConfigurationMocks = _all.DeleteBucketAnalyticsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketAnalyticsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1154,16 +1874,43 @@ func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Do(fn func(context.Co
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Stub() {
-	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketAnalyticsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketAnalyticsConfigurationMocks = _dat.DeleteBucketAnalyticsConfigurationMocks[:len(_dat.DeleteBucketAnalyticsConfigurationMocks)-1]
+		_dat.DeleteBucketAnalyticsConfigurationMocks = append(_dat.DeleteBucketAnalyticsConfigurationMocks, fn)
+		_dat.DeleteBucketAnalyticsConfigurationMocks = append(_dat.DeleteBucketAnalyticsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Stub() {
+	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketAnalyticsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Return(r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) {
-	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketAnalyticsConfiguration_Do(func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketAnalyticsConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketAnalyticsConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Calls() []_s3Client_DeleteBucketAnalyticsConfiguration_Call {
@@ -1176,6 +1923,26 @@ func (_recv *s3Client) _DeleteBucketAnalyticsConfiguration_Calls() []_s3Client_D
 	return _dat.DeleteBucketAnalyticsConfigurationCalls
 }
 
+func (s3Client) _DeleteBucketAnalyticsConfiguration_AllCalls() []_s3Client_DeleteBucketAnalyticsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketAnalyticsConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketAnalyticsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketAnalyticsConfigurationCalls = []_s3Client_DeleteBucketAnalyticsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketAnalyticsConfigurationCalls = []_s3Client_DeleteBucketAnalyticsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketCors(ctx context.Context, params *s3.DeleteBucketCorsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketCors: nil pointer receiver")
@@ -1183,14 +1950,25 @@ func (_recv *s3Client) DeleteBucketCors(ctx context.Context, params *s3.DeleteBu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketCorsCalls = append(_dat.DeleteBucketCorsCalls, _s3Client_DeleteBucketCors_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketCors
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketCorsCalls = append(_all.DeleteBucketCorsCalls, _s3Client_DeleteBucketCors_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)
 	if len(_dat.DeleteBucketCorsMocks) > 0 {
 		_fn = _dat.DeleteBucketCorsMocks[0]
 		if len(_dat.DeleteBucketCorsMocks) > 1 {
 			_dat.DeleteBucketCorsMocks = _dat.DeleteBucketCorsMocks[1:]
 		}
+	} else if len(_all.DeleteBucketCorsMocks) > 0 {
+		_fn = _all.DeleteBucketCorsMocks[0]
+		if len(_all.DeleteBucketCorsMocks) > 1 {
+			_all.DeleteBucketCorsMocks = _all.DeleteBucketCorsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketCors
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1212,16 +1990,43 @@ func (_recv *s3Client) _DeleteBucketCors_Do(fn func(context.Context, *s3.DeleteB
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketCors_Stub() {
-	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketCorsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketCors_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketCorsMocks = []func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error){}
+	} else if len(_dat.DeleteBucketCorsMocks) < 2 {
+		_dat.DeleteBucketCorsMocks = []func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketCorsMocks = _dat.DeleteBucketCorsMocks[:len(_dat.DeleteBucketCorsMocks)-1]
+		_dat.DeleteBucketCorsMocks = append(_dat.DeleteBucketCorsMocks, fn)
+		_dat.DeleteBucketCorsMocks = append(_dat.DeleteBucketCorsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketCorsMocks = []func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketCors_Stub() {
+	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketCorsOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketCors_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketCors_DoAll(t, func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketCorsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketCors_Return(r0 *s3.DeleteBucketCorsOutput, r1 error) {
-	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketCors_Do(func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketCors_ReturnAll(t *testing.T, r0 *s3.DeleteBucketCorsOutput, r1 error) {
+	new(s3Client)._DeleteBucketCors_DoAll(t, func(context.Context, *s3.DeleteBucketCorsInput, ...func(*s3.Options)) (*s3.DeleteBucketCorsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketCors_Calls() []_s3Client_DeleteBucketCors_Call {
@@ -1234,6 +2039,26 @@ func (_recv *s3Client) _DeleteBucketCors_Calls() []_s3Client_DeleteBucketCors_Ca
 	return _dat.DeleteBucketCorsCalls
 }
 
+func (s3Client) _DeleteBucketCors_AllCalls() []_s3Client_DeleteBucketCors_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketCorsCalls
+}
+
+func (s3Client) _DeleteBucketCors_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketCorsCalls = []_s3Client_DeleteBucketCors_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketCorsCalls = []_s3Client_DeleteBucketCors_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketEncryption(ctx context.Context, params *s3.DeleteBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketEncryption: nil pointer receiver")
@@ -1241,14 +2066,25 @@ func (_recv *s3Client) DeleteBucketEncryption(ctx context.Context, params *s3.De
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketEncryptionCalls = append(_dat.DeleteBucketEncryptionCalls, _s3Client_DeleteBucketEncryption_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketEncryption
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketEncryptionCalls = append(_all.DeleteBucketEncryptionCalls, _s3Client_DeleteBucketEncryption_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)
 	if len(_dat.DeleteBucketEncryptionMocks) > 0 {
 		_fn = _dat.DeleteBucketEncryptionMocks[0]
 		if len(_dat.DeleteBucketEncryptionMocks) > 1 {
 			_dat.DeleteBucketEncryptionMocks = _dat.DeleteBucketEncryptionMocks[1:]
 		}
+	} else if len(_all.DeleteBucketEncryptionMocks) > 0 {
+		_fn = _all.DeleteBucketEncryptionMocks[0]
+		if len(_all.DeleteBucketEncryptionMocks) > 1 {
+			_all.DeleteBucketEncryptionMocks = _all.DeleteBucketEncryptionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketEncryption
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1270,16 +2106,43 @@ func (_recv *s3Client) _DeleteBucketEncryption_Do(fn func(context.Context, *s3.D
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketEncryption_Stub() {
-	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketEncryptionOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketEncryption_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketEncryptionMocks = []func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error){}
+	} else if len(_dat.DeleteBucketEncryptionMocks) < 2 {
+		_dat.DeleteBucketEncryptionMocks = []func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketEncryptionMocks = _dat.DeleteBucketEncryptionMocks[:len(_dat.DeleteBucketEncryptionMocks)-1]
+		_dat.DeleteBucketEncryptionMocks = append(_dat.DeleteBucketEncryptionMocks, fn)
+		_dat.DeleteBucketEncryptionMocks = append(_dat.DeleteBucketEncryptionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketEncryptionMocks = []func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketEncryption_Stub() {
+	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketEncryptionOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketEncryption_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketEncryption_DoAll(t, func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketEncryptionOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketEncryption_Return(r0 *s3.DeleteBucketEncryptionOutput, r1 error) {
-	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketEncryption_Do(func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketEncryption_ReturnAll(t *testing.T, r0 *s3.DeleteBucketEncryptionOutput, r1 error) {
+	new(s3Client)._DeleteBucketEncryption_DoAll(t, func(context.Context, *s3.DeleteBucketEncryptionInput, ...func(*s3.Options)) (*s3.DeleteBucketEncryptionOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketEncryption_Calls() []_s3Client_DeleteBucketEncryption_Call {
@@ -1292,6 +2155,26 @@ func (_recv *s3Client) _DeleteBucketEncryption_Calls() []_s3Client_DeleteBucketE
 	return _dat.DeleteBucketEncryptionCalls
 }
 
+func (s3Client) _DeleteBucketEncryption_AllCalls() []_s3Client_DeleteBucketEncryption_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketEncryptionCalls
+}
+
+func (s3Client) _DeleteBucketEncryption_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketEncryptionCalls = []_s3Client_DeleteBucketEncryption_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketEncryptionCalls = []_s3Client_DeleteBucketEncryption_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.DeleteBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketIntelligentTieringConfiguration: nil pointer receiver")
@@ -1299,14 +2182,25 @@ func (_recv *s3Client) DeleteBucketIntelligentTieringConfiguration(ctx context.C
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketIntelligentTieringConfigurationCalls = append(_dat.DeleteBucketIntelligentTieringConfigurationCalls, _s3Client_DeleteBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketIntelligentTieringConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketIntelligentTieringConfigurationCalls = append(_all.DeleteBucketIntelligentTieringConfigurationCalls, _s3Client_DeleteBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)
 	if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) > 0 {
 		_fn = _dat.DeleteBucketIntelligentTieringConfigurationMocks[0]
 		if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) > 1 {
 			_dat.DeleteBucketIntelligentTieringConfigurationMocks = _dat.DeleteBucketIntelligentTieringConfigurationMocks[1:]
 		}
+	} else if len(_all.DeleteBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketIntelligentTieringConfigurationMocks[0]
+		if len(_all.DeleteBucketIntelligentTieringConfigurationMocks) > 1 {
+			_all.DeleteBucketIntelligentTieringConfigurationMocks = _all.DeleteBucketIntelligentTieringConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketIntelligentTieringConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1328,16 +2222,43 @@ func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Do(fn func(c
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Stub() {
-	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketIntelligentTieringConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = _dat.DeleteBucketIntelligentTieringConfigurationMocks[:len(_dat.DeleteBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = append(_dat.DeleteBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.DeleteBucketIntelligentTieringConfigurationMocks = append(_dat.DeleteBucketIntelligentTieringConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Stub() {
+	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketIntelligentTieringConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Return(r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) {
-	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketIntelligentTieringConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketIntelligentTieringConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Calls() []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call {
@@ -1350,6 +2271,26 @@ func (_recv *s3Client) _DeleteBucketIntelligentTieringConfiguration_Calls() []_s
 	return _dat.DeleteBucketIntelligentTieringConfigurationCalls
 }
 
+func (s3Client) _DeleteBucketIntelligentTieringConfiguration_AllCalls() []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketIntelligentTieringConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketIntelligentTieringConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketIntelligentTieringConfigurationCalls = []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketIntelligentTieringConfigurationCalls = []_s3Client_DeleteBucketIntelligentTieringConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketInventoryConfiguration(ctx context.Context, params *s3.DeleteBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketInventoryConfiguration: nil pointer receiver")
@@ -1357,14 +2298,25 @@ func (_recv *s3Client) DeleteBucketInventoryConfiguration(ctx context.Context, p
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketInventoryConfigurationCalls = append(_dat.DeleteBucketInventoryConfigurationCalls, _s3Client_DeleteBucketInventoryConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketInventoryConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketInventoryConfigurationCalls = append(_all.DeleteBucketInventoryConfigurationCalls, _s3Client_DeleteBucketInventoryConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)
 	if len(_dat.DeleteBucketInventoryConfigurationMocks) > 0 {
 		_fn = _dat.DeleteBucketInventoryConfigurationMocks[0]
 		if len(_dat.DeleteBucketInventoryConfigurationMocks) > 1 {
 			_dat.DeleteBucketInventoryConfigurationMocks = _dat.DeleteBucketInventoryConfigurationMocks[1:]
 		}
+	} else if len(_all.DeleteBucketInventoryConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketInventoryConfigurationMocks[0]
+		if len(_all.DeleteBucketInventoryConfigurationMocks) > 1 {
+			_all.DeleteBucketInventoryConfigurationMocks = _all.DeleteBucketInventoryConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketInventoryConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1386,16 +2338,43 @@ func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Do(fn func(context.Co
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Stub() {
-	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketInventoryConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketInventoryConfigurationMocks = []func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketInventoryConfigurationMocks) < 2 {
+		_dat.DeleteBucketInventoryConfigurationMocks = []func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketInventoryConfigurationMocks = _dat.DeleteBucketInventoryConfigurationMocks[:len(_dat.DeleteBucketInventoryConfigurationMocks)-1]
+		_dat.DeleteBucketInventoryConfigurationMocks = append(_dat.DeleteBucketInventoryConfigurationMocks, fn)
+		_dat.DeleteBucketInventoryConfigurationMocks = append(_dat.DeleteBucketInventoryConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketInventoryConfigurationMocks = []func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Stub() {
+	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketInventoryConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Return(r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) {
-	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketInventoryConfiguration_Do(func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketInventoryConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketInventoryConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketInventoryConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Calls() []_s3Client_DeleteBucketInventoryConfiguration_Call {
@@ -1408,6 +2387,26 @@ func (_recv *s3Client) _DeleteBucketInventoryConfiguration_Calls() []_s3Client_D
 	return _dat.DeleteBucketInventoryConfigurationCalls
 }
 
+func (s3Client) _DeleteBucketInventoryConfiguration_AllCalls() []_s3Client_DeleteBucketInventoryConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketInventoryConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketInventoryConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketInventoryConfigurationCalls = []_s3Client_DeleteBucketInventoryConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketInventoryConfigurationCalls = []_s3Client_DeleteBucketInventoryConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketLifecycle(ctx context.Context, params *s3.DeleteBucketLifecycleInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketLifecycle: nil pointer receiver")
@@ -1415,14 +2414,25 @@ func (_recv *s3Client) DeleteBucketLifecycle(ctx context.Context, params *s3.Del
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketLifecycleCalls = append(_dat.DeleteBucketLifecycleCalls, _s3Client_DeleteBucketLifecycle_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketLifecycle
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketLifecycleCalls = append(_all.DeleteBucketLifecycleCalls, _s3Client_DeleteBucketLifecycle_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)
 	if len(_dat.DeleteBucketLifecycleMocks) > 0 {
 		_fn = _dat.DeleteBucketLifecycleMocks[0]
 		if len(_dat.DeleteBucketLifecycleMocks) > 1 {
 			_dat.DeleteBucketLifecycleMocks = _dat.DeleteBucketLifecycleMocks[1:]
 		}
+	} else if len(_all.DeleteBucketLifecycleMocks) > 0 {
+		_fn = _all.DeleteBucketLifecycleMocks[0]
+		if len(_all.DeleteBucketLifecycleMocks) > 1 {
+			_all.DeleteBucketLifecycleMocks = _all.DeleteBucketLifecycleMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketLifecycle
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1444,16 +2454,43 @@ func (_recv *s3Client) _DeleteBucketLifecycle_Do(fn func(context.Context, *s3.De
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketLifecycle_Stub() {
-	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketLifecycleOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketLifecycle_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketLifecycleMocks = []func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error){}
+	} else if len(_dat.DeleteBucketLifecycleMocks) < 2 {
+		_dat.DeleteBucketLifecycleMocks = []func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketLifecycleMocks = _dat.DeleteBucketLifecycleMocks[:len(_dat.DeleteBucketLifecycleMocks)-1]
+		_dat.DeleteBucketLifecycleMocks = append(_dat.DeleteBucketLifecycleMocks, fn)
+		_dat.DeleteBucketLifecycleMocks = append(_dat.DeleteBucketLifecycleMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketLifecycleMocks = []func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketLifecycle_Stub() {
+	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketLifecycleOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketLifecycle_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketLifecycle_DoAll(t, func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketLifecycleOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketLifecycle_Return(r0 *s3.DeleteBucketLifecycleOutput, r1 error) {
-	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketLifecycle_Do(func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketLifecycle_ReturnAll(t *testing.T, r0 *s3.DeleteBucketLifecycleOutput, r1 error) {
+	new(s3Client)._DeleteBucketLifecycle_DoAll(t, func(context.Context, *s3.DeleteBucketLifecycleInput, ...func(*s3.Options)) (*s3.DeleteBucketLifecycleOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketLifecycle_Calls() []_s3Client_DeleteBucketLifecycle_Call {
@@ -1466,6 +2503,258 @@ func (_recv *s3Client) _DeleteBucketLifecycle_Calls() []_s3Client_DeleteBucketLi
 	return _dat.DeleteBucketLifecycleCalls
 }
 
+func (s3Client) _DeleteBucketLifecycle_AllCalls() []_s3Client_DeleteBucketLifecycle_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketLifecycleCalls
+}
+
+func (s3Client) _DeleteBucketLifecycle_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketLifecycleCalls = []_s3Client_DeleteBucketLifecycle_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketLifecycleCalls = []_s3Client_DeleteBucketLifecycle_Call{}
+	})
+}
+
+
+func (_recv *s3Client) DeleteBucketMetadataConfiguration(ctx context.Context, params *s3.DeleteBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetadataConfigurationCalls = append(_dat.DeleteBucketMetadataConfigurationCalls, _s3Client_DeleteBucketMetadataConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketMetadataConfigurationCalls = append(_all.DeleteBucketMetadataConfigurationCalls, _s3Client_DeleteBucketMetadataConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error)
+	if len(_dat.DeleteBucketMetadataConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketMetadataConfigurationMocks[0]
+		if len(_dat.DeleteBucketMetadataConfigurationMocks) > 1 {
+			_dat.DeleteBucketMetadataConfigurationMocks = _dat.DeleteBucketMetadataConfigurationMocks[1:]
+		}
+	} else if len(_all.DeleteBucketMetadataConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketMetadataConfigurationMocks[0]
+		if len(_all.DeleteBucketMetadataConfigurationMocks) > 1 {
+			_all.DeleteBucketMetadataConfigurationMocks = _all.DeleteBucketMetadataConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketMetadataConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataConfiguration_Do(fn func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetadataConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetadataConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetadataConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetadataConfigurationMocks = _dat.DeleteBucketMetadataConfigurationMocks[:len(_dat.DeleteBucketMetadataConfigurationMocks)-1]
+		_dat.DeleteBucketMetadataConfigurationMocks = append(_dat.DeleteBucketMetadataConfigurationMocks, fn)
+		_dat.DeleteBucketMetadataConfigurationMocks = append(_dat.DeleteBucketMetadataConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _DeleteBucketMetadataConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetadataConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetadataConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetadataConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetadataConfigurationMocks = _dat.DeleteBucketMetadataConfigurationMocks[:len(_dat.DeleteBucketMetadataConfigurationMocks)-1]
+		_dat.DeleteBucketMetadataConfigurationMocks = append(_dat.DeleteBucketMetadataConfigurationMocks, fn)
+		_dat.DeleteBucketMetadataConfigurationMocks = append(_dat.DeleteBucketMetadataConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketMetadataConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataConfiguration_Stub() {
+	_recv._DeleteBucketMetadataConfiguration_Do(func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketMetadataConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataConfiguration_Return(r0 *s3.DeleteBucketMetadataConfigurationOutput, r1 error) {
+	_recv._DeleteBucketMetadataConfiguration_Do(func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketMetadataConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketMetadataConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataConfiguration_Calls() []_s3Client_DeleteBucketMetadataConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketMetadataConfiguration_AllCalls() []_s3Client_DeleteBucketMetadataConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketMetadataConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetadataConfigurationCalls = []_s3Client_DeleteBucketMetadataConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketMetadataConfigurationCalls = []_s3Client_DeleteBucketMetadataConfiguration_Call{}
+	})
+}
+
+
+func (_recv *s3Client) DeleteBucketMetadataTableConfiguration(ctx context.Context, params *s3.DeleteBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetadataTableConfigurationCalls = append(_dat.DeleteBucketMetadataTableConfigurationCalls, _s3Client_DeleteBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketMetadataTableConfigurationCalls = append(_all.DeleteBucketMetadataTableConfigurationCalls, _s3Client_DeleteBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error)
+	if len(_dat.DeleteBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _dat.DeleteBucketMetadataTableConfigurationMocks[0]
+		if len(_dat.DeleteBucketMetadataTableConfigurationMocks) > 1 {
+			_dat.DeleteBucketMetadataTableConfigurationMocks = _dat.DeleteBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else if len(_all.DeleteBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketMetadataTableConfigurationMocks[0]
+		if len(_all.DeleteBucketMetadataTableConfigurationMocks) > 1 {
+			_all.DeleteBucketMetadataTableConfigurationMocks = _all.DeleteBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketMetadataTableConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataTableConfiguration_Do(fn func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = _dat.DeleteBucketMetadataTableConfigurationMocks[:len(_dat.DeleteBucketMetadataTableConfigurationMocks)-1]
+		_dat.DeleteBucketMetadataTableConfigurationMocks = append(_dat.DeleteBucketMetadataTableConfigurationMocks, fn)
+		_dat.DeleteBucketMetadataTableConfigurationMocks = append(_dat.DeleteBucketMetadataTableConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _DeleteBucketMetadataTableConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetadataTableConfigurationMocks = _dat.DeleteBucketMetadataTableConfigurationMocks[:len(_dat.DeleteBucketMetadataTableConfigurationMocks)-1]
+		_dat.DeleteBucketMetadataTableConfigurationMocks = append(_dat.DeleteBucketMetadataTableConfigurationMocks, fn)
+		_dat.DeleteBucketMetadataTableConfigurationMocks = append(_dat.DeleteBucketMetadataTableConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataTableConfiguration_Stub() {
+	_recv._DeleteBucketMetadataTableConfiguration_Do(func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketMetadataTableConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataTableConfiguration_Return(r0 *s3.DeleteBucketMetadataTableConfigurationOutput, r1 error) {
+	_recv._DeleteBucketMetadataTableConfiguration_Do(func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketMetadataTableConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketMetadataTableConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _DeleteBucketMetadataTableConfiguration_Calls() []_s3Client_DeleteBucketMetadataTableConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.DeleteBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketMetadataTableConfiguration_AllCalls() []_s3Client_DeleteBucketMetadataTableConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketMetadataTableConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetadataTableConfigurationCalls = []_s3Client_DeleteBucketMetadataTableConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketMetadataTableConfigurationCalls = []_s3Client_DeleteBucketMetadataTableConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketMetricsConfiguration(ctx context.Context, params *s3.DeleteBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketMetricsConfiguration: nil pointer receiver")
@@ -1473,14 +2762,25 @@ func (_recv *s3Client) DeleteBucketMetricsConfiguration(ctx context.Context, par
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketMetricsConfigurationCalls = append(_dat.DeleteBucketMetricsConfigurationCalls, _s3Client_DeleteBucketMetricsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketMetricsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketMetricsConfigurationCalls = append(_all.DeleteBucketMetricsConfigurationCalls, _s3Client_DeleteBucketMetricsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)
 	if len(_dat.DeleteBucketMetricsConfigurationMocks) > 0 {
 		_fn = _dat.DeleteBucketMetricsConfigurationMocks[0]
 		if len(_dat.DeleteBucketMetricsConfigurationMocks) > 1 {
 			_dat.DeleteBucketMetricsConfigurationMocks = _dat.DeleteBucketMetricsConfigurationMocks[1:]
 		}
+	} else if len(_all.DeleteBucketMetricsConfigurationMocks) > 0 {
+		_fn = _all.DeleteBucketMetricsConfigurationMocks[0]
+		if len(_all.DeleteBucketMetricsConfigurationMocks) > 1 {
+			_all.DeleteBucketMetricsConfigurationMocks = _all.DeleteBucketMetricsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketMetricsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1502,16 +2802,43 @@ func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Do(fn func(context.Cont
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Stub() {
-	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketMetricsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketMetricsConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.DeleteBucketMetricsConfigurationMocks) < 2 {
+		_dat.DeleteBucketMetricsConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketMetricsConfigurationMocks = _dat.DeleteBucketMetricsConfigurationMocks[:len(_dat.DeleteBucketMetricsConfigurationMocks)-1]
+		_dat.DeleteBucketMetricsConfigurationMocks = append(_dat.DeleteBucketMetricsConfigurationMocks, fn)
+		_dat.DeleteBucketMetricsConfigurationMocks = append(_dat.DeleteBucketMetricsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketMetricsConfigurationMocks = []func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Stub() {
+	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketMetricsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Return(r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) {
-	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketMetricsConfiguration_Do(func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketMetricsConfiguration_ReturnAll(t *testing.T, r0 *s3.DeleteBucketMetricsConfigurationOutput, r1 error) {
+	new(s3Client)._DeleteBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.DeleteBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.DeleteBucketMetricsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Calls() []_s3Client_DeleteBucketMetricsConfiguration_Call {
@@ -1524,6 +2851,26 @@ func (_recv *s3Client) _DeleteBucketMetricsConfiguration_Calls() []_s3Client_Del
 	return _dat.DeleteBucketMetricsConfigurationCalls
 }
 
+func (s3Client) _DeleteBucketMetricsConfiguration_AllCalls() []_s3Client_DeleteBucketMetricsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketMetricsConfigurationCalls
+}
+
+func (s3Client) _DeleteBucketMetricsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketMetricsConfigurationCalls = []_s3Client_DeleteBucketMetricsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketMetricsConfigurationCalls = []_s3Client_DeleteBucketMetricsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketOwnershipControls(ctx context.Context, params *s3.DeleteBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketOwnershipControls: nil pointer receiver")
@@ -1531,14 +2878,25 @@ func (_recv *s3Client) DeleteBucketOwnershipControls(ctx context.Context, params
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketOwnershipControlsCalls = append(_dat.DeleteBucketOwnershipControlsCalls, _s3Client_DeleteBucketOwnershipControls_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketOwnershipControls
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketOwnershipControlsCalls = append(_all.DeleteBucketOwnershipControlsCalls, _s3Client_DeleteBucketOwnershipControls_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)
 	if len(_dat.DeleteBucketOwnershipControlsMocks) > 0 {
 		_fn = _dat.DeleteBucketOwnershipControlsMocks[0]
 		if len(_dat.DeleteBucketOwnershipControlsMocks) > 1 {
 			_dat.DeleteBucketOwnershipControlsMocks = _dat.DeleteBucketOwnershipControlsMocks[1:]
 		}
+	} else if len(_all.DeleteBucketOwnershipControlsMocks) > 0 {
+		_fn = _all.DeleteBucketOwnershipControlsMocks[0]
+		if len(_all.DeleteBucketOwnershipControlsMocks) > 1 {
+			_all.DeleteBucketOwnershipControlsMocks = _all.DeleteBucketOwnershipControlsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketOwnershipControls
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1560,16 +2918,43 @@ func (_recv *s3Client) _DeleteBucketOwnershipControls_Do(fn func(context.Context
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketOwnershipControls_Stub() {
-	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketOwnershipControls_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketOwnershipControlsMocks = []func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.DeleteBucketOwnershipControlsMocks) < 2 {
+		_dat.DeleteBucketOwnershipControlsMocks = []func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketOwnershipControlsMocks = _dat.DeleteBucketOwnershipControlsMocks[:len(_dat.DeleteBucketOwnershipControlsMocks)-1]
+		_dat.DeleteBucketOwnershipControlsMocks = append(_dat.DeleteBucketOwnershipControlsMocks, fn)
+		_dat.DeleteBucketOwnershipControlsMocks = append(_dat.DeleteBucketOwnershipControlsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketOwnershipControlsMocks = []func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketOwnershipControls_Stub() {
+	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketOwnershipControls_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketOwnershipControls_DoAll(t, func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketOwnershipControls_Return(r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) {
-	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketOwnershipControls_Do(func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketOwnershipControls_ReturnAll(t *testing.T, r0 *s3.DeleteBucketOwnershipControlsOutput, r1 error) {
+	new(s3Client)._DeleteBucketOwnershipControls_DoAll(t, func(context.Context, *s3.DeleteBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.DeleteBucketOwnershipControlsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketOwnershipControls_Calls() []_s3Client_DeleteBucketOwnershipControls_Call {
@@ -1582,6 +2967,26 @@ func (_recv *s3Client) _DeleteBucketOwnershipControls_Calls() []_s3Client_Delete
 	return _dat.DeleteBucketOwnershipControlsCalls
 }
 
+func (s3Client) _DeleteBucketOwnershipControls_AllCalls() []_s3Client_DeleteBucketOwnershipControls_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketOwnershipControlsCalls
+}
+
+func (s3Client) _DeleteBucketOwnershipControls_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketOwnershipControlsCalls = []_s3Client_DeleteBucketOwnershipControls_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketOwnershipControlsCalls = []_s3Client_DeleteBucketOwnershipControls_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketPolicy(ctx context.Context, params *s3.DeleteBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketPolicy: nil pointer receiver")
@@ -1589,14 +2994,25 @@ func (_recv *s3Client) DeleteBucketPolicy(ctx context.Context, params *s3.Delete
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketPolicyCalls = append(_dat.DeleteBucketPolicyCalls, _s3Client_DeleteBucketPolicy_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketPolicy
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketPolicyCalls = append(_all.DeleteBucketPolicyCalls, _s3Client_DeleteBucketPolicy_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)
 	if len(_dat.DeleteBucketPolicyMocks) > 0 {
 		_fn = _dat.DeleteBucketPolicyMocks[0]
 		if len(_dat.DeleteBucketPolicyMocks) > 1 {
 			_dat.DeleteBucketPolicyMocks = _dat.DeleteBucketPolicyMocks[1:]
 		}
+	} else if len(_all.DeleteBucketPolicyMocks) > 0 {
+		_fn = _all.DeleteBucketPolicyMocks[0]
+		if len(_all.DeleteBucketPolicyMocks) > 1 {
+			_all.DeleteBucketPolicyMocks = _all.DeleteBucketPolicyMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketPolicy
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1618,16 +3034,43 @@ func (_recv *s3Client) _DeleteBucketPolicy_Do(fn func(context.Context, *s3.Delet
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketPolicy_Stub() {
-	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketPolicyOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketPolicy_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketPolicyMocks = []func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error){}
+	} else if len(_dat.DeleteBucketPolicyMocks) < 2 {
+		_dat.DeleteBucketPolicyMocks = []func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketPolicyMocks = _dat.DeleteBucketPolicyMocks[:len(_dat.DeleteBucketPolicyMocks)-1]
+		_dat.DeleteBucketPolicyMocks = append(_dat.DeleteBucketPolicyMocks, fn)
+		_dat.DeleteBucketPolicyMocks = append(_dat.DeleteBucketPolicyMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketPolicyMocks = []func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketPolicy_Stub() {
+	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketPolicyOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketPolicy_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketPolicy_DoAll(t, func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketPolicyOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketPolicy_Return(r0 *s3.DeleteBucketPolicyOutput, r1 error) {
-	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketPolicy_Do(func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketPolicy_ReturnAll(t *testing.T, r0 *s3.DeleteBucketPolicyOutput, r1 error) {
+	new(s3Client)._DeleteBucketPolicy_DoAll(t, func(context.Context, *s3.DeleteBucketPolicyInput, ...func(*s3.Options)) (*s3.DeleteBucketPolicyOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketPolicy_Calls() []_s3Client_DeleteBucketPolicy_Call {
@@ -1640,6 +3083,26 @@ func (_recv *s3Client) _DeleteBucketPolicy_Calls() []_s3Client_DeleteBucketPolic
 	return _dat.DeleteBucketPolicyCalls
 }
 
+func (s3Client) _DeleteBucketPolicy_AllCalls() []_s3Client_DeleteBucketPolicy_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketPolicyCalls
+}
+
+func (s3Client) _DeleteBucketPolicy_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketPolicyCalls = []_s3Client_DeleteBucketPolicy_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketPolicyCalls = []_s3Client_DeleteBucketPolicy_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketReplication(ctx context.Context, params *s3.DeleteBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketReplication: nil pointer receiver")
@@ -1647,14 +3110,25 @@ func (_recv *s3Client) DeleteBucketReplication(ctx context.Context, params *s3.D
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketReplicationCalls = append(_dat.DeleteBucketReplicationCalls, _s3Client_DeleteBucketReplication_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketReplication
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketReplicationCalls = append(_all.DeleteBucketReplicationCalls, _s3Client_DeleteBucketReplication_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)
 	if len(_dat.DeleteBucketReplicationMocks) > 0 {
 		_fn = _dat.DeleteBucketReplicationMocks[0]
 		if len(_dat.DeleteBucketReplicationMocks) > 1 {
 			_dat.DeleteBucketReplicationMocks = _dat.DeleteBucketReplicationMocks[1:]
 		}
+	} else if len(_all.DeleteBucketReplicationMocks) > 0 {
+		_fn = _all.DeleteBucketReplicationMocks[0]
+		if len(_all.DeleteBucketReplicationMocks) > 1 {
+			_all.DeleteBucketReplicationMocks = _all.DeleteBucketReplicationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketReplication
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1676,16 +3150,43 @@ func (_recv *s3Client) _DeleteBucketReplication_Do(fn func(context.Context, *s3.
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketReplication_Stub() {
-	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketReplicationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketReplication_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketReplicationMocks = []func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error){}
+	} else if len(_dat.DeleteBucketReplicationMocks) < 2 {
+		_dat.DeleteBucketReplicationMocks = []func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketReplicationMocks = _dat.DeleteBucketReplicationMocks[:len(_dat.DeleteBucketReplicationMocks)-1]
+		_dat.DeleteBucketReplicationMocks = append(_dat.DeleteBucketReplicationMocks, fn)
+		_dat.DeleteBucketReplicationMocks = append(_dat.DeleteBucketReplicationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketReplicationMocks = []func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketReplication_Stub() {
+	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketReplicationOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketReplication_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketReplication_DoAll(t, func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketReplicationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketReplication_Return(r0 *s3.DeleteBucketReplicationOutput, r1 error) {
-	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketReplication_Do(func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketReplication_ReturnAll(t *testing.T, r0 *s3.DeleteBucketReplicationOutput, r1 error) {
+	new(s3Client)._DeleteBucketReplication_DoAll(t, func(context.Context, *s3.DeleteBucketReplicationInput, ...func(*s3.Options)) (*s3.DeleteBucketReplicationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketReplication_Calls() []_s3Client_DeleteBucketReplication_Call {
@@ -1698,6 +3199,26 @@ func (_recv *s3Client) _DeleteBucketReplication_Calls() []_s3Client_DeleteBucket
 	return _dat.DeleteBucketReplicationCalls
 }
 
+func (s3Client) _DeleteBucketReplication_AllCalls() []_s3Client_DeleteBucketReplication_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketReplicationCalls
+}
+
+func (s3Client) _DeleteBucketReplication_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketReplicationCalls = []_s3Client_DeleteBucketReplication_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketReplicationCalls = []_s3Client_DeleteBucketReplication_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketTagging(ctx context.Context, params *s3.DeleteBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketTagging: nil pointer receiver")
@@ -1705,14 +3226,25 @@ func (_recv *s3Client) DeleteBucketTagging(ctx context.Context, params *s3.Delet
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketTaggingCalls = append(_dat.DeleteBucketTaggingCalls, _s3Client_DeleteBucketTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketTaggingCalls = append(_all.DeleteBucketTaggingCalls, _s3Client_DeleteBucketTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)
 	if len(_dat.DeleteBucketTaggingMocks) > 0 {
 		_fn = _dat.DeleteBucketTaggingMocks[0]
 		if len(_dat.DeleteBucketTaggingMocks) > 1 {
 			_dat.DeleteBucketTaggingMocks = _dat.DeleteBucketTaggingMocks[1:]
 		}
+	} else if len(_all.DeleteBucketTaggingMocks) > 0 {
+		_fn = _all.DeleteBucketTaggingMocks[0]
+		if len(_all.DeleteBucketTaggingMocks) > 1 {
+			_all.DeleteBucketTaggingMocks = _all.DeleteBucketTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1734,16 +3266,43 @@ func (_recv *s3Client) _DeleteBucketTagging_Do(fn func(context.Context, *s3.Dele
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketTagging_Stub() {
-	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketTagging_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketTaggingMocks = []func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error){}
+	} else if len(_dat.DeleteBucketTaggingMocks) < 2 {
+		_dat.DeleteBucketTaggingMocks = []func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketTaggingMocks = _dat.DeleteBucketTaggingMocks[:len(_dat.DeleteBucketTaggingMocks)-1]
+		_dat.DeleteBucketTaggingMocks = append(_dat.DeleteBucketTaggingMocks, fn)
+		_dat.DeleteBucketTaggingMocks = append(_dat.DeleteBucketTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketTaggingMocks = []func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketTagging_Stub() {
+	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketTagging_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketTagging_DoAll(t, func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketTagging_Return(r0 *s3.DeleteBucketTaggingOutput, r1 error) {
-	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketTagging_Do(func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketTagging_ReturnAll(t *testing.T, r0 *s3.DeleteBucketTaggingOutput, r1 error) {
+	new(s3Client)._DeleteBucketTagging_DoAll(t, func(context.Context, *s3.DeleteBucketTaggingInput, ...func(*s3.Options)) (*s3.DeleteBucketTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketTagging_Calls() []_s3Client_DeleteBucketTagging_Call {
@@ -1756,6 +3315,26 @@ func (_recv *s3Client) _DeleteBucketTagging_Calls() []_s3Client_DeleteBucketTagg
 	return _dat.DeleteBucketTaggingCalls
 }
 
+func (s3Client) _DeleteBucketTagging_AllCalls() []_s3Client_DeleteBucketTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketTaggingCalls
+}
+
+func (s3Client) _DeleteBucketTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketTaggingCalls = []_s3Client_DeleteBucketTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketTaggingCalls = []_s3Client_DeleteBucketTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteBucketWebsite(ctx context.Context, params *s3.DeleteBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteBucketWebsite: nil pointer receiver")
@@ -1763,14 +3342,25 @@ func (_recv *s3Client) DeleteBucketWebsite(ctx context.Context, params *s3.Delet
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteBucketWebsiteCalls = append(_dat.DeleteBucketWebsiteCalls, _s3Client_DeleteBucketWebsite_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteBucketWebsite
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteBucketWebsiteCalls = append(_all.DeleteBucketWebsiteCalls, _s3Client_DeleteBucketWebsite_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)
 	if len(_dat.DeleteBucketWebsiteMocks) > 0 {
 		_fn = _dat.DeleteBucketWebsiteMocks[0]
 		if len(_dat.DeleteBucketWebsiteMocks) > 1 {
 			_dat.DeleteBucketWebsiteMocks = _dat.DeleteBucketWebsiteMocks[1:]
 		}
+	} else if len(_all.DeleteBucketWebsiteMocks) > 0 {
+		_fn = _all.DeleteBucketWebsiteMocks[0]
+		if len(_all.DeleteBucketWebsiteMocks) > 1 {
+			_all.DeleteBucketWebsiteMocks = _all.DeleteBucketWebsiteMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteBucketWebsite
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1792,16 +3382,43 @@ func (_recv *s3Client) _DeleteBucketWebsite_Do(fn func(context.Context, *s3.Dele
 	}
 }
 
-func (_recv *s3Client) _DeleteBucketWebsite_Stub() {
-	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketWebsiteOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteBucketWebsite_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteBucketWebsiteMocks = []func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error){}
+	} else if len(_dat.DeleteBucketWebsiteMocks) < 2 {
+		_dat.DeleteBucketWebsiteMocks = []func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.DeleteBucketWebsiteMocks = _dat.DeleteBucketWebsiteMocks[:len(_dat.DeleteBucketWebsiteMocks)-1]
+		_dat.DeleteBucketWebsiteMocks = append(_dat.DeleteBucketWebsiteMocks, fn)
+		_dat.DeleteBucketWebsiteMocks = append(_dat.DeleteBucketWebsiteMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteBucketWebsiteMocks = []func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteBucketWebsite_Stub() {
+	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketWebsiteOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteBucketWebsite_StubAll(t *testing.T) {
+	new(s3Client)._DeleteBucketWebsite_DoAll(t, func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.DeleteBucketWebsiteOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteBucketWebsite_Return(r0 *s3.DeleteBucketWebsiteOutput, r1 error) {
-	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteBucketWebsite_Do(func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteBucketWebsite_ReturnAll(t *testing.T, r0 *s3.DeleteBucketWebsiteOutput, r1 error) {
+	new(s3Client)._DeleteBucketWebsite_DoAll(t, func(context.Context, *s3.DeleteBucketWebsiteInput, ...func(*s3.Options)) (*s3.DeleteBucketWebsiteOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteBucketWebsite_Calls() []_s3Client_DeleteBucketWebsite_Call {
@@ -1814,6 +3431,26 @@ func (_recv *s3Client) _DeleteBucketWebsite_Calls() []_s3Client_DeleteBucketWebs
 	return _dat.DeleteBucketWebsiteCalls
 }
 
+func (s3Client) _DeleteBucketWebsite_AllCalls() []_s3Client_DeleteBucketWebsite_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteBucketWebsiteCalls
+}
+
+func (s3Client) _DeleteBucketWebsite_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteBucketWebsiteCalls = []_s3Client_DeleteBucketWebsite_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteBucketWebsiteCalls = []_s3Client_DeleteBucketWebsite_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteObject(ctx context.Context, params *s3.DeleteObjectInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteObject: nil pointer receiver")
@@ -1821,14 +3458,25 @@ func (_recv *s3Client) DeleteObject(ctx context.Context, params *s3.DeleteObject
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteObjectCalls = append(_dat.DeleteObjectCalls, _s3Client_DeleteObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteObjectCalls = append(_all.DeleteObjectCalls, _s3Client_DeleteObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)
 	if len(_dat.DeleteObjectMocks) > 0 {
 		_fn = _dat.DeleteObjectMocks[0]
 		if len(_dat.DeleteObjectMocks) > 1 {
 			_dat.DeleteObjectMocks = _dat.DeleteObjectMocks[1:]
 		}
+	} else if len(_all.DeleteObjectMocks) > 0 {
+		_fn = _all.DeleteObjectMocks[0]
+		if len(_all.DeleteObjectMocks) > 1 {
+			_all.DeleteObjectMocks = _all.DeleteObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1850,16 +3498,43 @@ func (_recv *s3Client) _DeleteObject_Do(fn func(context.Context, *s3.DeleteObjec
 	}
 }
 
-func (_recv *s3Client) _DeleteObject_Stub() {
-	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteObject_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectMocks = []func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error){}
+	} else if len(_dat.DeleteObjectMocks) < 2 {
+		_dat.DeleteObjectMocks = []func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectMocks = _dat.DeleteObjectMocks[:len(_dat.DeleteObjectMocks)-1]
+		_dat.DeleteObjectMocks = append(_dat.DeleteObjectMocks, fn)
+		_dat.DeleteObjectMocks = append(_dat.DeleteObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteObjectMocks = []func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteObject_Stub() {
+	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteObject_StubAll(t *testing.T) {
+	new(s3Client)._DeleteObject_DoAll(t, func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteObject_Return(r0 *s3.DeleteObjectOutput, r1 error) {
-	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteObject_Do(func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteObject_ReturnAll(t *testing.T, r0 *s3.DeleteObjectOutput, r1 error) {
+	new(s3Client)._DeleteObject_DoAll(t, func(context.Context, *s3.DeleteObjectInput, ...func(*s3.Options)) (*s3.DeleteObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteObject_Calls() []_s3Client_DeleteObject_Call {
@@ -1872,6 +3547,26 @@ func (_recv *s3Client) _DeleteObject_Calls() []_s3Client_DeleteObject_Call {
 	return _dat.DeleteObjectCalls
 }
 
+func (s3Client) _DeleteObject_AllCalls() []_s3Client_DeleteObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectCalls
+}
+
+func (s3Client) _DeleteObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteObjectCalls = []_s3Client_DeleteObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteObjectCalls = []_s3Client_DeleteObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteObjectTagging(ctx context.Context, params *s3.DeleteObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteObjectTagging: nil pointer receiver")
@@ -1879,14 +3574,25 @@ func (_recv *s3Client) DeleteObjectTagging(ctx context.Context, params *s3.Delet
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteObjectTaggingCalls = append(_dat.DeleteObjectTaggingCalls, _s3Client_DeleteObjectTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteObjectTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteObjectTaggingCalls = append(_all.DeleteObjectTaggingCalls, _s3Client_DeleteObjectTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)
 	if len(_dat.DeleteObjectTaggingMocks) > 0 {
 		_fn = _dat.DeleteObjectTaggingMocks[0]
 		if len(_dat.DeleteObjectTaggingMocks) > 1 {
 			_dat.DeleteObjectTaggingMocks = _dat.DeleteObjectTaggingMocks[1:]
 		}
+	} else if len(_all.DeleteObjectTaggingMocks) > 0 {
+		_fn = _all.DeleteObjectTaggingMocks[0]
+		if len(_all.DeleteObjectTaggingMocks) > 1 {
+			_all.DeleteObjectTaggingMocks = _all.DeleteObjectTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteObjectTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1908,16 +3614,43 @@ func (_recv *s3Client) _DeleteObjectTagging_Do(fn func(context.Context, *s3.Dele
 	}
 }
 
-func (_recv *s3Client) _DeleteObjectTagging_Stub() {
-	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteObjectTagging_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectTaggingMocks = []func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error){}
+	} else if len(_dat.DeleteObjectTaggingMocks) < 2 {
+		_dat.DeleteObjectTaggingMocks = []func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectTaggingMocks = _dat.DeleteObjectTaggingMocks[:len(_dat.DeleteObjectTaggingMocks)-1]
+		_dat.DeleteObjectTaggingMocks = append(_dat.DeleteObjectTaggingMocks, fn)
+		_dat.DeleteObjectTaggingMocks = append(_dat.DeleteObjectTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteObjectTaggingMocks = []func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteObjectTagging_Stub() {
+	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteObjectTagging_StubAll(t *testing.T) {
+	new(s3Client)._DeleteObjectTagging_DoAll(t, func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteObjectTagging_Return(r0 *s3.DeleteObjectTaggingOutput, r1 error) {
-	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteObjectTagging_Do(func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteObjectTagging_ReturnAll(t *testing.T, r0 *s3.DeleteObjectTaggingOutput, r1 error) {
+	new(s3Client)._DeleteObjectTagging_DoAll(t, func(context.Context, *s3.DeleteObjectTaggingInput, ...func(*s3.Options)) (*s3.DeleteObjectTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteObjectTagging_Calls() []_s3Client_DeleteObjectTagging_Call {
@@ -1930,6 +3663,26 @@ func (_recv *s3Client) _DeleteObjectTagging_Calls() []_s3Client_DeleteObjectTagg
 	return _dat.DeleteObjectTaggingCalls
 }
 
+func (s3Client) _DeleteObjectTagging_AllCalls() []_s3Client_DeleteObjectTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectTaggingCalls
+}
+
+func (s3Client) _DeleteObjectTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteObjectTaggingCalls = []_s3Client_DeleteObjectTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteObjectTaggingCalls = []_s3Client_DeleteObjectTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeleteObjects(ctx context.Context, params *s3.DeleteObjectsInput, optFns ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeleteObjects: nil pointer receiver")
@@ -1937,14 +3690,25 @@ func (_recv *s3Client) DeleteObjects(ctx context.Context, params *s3.DeleteObjec
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeleteObjectsCalls = append(_dat.DeleteObjectsCalls, _s3Client_DeleteObjects_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeleteObjects
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeleteObjectsCalls = append(_all.DeleteObjectsCalls, _s3Client_DeleteObjects_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)
 	if len(_dat.DeleteObjectsMocks) > 0 {
 		_fn = _dat.DeleteObjectsMocks[0]
 		if len(_dat.DeleteObjectsMocks) > 1 {
 			_dat.DeleteObjectsMocks = _dat.DeleteObjectsMocks[1:]
 		}
+	} else if len(_all.DeleteObjectsMocks) > 0 {
+		_fn = _all.DeleteObjectsMocks[0]
+		if len(_all.DeleteObjectsMocks) > 1 {
+			_all.DeleteObjectsMocks = _all.DeleteObjectsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeleteObjects
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -1966,16 +3730,43 @@ func (_recv *s3Client) _DeleteObjects_Do(fn func(context.Context, *s3.DeleteObje
 	}
 }
 
-func (_recv *s3Client) _DeleteObjects_Stub() {
-	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeleteObjects_DoAll(t *testing.T, fn func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeleteObjectsMocks = []func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error){}
+	} else if len(_dat.DeleteObjectsMocks) < 2 {
+		_dat.DeleteObjectsMocks = []func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error){fn, fn}
+	} else {
+		_dat.DeleteObjectsMocks = _dat.DeleteObjectsMocks[:len(_dat.DeleteObjectsMocks)-1]
+		_dat.DeleteObjectsMocks = append(_dat.DeleteObjectsMocks, fn)
+		_dat.DeleteObjectsMocks = append(_dat.DeleteObjectsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeleteObjectsMocks = []func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeleteObjects_Stub() {
+	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectsOutput, r1 error) { return })
+}
+
+func (s3Client) _DeleteObjects_StubAll(t *testing.T) {
+	new(s3Client)._DeleteObjects_DoAll(t, func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (r0 *s3.DeleteObjectsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeleteObjects_Return(r0 *s3.DeleteObjectsOutput, r1 error) {
-	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) {
-		return r0, r1
-	})
+	_recv._DeleteObjects_Do(func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeleteObjects_ReturnAll(t *testing.T, r0 *s3.DeleteObjectsOutput, r1 error) {
+	new(s3Client)._DeleteObjects_DoAll(t, func(context.Context, *s3.DeleteObjectsInput, ...func(*s3.Options)) (*s3.DeleteObjectsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeleteObjects_Calls() []_s3Client_DeleteObjects_Call {
@@ -1988,6 +3779,26 @@ func (_recv *s3Client) _DeleteObjects_Calls() []_s3Client_DeleteObjects_Call {
 	return _dat.DeleteObjectsCalls
 }
 
+func (s3Client) _DeleteObjects_AllCalls() []_s3Client_DeleteObjects_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeleteObjectsCalls
+}
+
+func (s3Client) _DeleteObjects_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeleteObjectsCalls = []_s3Client_DeleteObjects_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeleteObjectsCalls = []_s3Client_DeleteObjects_Call{}
+	})
+}
+
+
 func (_recv *s3Client) DeletePublicAccessBlock(ctx context.Context, params *s3.DeletePublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) {
 	if _recv == nil {
 		panic("s3Client.DeletePublicAccessBlock: nil pointer receiver")
@@ -1995,14 +3806,25 @@ func (_recv *s3Client) DeletePublicAccessBlock(ctx context.Context, params *s3.D
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.DeletePublicAccessBlockCalls = append(_dat.DeletePublicAccessBlockCalls, _s3Client_DeletePublicAccessBlock_Call{ctx, params, optFns})
-	_fn := _recv.Client.DeletePublicAccessBlock
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.DeletePublicAccessBlockCalls = append(_all.DeletePublicAccessBlockCalls, _s3Client_DeletePublicAccessBlock_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)
 	if len(_dat.DeletePublicAccessBlockMocks) > 0 {
 		_fn = _dat.DeletePublicAccessBlockMocks[0]
 		if len(_dat.DeletePublicAccessBlockMocks) > 1 {
 			_dat.DeletePublicAccessBlockMocks = _dat.DeletePublicAccessBlockMocks[1:]
 		}
+	} else if len(_all.DeletePublicAccessBlockMocks) > 0 {
+		_fn = _all.DeletePublicAccessBlockMocks[0]
+		if len(_all.DeletePublicAccessBlockMocks) > 1 {
+			_all.DeletePublicAccessBlockMocks = _all.DeletePublicAccessBlockMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.DeletePublicAccessBlock
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2024,16 +3846,43 @@ func (_recv *s3Client) _DeletePublicAccessBlock_Do(fn func(context.Context, *s3.
 	}
 }
 
-func (_recv *s3Client) _DeletePublicAccessBlock_Stub() {
-	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.DeletePublicAccessBlockOutput, r1 error) {
-		return r0, r1
+func (s3Client) _DeletePublicAccessBlock_DoAll(t *testing.T, fn func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.DeletePublicAccessBlockMocks = []func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error){}
+	} else if len(_dat.DeletePublicAccessBlockMocks) < 2 {
+		_dat.DeletePublicAccessBlockMocks = []func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.DeletePublicAccessBlockMocks = _dat.DeletePublicAccessBlockMocks[:len(_dat.DeletePublicAccessBlockMocks)-1]
+		_dat.DeletePublicAccessBlockMocks = append(_dat.DeletePublicAccessBlockMocks, fn)
+		_dat.DeletePublicAccessBlockMocks = append(_dat.DeletePublicAccessBlockMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.DeletePublicAccessBlockMocks = []func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _DeletePublicAccessBlock_Stub() {
+	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.DeletePublicAccessBlockOutput, r1 error) { return })
+}
+
+func (s3Client) _DeletePublicAccessBlock_StubAll(t *testing.T) {
+	new(s3Client)._DeletePublicAccessBlock_DoAll(t, func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.DeletePublicAccessBlockOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _DeletePublicAccessBlock_Return(r0 *s3.DeletePublicAccessBlockOutput, r1 error) {
-	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) {
-		return r0, r1
-	})
+	_recv._DeletePublicAccessBlock_Do(func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _DeletePublicAccessBlock_ReturnAll(t *testing.T, r0 *s3.DeletePublicAccessBlockOutput, r1 error) {
+	new(s3Client)._DeletePublicAccessBlock_DoAll(t, func(context.Context, *s3.DeletePublicAccessBlockInput, ...func(*s3.Options)) (*s3.DeletePublicAccessBlockOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _DeletePublicAccessBlock_Calls() []_s3Client_DeletePublicAccessBlock_Call {
@@ -2046,6 +3895,142 @@ func (_recv *s3Client) _DeletePublicAccessBlock_Calls() []_s3Client_DeletePublic
 	return _dat.DeletePublicAccessBlockCalls
 }
 
+func (s3Client) _DeletePublicAccessBlock_AllCalls() []_s3Client_DeletePublicAccessBlock_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.DeletePublicAccessBlockCalls
+}
+
+func (s3Client) _DeletePublicAccessBlock_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.DeletePublicAccessBlockCalls = []_s3Client_DeletePublicAccessBlock_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.DeletePublicAccessBlockCalls = []_s3Client_DeletePublicAccessBlock_Call{}
+	})
+}
+
+
+func (_recv *s3Client) GetBucketAbac(ctx context.Context, params *s3.GetBucketAbacInput, optFns ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketAbacCalls = append(_dat.GetBucketAbacCalls, _s3Client_GetBucketAbac_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketAbacCalls = append(_all.GetBucketAbacCalls, _s3Client_GetBucketAbac_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error)
+	if len(_dat.GetBucketAbacMocks) > 0 {
+		_fn = _dat.GetBucketAbacMocks[0]
+		if len(_dat.GetBucketAbacMocks) > 1 {
+			_dat.GetBucketAbacMocks = _dat.GetBucketAbacMocks[1:]
+		}
+	} else if len(_all.GetBucketAbacMocks) > 0 {
+		_fn = _all.GetBucketAbacMocks[0]
+		if len(_all.GetBucketAbacMocks) > 1 {
+			_all.GetBucketAbacMocks = _all.GetBucketAbacMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketAbac
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketAbac_Do(fn func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAbacMocks = []func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error){}
+	} else if len(_dat.GetBucketAbacMocks) < 2 {
+		_dat.GetBucketAbacMocks = []func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAbacMocks = _dat.GetBucketAbacMocks[:len(_dat.GetBucketAbacMocks)-1]
+		_dat.GetBucketAbacMocks = append(_dat.GetBucketAbacMocks, fn)
+		_dat.GetBucketAbacMocks = append(_dat.GetBucketAbacMocks, fn)
+	}
+}
+
+func (s3Client) _GetBucketAbac_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAbacMocks = []func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error){}
+	} else if len(_dat.GetBucketAbacMocks) < 2 {
+		_dat.GetBucketAbacMocks = []func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAbacMocks = _dat.GetBucketAbacMocks[:len(_dat.GetBucketAbacMocks)-1]
+		_dat.GetBucketAbacMocks = append(_dat.GetBucketAbacMocks, fn)
+		_dat.GetBucketAbacMocks = append(_dat.GetBucketAbacMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketAbacMocks = []func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _GetBucketAbac_Stub() {
+	_recv._GetBucketAbac_Do(func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (r0 *s3.GetBucketAbacOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketAbac_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketAbac_DoAll(t, func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (r0 *s3.GetBucketAbacOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _GetBucketAbac_Return(r0 *s3.GetBucketAbacOutput, r1 error) {
+	_recv._GetBucketAbac_Do(func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketAbac_ReturnAll(t *testing.T, r0 *s3.GetBucketAbacOutput, r1 error) {
+	new(s3Client)._GetBucketAbac_DoAll(t, func(context.Context, *s3.GetBucketAbacInput, ...func(*s3.Options)) (*s3.GetBucketAbacOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _GetBucketAbac_Calls() []_s3Client_GetBucketAbac_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAbacCalls
+}
+
+func (s3Client) _GetBucketAbac_AllCalls() []_s3Client_GetBucketAbac_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAbacCalls
+}
+
+func (s3Client) _GetBucketAbac_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketAbacCalls = []_s3Client_GetBucketAbac_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketAbacCalls = []_s3Client_GetBucketAbac_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketAccelerateConfiguration(ctx context.Context, params *s3.GetBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketAccelerateConfiguration: nil pointer receiver")
@@ -2053,14 +4038,25 @@ func (_recv *s3Client) GetBucketAccelerateConfiguration(ctx context.Context, par
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketAccelerateConfigurationCalls = append(_dat.GetBucketAccelerateConfigurationCalls, _s3Client_GetBucketAccelerateConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketAccelerateConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketAccelerateConfigurationCalls = append(_all.GetBucketAccelerateConfigurationCalls, _s3Client_GetBucketAccelerateConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)
 	if len(_dat.GetBucketAccelerateConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketAccelerateConfigurationMocks[0]
 		if len(_dat.GetBucketAccelerateConfigurationMocks) > 1 {
 			_dat.GetBucketAccelerateConfigurationMocks = _dat.GetBucketAccelerateConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketAccelerateConfigurationMocks) > 0 {
+		_fn = _all.GetBucketAccelerateConfigurationMocks[0]
+		if len(_all.GetBucketAccelerateConfigurationMocks) > 1 {
+			_all.GetBucketAccelerateConfigurationMocks = _all.GetBucketAccelerateConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketAccelerateConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2082,16 +4078,43 @@ func (_recv *s3Client) _GetBucketAccelerateConfiguration_Do(fn func(context.Cont
 	}
 }
 
-func (_recv *s3Client) _GetBucketAccelerateConfiguration_Stub() {
-	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketAccelerateConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAccelerateConfigurationMocks = []func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error){}
+	} else if len(_dat.GetBucketAccelerateConfigurationMocks) < 2 {
+		_dat.GetBucketAccelerateConfigurationMocks = []func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAccelerateConfigurationMocks = _dat.GetBucketAccelerateConfigurationMocks[:len(_dat.GetBucketAccelerateConfigurationMocks)-1]
+		_dat.GetBucketAccelerateConfigurationMocks = append(_dat.GetBucketAccelerateConfigurationMocks, fn)
+		_dat.GetBucketAccelerateConfigurationMocks = append(_dat.GetBucketAccelerateConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketAccelerateConfigurationMocks = []func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketAccelerateConfiguration_Stub() {
+	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketAccelerateConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketAccelerateConfiguration_DoAll(t, func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketAccelerateConfiguration_Return(r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) {
-	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketAccelerateConfiguration_Do(func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketAccelerateConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketAccelerateConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketAccelerateConfiguration_DoAll(t, func(context.Context, *s3.GetBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketAccelerateConfiguration_Calls() []_s3Client_GetBucketAccelerateConfiguration_Call {
@@ -2104,6 +4127,26 @@ func (_recv *s3Client) _GetBucketAccelerateConfiguration_Calls() []_s3Client_Get
 	return _dat.GetBucketAccelerateConfigurationCalls
 }
 
+func (s3Client) _GetBucketAccelerateConfiguration_AllCalls() []_s3Client_GetBucketAccelerateConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAccelerateConfigurationCalls
+}
+
+func (s3Client) _GetBucketAccelerateConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketAccelerateConfigurationCalls = []_s3Client_GetBucketAccelerateConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketAccelerateConfigurationCalls = []_s3Client_GetBucketAccelerateConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketAcl(ctx context.Context, params *s3.GetBucketAclInput, optFns ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketAcl: nil pointer receiver")
@@ -2111,14 +4154,25 @@ func (_recv *s3Client) GetBucketAcl(ctx context.Context, params *s3.GetBucketAcl
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketAclCalls = append(_dat.GetBucketAclCalls, _s3Client_GetBucketAcl_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketAcl
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketAclCalls = append(_all.GetBucketAclCalls, _s3Client_GetBucketAcl_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)
 	if len(_dat.GetBucketAclMocks) > 0 {
 		_fn = _dat.GetBucketAclMocks[0]
 		if len(_dat.GetBucketAclMocks) > 1 {
 			_dat.GetBucketAclMocks = _dat.GetBucketAclMocks[1:]
 		}
+	} else if len(_all.GetBucketAclMocks) > 0 {
+		_fn = _all.GetBucketAclMocks[0]
+		if len(_all.GetBucketAclMocks) > 1 {
+			_all.GetBucketAclMocks = _all.GetBucketAclMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketAcl
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2140,16 +4194,43 @@ func (_recv *s3Client) _GetBucketAcl_Do(fn func(context.Context, *s3.GetBucketAc
 	}
 }
 
-func (_recv *s3Client) _GetBucketAcl_Stub() {
-	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (r0 *s3.GetBucketAclOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketAcl_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAclMocks = []func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error){}
+	} else if len(_dat.GetBucketAclMocks) < 2 {
+		_dat.GetBucketAclMocks = []func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAclMocks = _dat.GetBucketAclMocks[:len(_dat.GetBucketAclMocks)-1]
+		_dat.GetBucketAclMocks = append(_dat.GetBucketAclMocks, fn)
+		_dat.GetBucketAclMocks = append(_dat.GetBucketAclMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketAclMocks = []func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketAcl_Stub() {
+	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (r0 *s3.GetBucketAclOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketAcl_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketAcl_DoAll(t, func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (r0 *s3.GetBucketAclOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketAcl_Return(r0 *s3.GetBucketAclOutput, r1 error) {
-	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketAcl_Do(func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketAcl_ReturnAll(t *testing.T, r0 *s3.GetBucketAclOutput, r1 error) {
+	new(s3Client)._GetBucketAcl_DoAll(t, func(context.Context, *s3.GetBucketAclInput, ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketAcl_Calls() []_s3Client_GetBucketAcl_Call {
@@ -2162,6 +4243,26 @@ func (_recv *s3Client) _GetBucketAcl_Calls() []_s3Client_GetBucketAcl_Call {
 	return _dat.GetBucketAclCalls
 }
 
+func (s3Client) _GetBucketAcl_AllCalls() []_s3Client_GetBucketAcl_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAclCalls
+}
+
+func (s3Client) _GetBucketAcl_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketAclCalls = []_s3Client_GetBucketAcl_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketAclCalls = []_s3Client_GetBucketAcl_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketAnalyticsConfiguration(ctx context.Context, params *s3.GetBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketAnalyticsConfiguration: nil pointer receiver")
@@ -2169,14 +4270,25 @@ func (_recv *s3Client) GetBucketAnalyticsConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketAnalyticsConfigurationCalls = append(_dat.GetBucketAnalyticsConfigurationCalls, _s3Client_GetBucketAnalyticsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketAnalyticsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketAnalyticsConfigurationCalls = append(_all.GetBucketAnalyticsConfigurationCalls, _s3Client_GetBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)
 	if len(_dat.GetBucketAnalyticsConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketAnalyticsConfigurationMocks[0]
 		if len(_dat.GetBucketAnalyticsConfigurationMocks) > 1 {
 			_dat.GetBucketAnalyticsConfigurationMocks = _dat.GetBucketAnalyticsConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _all.GetBucketAnalyticsConfigurationMocks[0]
+		if len(_all.GetBucketAnalyticsConfigurationMocks) > 1 {
+			_all.GetBucketAnalyticsConfigurationMocks = _all.GetBucketAnalyticsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketAnalyticsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2198,16 +4310,43 @@ func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Stub() {
-	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketAnalyticsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.GetBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.GetBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketAnalyticsConfigurationMocks = _dat.GetBucketAnalyticsConfigurationMocks[:len(_dat.GetBucketAnalyticsConfigurationMocks)-1]
+		_dat.GetBucketAnalyticsConfigurationMocks = append(_dat.GetBucketAnalyticsConfigurationMocks, fn)
+		_dat.GetBucketAnalyticsConfigurationMocks = append(_dat.GetBucketAnalyticsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Stub() {
+	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketAnalyticsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Return(r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) {
-	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketAnalyticsConfiguration_Do(func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketAnalyticsConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketAnalyticsConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.GetBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Calls() []_s3Client_GetBucketAnalyticsConfiguration_Call {
@@ -2220,6 +4359,26 @@ func (_recv *s3Client) _GetBucketAnalyticsConfiguration_Calls() []_s3Client_GetB
 	return _dat.GetBucketAnalyticsConfigurationCalls
 }
 
+func (s3Client) _GetBucketAnalyticsConfiguration_AllCalls() []_s3Client_GetBucketAnalyticsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketAnalyticsConfigurationCalls
+}
+
+func (s3Client) _GetBucketAnalyticsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketAnalyticsConfigurationCalls = []_s3Client_GetBucketAnalyticsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketAnalyticsConfigurationCalls = []_s3Client_GetBucketAnalyticsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketCors(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketCors: nil pointer receiver")
@@ -2227,14 +4386,25 @@ func (_recv *s3Client) GetBucketCors(ctx context.Context, params *s3.GetBucketCo
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketCorsCalls = append(_dat.GetBucketCorsCalls, _s3Client_GetBucketCors_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketCors
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketCorsCalls = append(_all.GetBucketCorsCalls, _s3Client_GetBucketCors_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)
 	if len(_dat.GetBucketCorsMocks) > 0 {
 		_fn = _dat.GetBucketCorsMocks[0]
 		if len(_dat.GetBucketCorsMocks) > 1 {
 			_dat.GetBucketCorsMocks = _dat.GetBucketCorsMocks[1:]
 		}
+	} else if len(_all.GetBucketCorsMocks) > 0 {
+		_fn = _all.GetBucketCorsMocks[0]
+		if len(_all.GetBucketCorsMocks) > 1 {
+			_all.GetBucketCorsMocks = _all.GetBucketCorsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketCors
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2256,16 +4426,43 @@ func (_recv *s3Client) _GetBucketCors_Do(fn func(context.Context, *s3.GetBucketC
 	}
 }
 
-func (_recv *s3Client) _GetBucketCors_Stub() {
-	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (r0 *s3.GetBucketCorsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketCors_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketCorsMocks = []func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error){}
+	} else if len(_dat.GetBucketCorsMocks) < 2 {
+		_dat.GetBucketCorsMocks = []func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketCorsMocks = _dat.GetBucketCorsMocks[:len(_dat.GetBucketCorsMocks)-1]
+		_dat.GetBucketCorsMocks = append(_dat.GetBucketCorsMocks, fn)
+		_dat.GetBucketCorsMocks = append(_dat.GetBucketCorsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketCorsMocks = []func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketCors_Stub() {
+	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (r0 *s3.GetBucketCorsOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketCors_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketCors_DoAll(t, func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (r0 *s3.GetBucketCorsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketCors_Return(r0 *s3.GetBucketCorsOutput, r1 error) {
-	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketCors_Do(func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketCors_ReturnAll(t *testing.T, r0 *s3.GetBucketCorsOutput, r1 error) {
+	new(s3Client)._GetBucketCors_DoAll(t, func(context.Context, *s3.GetBucketCorsInput, ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketCors_Calls() []_s3Client_GetBucketCors_Call {
@@ -2278,6 +4475,26 @@ func (_recv *s3Client) _GetBucketCors_Calls() []_s3Client_GetBucketCors_Call {
 	return _dat.GetBucketCorsCalls
 }
 
+func (s3Client) _GetBucketCors_AllCalls() []_s3Client_GetBucketCors_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketCorsCalls
+}
+
+func (s3Client) _GetBucketCors_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketCorsCalls = []_s3Client_GetBucketCors_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketCorsCalls = []_s3Client_GetBucketCors_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketEncryption(ctx context.Context, params *s3.GetBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketEncryption: nil pointer receiver")
@@ -2285,14 +4502,25 @@ func (_recv *s3Client) GetBucketEncryption(ctx context.Context, params *s3.GetBu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketEncryptionCalls = append(_dat.GetBucketEncryptionCalls, _s3Client_GetBucketEncryption_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketEncryption
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketEncryptionCalls = append(_all.GetBucketEncryptionCalls, _s3Client_GetBucketEncryption_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)
 	if len(_dat.GetBucketEncryptionMocks) > 0 {
 		_fn = _dat.GetBucketEncryptionMocks[0]
 		if len(_dat.GetBucketEncryptionMocks) > 1 {
 			_dat.GetBucketEncryptionMocks = _dat.GetBucketEncryptionMocks[1:]
 		}
+	} else if len(_all.GetBucketEncryptionMocks) > 0 {
+		_fn = _all.GetBucketEncryptionMocks[0]
+		if len(_all.GetBucketEncryptionMocks) > 1 {
+			_all.GetBucketEncryptionMocks = _all.GetBucketEncryptionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketEncryption
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2314,16 +4542,43 @@ func (_recv *s3Client) _GetBucketEncryption_Do(fn func(context.Context, *s3.GetB
 	}
 }
 
-func (_recv *s3Client) _GetBucketEncryption_Stub() {
-	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.GetBucketEncryptionOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketEncryption_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketEncryptionMocks = []func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error){}
+	} else if len(_dat.GetBucketEncryptionMocks) < 2 {
+		_dat.GetBucketEncryptionMocks = []func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketEncryptionMocks = _dat.GetBucketEncryptionMocks[:len(_dat.GetBucketEncryptionMocks)-1]
+		_dat.GetBucketEncryptionMocks = append(_dat.GetBucketEncryptionMocks, fn)
+		_dat.GetBucketEncryptionMocks = append(_dat.GetBucketEncryptionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketEncryptionMocks = []func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketEncryption_Stub() {
+	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.GetBucketEncryptionOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketEncryption_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketEncryption_DoAll(t, func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.GetBucketEncryptionOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketEncryption_Return(r0 *s3.GetBucketEncryptionOutput, r1 error) {
-	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketEncryption_Do(func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketEncryption_ReturnAll(t *testing.T, r0 *s3.GetBucketEncryptionOutput, r1 error) {
+	new(s3Client)._GetBucketEncryption_DoAll(t, func(context.Context, *s3.GetBucketEncryptionInput, ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketEncryption_Calls() []_s3Client_GetBucketEncryption_Call {
@@ -2336,6 +4591,26 @@ func (_recv *s3Client) _GetBucketEncryption_Calls() []_s3Client_GetBucketEncrypt
 	return _dat.GetBucketEncryptionCalls
 }
 
+func (s3Client) _GetBucketEncryption_AllCalls() []_s3Client_GetBucketEncryption_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketEncryptionCalls
+}
+
+func (s3Client) _GetBucketEncryption_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketEncryptionCalls = []_s3Client_GetBucketEncryption_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketEncryptionCalls = []_s3Client_GetBucketEncryption_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.GetBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketIntelligentTieringConfiguration: nil pointer receiver")
@@ -2343,14 +4618,25 @@ func (_recv *s3Client) GetBucketIntelligentTieringConfiguration(ctx context.Cont
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketIntelligentTieringConfigurationCalls = append(_dat.GetBucketIntelligentTieringConfigurationCalls, _s3Client_GetBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketIntelligentTieringConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketIntelligentTieringConfigurationCalls = append(_all.GetBucketIntelligentTieringConfigurationCalls, _s3Client_GetBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)
 	if len(_dat.GetBucketIntelligentTieringConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketIntelligentTieringConfigurationMocks[0]
 		if len(_dat.GetBucketIntelligentTieringConfigurationMocks) > 1 {
 			_dat.GetBucketIntelligentTieringConfigurationMocks = _dat.GetBucketIntelligentTieringConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _all.GetBucketIntelligentTieringConfigurationMocks[0]
+		if len(_all.GetBucketIntelligentTieringConfigurationMocks) > 1 {
+			_all.GetBucketIntelligentTieringConfigurationMocks = _all.GetBucketIntelligentTieringConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketIntelligentTieringConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2372,16 +4658,43 @@ func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Do(fn func(cont
 	}
 }
 
-func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Stub() {
-	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketIntelligentTieringConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.GetBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketIntelligentTieringConfigurationMocks = _dat.GetBucketIntelligentTieringConfigurationMocks[:len(_dat.GetBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.GetBucketIntelligentTieringConfigurationMocks = append(_dat.GetBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.GetBucketIntelligentTieringConfigurationMocks = append(_dat.GetBucketIntelligentTieringConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Stub() {
+	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketIntelligentTieringConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Return(r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) {
-	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketIntelligentTieringConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketIntelligentTieringConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.GetBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Calls() []_s3Client_GetBucketIntelligentTieringConfiguration_Call {
@@ -2394,6 +4707,26 @@ func (_recv *s3Client) _GetBucketIntelligentTieringConfiguration_Calls() []_s3Cl
 	return _dat.GetBucketIntelligentTieringConfigurationCalls
 }
 
+func (s3Client) _GetBucketIntelligentTieringConfiguration_AllCalls() []_s3Client_GetBucketIntelligentTieringConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketIntelligentTieringConfigurationCalls
+}
+
+func (s3Client) _GetBucketIntelligentTieringConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketIntelligentTieringConfigurationCalls = []_s3Client_GetBucketIntelligentTieringConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketIntelligentTieringConfigurationCalls = []_s3Client_GetBucketIntelligentTieringConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketInventoryConfiguration(ctx context.Context, params *s3.GetBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketInventoryConfiguration: nil pointer receiver")
@@ -2401,14 +4734,25 @@ func (_recv *s3Client) GetBucketInventoryConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketInventoryConfigurationCalls = append(_dat.GetBucketInventoryConfigurationCalls, _s3Client_GetBucketInventoryConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketInventoryConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketInventoryConfigurationCalls = append(_all.GetBucketInventoryConfigurationCalls, _s3Client_GetBucketInventoryConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)
 	if len(_dat.GetBucketInventoryConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketInventoryConfigurationMocks[0]
 		if len(_dat.GetBucketInventoryConfigurationMocks) > 1 {
 			_dat.GetBucketInventoryConfigurationMocks = _dat.GetBucketInventoryConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketInventoryConfigurationMocks) > 0 {
+		_fn = _all.GetBucketInventoryConfigurationMocks[0]
+		if len(_all.GetBucketInventoryConfigurationMocks) > 1 {
+			_all.GetBucketInventoryConfigurationMocks = _all.GetBucketInventoryConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketInventoryConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2430,16 +4774,43 @@ func (_recv *s3Client) _GetBucketInventoryConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _GetBucketInventoryConfiguration_Stub() {
-	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketInventoryConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketInventoryConfigurationMocks = []func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.GetBucketInventoryConfigurationMocks) < 2 {
+		_dat.GetBucketInventoryConfigurationMocks = []func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketInventoryConfigurationMocks = _dat.GetBucketInventoryConfigurationMocks[:len(_dat.GetBucketInventoryConfigurationMocks)-1]
+		_dat.GetBucketInventoryConfigurationMocks = append(_dat.GetBucketInventoryConfigurationMocks, fn)
+		_dat.GetBucketInventoryConfigurationMocks = append(_dat.GetBucketInventoryConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketInventoryConfigurationMocks = []func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketInventoryConfiguration_Stub() {
+	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketInventoryConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketInventoryConfiguration_Return(r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) {
-	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketInventoryConfiguration_Do(func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketInventoryConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketInventoryConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.GetBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketInventoryConfiguration_Calls() []_s3Client_GetBucketInventoryConfiguration_Call {
@@ -2452,6 +4823,26 @@ func (_recv *s3Client) _GetBucketInventoryConfiguration_Calls() []_s3Client_GetB
 	return _dat.GetBucketInventoryConfigurationCalls
 }
 
+func (s3Client) _GetBucketInventoryConfiguration_AllCalls() []_s3Client_GetBucketInventoryConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketInventoryConfigurationCalls
+}
+
+func (s3Client) _GetBucketInventoryConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketInventoryConfigurationCalls = []_s3Client_GetBucketInventoryConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketInventoryConfigurationCalls = []_s3Client_GetBucketInventoryConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketLifecycleConfiguration(ctx context.Context, params *s3.GetBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketLifecycleConfiguration: nil pointer receiver")
@@ -2459,14 +4850,25 @@ func (_recv *s3Client) GetBucketLifecycleConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketLifecycleConfigurationCalls = append(_dat.GetBucketLifecycleConfigurationCalls, _s3Client_GetBucketLifecycleConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketLifecycleConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketLifecycleConfigurationCalls = append(_all.GetBucketLifecycleConfigurationCalls, _s3Client_GetBucketLifecycleConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)
 	if len(_dat.GetBucketLifecycleConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketLifecycleConfigurationMocks[0]
 		if len(_dat.GetBucketLifecycleConfigurationMocks) > 1 {
 			_dat.GetBucketLifecycleConfigurationMocks = _dat.GetBucketLifecycleConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketLifecycleConfigurationMocks) > 0 {
+		_fn = _all.GetBucketLifecycleConfigurationMocks[0]
+		if len(_all.GetBucketLifecycleConfigurationMocks) > 1 {
+			_all.GetBucketLifecycleConfigurationMocks = _all.GetBucketLifecycleConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketLifecycleConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2488,16 +4890,43 @@ func (_recv *s3Client) _GetBucketLifecycleConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _GetBucketLifecycleConfiguration_Stub() {
-	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketLifecycleConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLifecycleConfigurationMocks = []func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error){}
+	} else if len(_dat.GetBucketLifecycleConfigurationMocks) < 2 {
+		_dat.GetBucketLifecycleConfigurationMocks = []func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLifecycleConfigurationMocks = _dat.GetBucketLifecycleConfigurationMocks[:len(_dat.GetBucketLifecycleConfigurationMocks)-1]
+		_dat.GetBucketLifecycleConfigurationMocks = append(_dat.GetBucketLifecycleConfigurationMocks, fn)
+		_dat.GetBucketLifecycleConfigurationMocks = append(_dat.GetBucketLifecycleConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketLifecycleConfigurationMocks = []func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketLifecycleConfiguration_Stub() {
+	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketLifecycleConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketLifecycleConfiguration_DoAll(t, func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketLifecycleConfiguration_Return(r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) {
-	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketLifecycleConfiguration_Do(func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketLifecycleConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketLifecycleConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketLifecycleConfiguration_DoAll(t, func(context.Context, *s3.GetBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketLifecycleConfiguration_Calls() []_s3Client_GetBucketLifecycleConfiguration_Call {
@@ -2510,6 +4939,26 @@ func (_recv *s3Client) _GetBucketLifecycleConfiguration_Calls() []_s3Client_GetB
 	return _dat.GetBucketLifecycleConfigurationCalls
 }
 
+func (s3Client) _GetBucketLifecycleConfiguration_AllCalls() []_s3Client_GetBucketLifecycleConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLifecycleConfigurationCalls
+}
+
+func (s3Client) _GetBucketLifecycleConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketLifecycleConfigurationCalls = []_s3Client_GetBucketLifecycleConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketLifecycleConfigurationCalls = []_s3Client_GetBucketLifecycleConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketLocation(ctx context.Context, params *s3.GetBucketLocationInput, optFns ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketLocation: nil pointer receiver")
@@ -2517,14 +4966,25 @@ func (_recv *s3Client) GetBucketLocation(ctx context.Context, params *s3.GetBuck
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketLocationCalls = append(_dat.GetBucketLocationCalls, _s3Client_GetBucketLocation_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketLocation
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketLocationCalls = append(_all.GetBucketLocationCalls, _s3Client_GetBucketLocation_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)
 	if len(_dat.GetBucketLocationMocks) > 0 {
 		_fn = _dat.GetBucketLocationMocks[0]
 		if len(_dat.GetBucketLocationMocks) > 1 {
 			_dat.GetBucketLocationMocks = _dat.GetBucketLocationMocks[1:]
 		}
+	} else if len(_all.GetBucketLocationMocks) > 0 {
+		_fn = _all.GetBucketLocationMocks[0]
+		if len(_all.GetBucketLocationMocks) > 1 {
+			_all.GetBucketLocationMocks = _all.GetBucketLocationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketLocation
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2546,16 +5006,43 @@ func (_recv *s3Client) _GetBucketLocation_Do(fn func(context.Context, *s3.GetBuc
 	}
 }
 
-func (_recv *s3Client) _GetBucketLocation_Stub() {
-	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLocationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketLocation_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLocationMocks = []func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error){}
+	} else if len(_dat.GetBucketLocationMocks) < 2 {
+		_dat.GetBucketLocationMocks = []func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLocationMocks = _dat.GetBucketLocationMocks[:len(_dat.GetBucketLocationMocks)-1]
+		_dat.GetBucketLocationMocks = append(_dat.GetBucketLocationMocks, fn)
+		_dat.GetBucketLocationMocks = append(_dat.GetBucketLocationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketLocationMocks = []func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketLocation_Stub() {
+	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLocationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketLocation_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketLocation_DoAll(t, func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (r0 *s3.GetBucketLocationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketLocation_Return(r0 *s3.GetBucketLocationOutput, r1 error) {
-	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketLocation_Do(func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketLocation_ReturnAll(t *testing.T, r0 *s3.GetBucketLocationOutput, r1 error) {
+	new(s3Client)._GetBucketLocation_DoAll(t, func(context.Context, *s3.GetBucketLocationInput, ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketLocation_Calls() []_s3Client_GetBucketLocation_Call {
@@ -2568,6 +5055,26 @@ func (_recv *s3Client) _GetBucketLocation_Calls() []_s3Client_GetBucketLocation_
 	return _dat.GetBucketLocationCalls
 }
 
+func (s3Client) _GetBucketLocation_AllCalls() []_s3Client_GetBucketLocation_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLocationCalls
+}
+
+func (s3Client) _GetBucketLocation_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketLocationCalls = []_s3Client_GetBucketLocation_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketLocationCalls = []_s3Client_GetBucketLocation_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketLogging(ctx context.Context, params *s3.GetBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketLogging: nil pointer receiver")
@@ -2575,14 +5082,25 @@ func (_recv *s3Client) GetBucketLogging(ctx context.Context, params *s3.GetBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketLoggingCalls = append(_dat.GetBucketLoggingCalls, _s3Client_GetBucketLogging_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketLogging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketLoggingCalls = append(_all.GetBucketLoggingCalls, _s3Client_GetBucketLogging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)
 	if len(_dat.GetBucketLoggingMocks) > 0 {
 		_fn = _dat.GetBucketLoggingMocks[0]
 		if len(_dat.GetBucketLoggingMocks) > 1 {
 			_dat.GetBucketLoggingMocks = _dat.GetBucketLoggingMocks[1:]
 		}
+	} else if len(_all.GetBucketLoggingMocks) > 0 {
+		_fn = _all.GetBucketLoggingMocks[0]
+		if len(_all.GetBucketLoggingMocks) > 1 {
+			_all.GetBucketLoggingMocks = _all.GetBucketLoggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketLogging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2604,16 +5122,43 @@ func (_recv *s3Client) _GetBucketLogging_Do(fn func(context.Context, *s3.GetBuck
 	}
 }
 
-func (_recv *s3Client) _GetBucketLogging_Stub() {
-	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketLoggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketLogging_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketLoggingMocks = []func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error){}
+	} else if len(_dat.GetBucketLoggingMocks) < 2 {
+		_dat.GetBucketLoggingMocks = []func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketLoggingMocks = _dat.GetBucketLoggingMocks[:len(_dat.GetBucketLoggingMocks)-1]
+		_dat.GetBucketLoggingMocks = append(_dat.GetBucketLoggingMocks, fn)
+		_dat.GetBucketLoggingMocks = append(_dat.GetBucketLoggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketLoggingMocks = []func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketLogging_Stub() {
+	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketLoggingOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketLogging_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketLogging_DoAll(t, func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketLoggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketLogging_Return(r0 *s3.GetBucketLoggingOutput, r1 error) {
-	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketLogging_Do(func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketLogging_ReturnAll(t *testing.T, r0 *s3.GetBucketLoggingOutput, r1 error) {
+	new(s3Client)._GetBucketLogging_DoAll(t, func(context.Context, *s3.GetBucketLoggingInput, ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketLogging_Calls() []_s3Client_GetBucketLogging_Call {
@@ -2626,6 +5171,258 @@ func (_recv *s3Client) _GetBucketLogging_Calls() []_s3Client_GetBucketLogging_Ca
 	return _dat.GetBucketLoggingCalls
 }
 
+func (s3Client) _GetBucketLogging_AllCalls() []_s3Client_GetBucketLogging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketLoggingCalls
+}
+
+func (s3Client) _GetBucketLogging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketLoggingCalls = []_s3Client_GetBucketLogging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketLoggingCalls = []_s3Client_GetBucketLogging_Call{}
+	})
+}
+
+
+func (_recv *s3Client) GetBucketMetadataConfiguration(ctx context.Context, params *s3.GetBucketMetadataConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketMetadataConfigurationCalls = append(_dat.GetBucketMetadataConfigurationCalls, _s3Client_GetBucketMetadataConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketMetadataConfigurationCalls = append(_all.GetBucketMetadataConfigurationCalls, _s3Client_GetBucketMetadataConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error)
+	if len(_dat.GetBucketMetadataConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketMetadataConfigurationMocks[0]
+		if len(_dat.GetBucketMetadataConfigurationMocks) > 1 {
+			_dat.GetBucketMetadataConfigurationMocks = _dat.GetBucketMetadataConfigurationMocks[1:]
+		}
+	} else if len(_all.GetBucketMetadataConfigurationMocks) > 0 {
+		_fn = _all.GetBucketMetadataConfigurationMocks[0]
+		if len(_all.GetBucketMetadataConfigurationMocks) > 1 {
+			_all.GetBucketMetadataConfigurationMocks = _all.GetBucketMetadataConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketMetadataConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketMetadataConfiguration_Do(fn func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetadataConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetadataConfigurationMocks) < 2 {
+		_dat.GetBucketMetadataConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetadataConfigurationMocks = _dat.GetBucketMetadataConfigurationMocks[:len(_dat.GetBucketMetadataConfigurationMocks)-1]
+		_dat.GetBucketMetadataConfigurationMocks = append(_dat.GetBucketMetadataConfigurationMocks, fn)
+		_dat.GetBucketMetadataConfigurationMocks = append(_dat.GetBucketMetadataConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _GetBucketMetadataConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetadataConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetadataConfigurationMocks) < 2 {
+		_dat.GetBucketMetadataConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetadataConfigurationMocks = _dat.GetBucketMetadataConfigurationMocks[:len(_dat.GetBucketMetadataConfigurationMocks)-1]
+		_dat.GetBucketMetadataConfigurationMocks = append(_dat.GetBucketMetadataConfigurationMocks, fn)
+		_dat.GetBucketMetadataConfigurationMocks = append(_dat.GetBucketMetadataConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketMetadataConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _GetBucketMetadataConfiguration_Stub() {
+	_recv._GetBucketMetadataConfiguration_Do(func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketMetadataConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetadataConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _GetBucketMetadataConfiguration_Return(r0 *s3.GetBucketMetadataConfigurationOutput, r1 error) {
+	_recv._GetBucketMetadataConfiguration_Do(func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketMetadataConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketMetadataConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketMetadataConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetadataConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _GetBucketMetadataConfiguration_Calls() []_s3Client_GetBucketMetadataConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _GetBucketMetadataConfiguration_AllCalls() []_s3Client_GetBucketMetadataConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetadataConfigurationCalls
+}
+
+func (s3Client) _GetBucketMetadataConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketMetadataConfigurationCalls = []_s3Client_GetBucketMetadataConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketMetadataConfigurationCalls = []_s3Client_GetBucketMetadataConfiguration_Call{}
+	})
+}
+
+
+func (_recv *s3Client) GetBucketMetadataTableConfiguration(ctx context.Context, params *s3.GetBucketMetadataTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.GetBucketMetadataTableConfigurationCalls = append(_dat.GetBucketMetadataTableConfigurationCalls, _s3Client_GetBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketMetadataTableConfigurationCalls = append(_all.GetBucketMetadataTableConfigurationCalls, _s3Client_GetBucketMetadataTableConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error)
+	if len(_dat.GetBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _dat.GetBucketMetadataTableConfigurationMocks[0]
+		if len(_dat.GetBucketMetadataTableConfigurationMocks) > 1 {
+			_dat.GetBucketMetadataTableConfigurationMocks = _dat.GetBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else if len(_all.GetBucketMetadataTableConfigurationMocks) > 0 {
+		_fn = _all.GetBucketMetadataTableConfigurationMocks[0]
+		if len(_all.GetBucketMetadataTableConfigurationMocks) > 1 {
+			_all.GetBucketMetadataTableConfigurationMocks = _all.GetBucketMetadataTableConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketMetadataTableConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _GetBucketMetadataTableConfiguration_Do(fn func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.GetBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetadataTableConfigurationMocks = _dat.GetBucketMetadataTableConfigurationMocks[:len(_dat.GetBucketMetadataTableConfigurationMocks)-1]
+		_dat.GetBucketMetadataTableConfigurationMocks = append(_dat.GetBucketMetadataTableConfigurationMocks, fn)
+		_dat.GetBucketMetadataTableConfigurationMocks = append(_dat.GetBucketMetadataTableConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _GetBucketMetadataTableConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetadataTableConfigurationMocks) < 2 {
+		_dat.GetBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetadataTableConfigurationMocks = _dat.GetBucketMetadataTableConfigurationMocks[:len(_dat.GetBucketMetadataTableConfigurationMocks)-1]
+		_dat.GetBucketMetadataTableConfigurationMocks = append(_dat.GetBucketMetadataTableConfigurationMocks, fn)
+		_dat.GetBucketMetadataTableConfigurationMocks = append(_dat.GetBucketMetadataTableConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketMetadataTableConfigurationMocks = []func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _GetBucketMetadataTableConfiguration_Stub() {
+	_recv._GetBucketMetadataTableConfiguration_Do(func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketMetadataTableConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetadataTableConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _GetBucketMetadataTableConfiguration_Return(r0 *s3.GetBucketMetadataTableConfigurationOutput, r1 error) {
+	_recv._GetBucketMetadataTableConfiguration_Do(func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketMetadataTableConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketMetadataTableConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketMetadataTableConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetadataTableConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetadataTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _GetBucketMetadataTableConfiguration_Calls() []_s3Client_GetBucketMetadataTableConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.GetBucketMetadataTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _GetBucketMetadataTableConfiguration_AllCalls() []_s3Client_GetBucketMetadataTableConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetadataTableConfigurationCalls
+}
+
+func (s3Client) _GetBucketMetadataTableConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketMetadataTableConfigurationCalls = []_s3Client_GetBucketMetadataTableConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketMetadataTableConfigurationCalls = []_s3Client_GetBucketMetadataTableConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketMetricsConfiguration(ctx context.Context, params *s3.GetBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketMetricsConfiguration: nil pointer receiver")
@@ -2633,14 +5430,25 @@ func (_recv *s3Client) GetBucketMetricsConfiguration(ctx context.Context, params
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketMetricsConfigurationCalls = append(_dat.GetBucketMetricsConfigurationCalls, _s3Client_GetBucketMetricsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketMetricsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketMetricsConfigurationCalls = append(_all.GetBucketMetricsConfigurationCalls, _s3Client_GetBucketMetricsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)
 	if len(_dat.GetBucketMetricsConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketMetricsConfigurationMocks[0]
 		if len(_dat.GetBucketMetricsConfigurationMocks) > 1 {
 			_dat.GetBucketMetricsConfigurationMocks = _dat.GetBucketMetricsConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketMetricsConfigurationMocks) > 0 {
+		_fn = _all.GetBucketMetricsConfigurationMocks[0]
+		if len(_all.GetBucketMetricsConfigurationMocks) > 1 {
+			_all.GetBucketMetricsConfigurationMocks = _all.GetBucketMetricsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketMetricsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2662,16 +5470,43 @@ func (_recv *s3Client) _GetBucketMetricsConfiguration_Do(fn func(context.Context
 	}
 }
 
-func (_recv *s3Client) _GetBucketMetricsConfiguration_Stub() {
-	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketMetricsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketMetricsConfigurationMocks = []func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.GetBucketMetricsConfigurationMocks) < 2 {
+		_dat.GetBucketMetricsConfigurationMocks = []func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketMetricsConfigurationMocks = _dat.GetBucketMetricsConfigurationMocks[:len(_dat.GetBucketMetricsConfigurationMocks)-1]
+		_dat.GetBucketMetricsConfigurationMocks = append(_dat.GetBucketMetricsConfigurationMocks, fn)
+		_dat.GetBucketMetricsConfigurationMocks = append(_dat.GetBucketMetricsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketMetricsConfigurationMocks = []func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketMetricsConfiguration_Stub() {
+	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketMetricsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketMetricsConfiguration_Return(r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) {
-	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketMetricsConfiguration_Do(func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketMetricsConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketMetricsConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.GetBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketMetricsConfiguration_Calls() []_s3Client_GetBucketMetricsConfiguration_Call {
@@ -2684,6 +5519,26 @@ func (_recv *s3Client) _GetBucketMetricsConfiguration_Calls() []_s3Client_GetBuc
 	return _dat.GetBucketMetricsConfigurationCalls
 }
 
+func (s3Client) _GetBucketMetricsConfiguration_AllCalls() []_s3Client_GetBucketMetricsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketMetricsConfigurationCalls
+}
+
+func (s3Client) _GetBucketMetricsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketMetricsConfigurationCalls = []_s3Client_GetBucketMetricsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketMetricsConfigurationCalls = []_s3Client_GetBucketMetricsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketNotificationConfiguration(ctx context.Context, params *s3.GetBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketNotificationConfiguration: nil pointer receiver")
@@ -2691,14 +5546,25 @@ func (_recv *s3Client) GetBucketNotificationConfiguration(ctx context.Context, p
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketNotificationConfigurationCalls = append(_dat.GetBucketNotificationConfigurationCalls, _s3Client_GetBucketNotificationConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketNotificationConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketNotificationConfigurationCalls = append(_all.GetBucketNotificationConfigurationCalls, _s3Client_GetBucketNotificationConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)
 	if len(_dat.GetBucketNotificationConfigurationMocks) > 0 {
 		_fn = _dat.GetBucketNotificationConfigurationMocks[0]
 		if len(_dat.GetBucketNotificationConfigurationMocks) > 1 {
 			_dat.GetBucketNotificationConfigurationMocks = _dat.GetBucketNotificationConfigurationMocks[1:]
 		}
+	} else if len(_all.GetBucketNotificationConfigurationMocks) > 0 {
+		_fn = _all.GetBucketNotificationConfigurationMocks[0]
+		if len(_all.GetBucketNotificationConfigurationMocks) > 1 {
+			_all.GetBucketNotificationConfigurationMocks = _all.GetBucketNotificationConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketNotificationConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2720,16 +5586,43 @@ func (_recv *s3Client) _GetBucketNotificationConfiguration_Do(fn func(context.Co
 	}
 }
 
-func (_recv *s3Client) _GetBucketNotificationConfiguration_Stub() {
-	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketNotificationConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketNotificationConfigurationMocks = []func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error){}
+	} else if len(_dat.GetBucketNotificationConfigurationMocks) < 2 {
+		_dat.GetBucketNotificationConfigurationMocks = []func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketNotificationConfigurationMocks = _dat.GetBucketNotificationConfigurationMocks[:len(_dat.GetBucketNotificationConfigurationMocks)-1]
+		_dat.GetBucketNotificationConfigurationMocks = append(_dat.GetBucketNotificationConfigurationMocks, fn)
+		_dat.GetBucketNotificationConfigurationMocks = append(_dat.GetBucketNotificationConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketNotificationConfigurationMocks = []func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketNotificationConfiguration_Stub() {
+	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketNotificationConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketNotificationConfiguration_DoAll(t, func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketNotificationConfiguration_Return(r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) {
-	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketNotificationConfiguration_Do(func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketNotificationConfiguration_ReturnAll(t *testing.T, r0 *s3.GetBucketNotificationConfigurationOutput, r1 error) {
+	new(s3Client)._GetBucketNotificationConfiguration_DoAll(t, func(context.Context, *s3.GetBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketNotificationConfiguration_Calls() []_s3Client_GetBucketNotificationConfiguration_Call {
@@ -2742,6 +5635,26 @@ func (_recv *s3Client) _GetBucketNotificationConfiguration_Calls() []_s3Client_G
 	return _dat.GetBucketNotificationConfigurationCalls
 }
 
+func (s3Client) _GetBucketNotificationConfiguration_AllCalls() []_s3Client_GetBucketNotificationConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketNotificationConfigurationCalls
+}
+
+func (s3Client) _GetBucketNotificationConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketNotificationConfigurationCalls = []_s3Client_GetBucketNotificationConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketNotificationConfigurationCalls = []_s3Client_GetBucketNotificationConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketOwnershipControls(ctx context.Context, params *s3.GetBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketOwnershipControls: nil pointer receiver")
@@ -2749,14 +5662,25 @@ func (_recv *s3Client) GetBucketOwnershipControls(ctx context.Context, params *s
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketOwnershipControlsCalls = append(_dat.GetBucketOwnershipControlsCalls, _s3Client_GetBucketOwnershipControls_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketOwnershipControls
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketOwnershipControlsCalls = append(_all.GetBucketOwnershipControlsCalls, _s3Client_GetBucketOwnershipControls_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)
 	if len(_dat.GetBucketOwnershipControlsMocks) > 0 {
 		_fn = _dat.GetBucketOwnershipControlsMocks[0]
 		if len(_dat.GetBucketOwnershipControlsMocks) > 1 {
 			_dat.GetBucketOwnershipControlsMocks = _dat.GetBucketOwnershipControlsMocks[1:]
 		}
+	} else if len(_all.GetBucketOwnershipControlsMocks) > 0 {
+		_fn = _all.GetBucketOwnershipControlsMocks[0]
+		if len(_all.GetBucketOwnershipControlsMocks) > 1 {
+			_all.GetBucketOwnershipControlsMocks = _all.GetBucketOwnershipControlsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketOwnershipControls
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2778,16 +5702,43 @@ func (_recv *s3Client) _GetBucketOwnershipControls_Do(fn func(context.Context, *
 	}
 }
 
-func (_recv *s3Client) _GetBucketOwnershipControls_Stub() {
-	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.GetBucketOwnershipControlsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketOwnershipControls_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketOwnershipControlsMocks = []func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.GetBucketOwnershipControlsMocks) < 2 {
+		_dat.GetBucketOwnershipControlsMocks = []func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketOwnershipControlsMocks = _dat.GetBucketOwnershipControlsMocks[:len(_dat.GetBucketOwnershipControlsMocks)-1]
+		_dat.GetBucketOwnershipControlsMocks = append(_dat.GetBucketOwnershipControlsMocks, fn)
+		_dat.GetBucketOwnershipControlsMocks = append(_dat.GetBucketOwnershipControlsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketOwnershipControlsMocks = []func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketOwnershipControls_Stub() {
+	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.GetBucketOwnershipControlsOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketOwnershipControls_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketOwnershipControls_DoAll(t, func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.GetBucketOwnershipControlsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketOwnershipControls_Return(r0 *s3.GetBucketOwnershipControlsOutput, r1 error) {
-	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketOwnershipControls_Do(func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketOwnershipControls_ReturnAll(t *testing.T, r0 *s3.GetBucketOwnershipControlsOutput, r1 error) {
+	new(s3Client)._GetBucketOwnershipControls_DoAll(t, func(context.Context, *s3.GetBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketOwnershipControls_Calls() []_s3Client_GetBucketOwnershipControls_Call {
@@ -2800,6 +5751,26 @@ func (_recv *s3Client) _GetBucketOwnershipControls_Calls() []_s3Client_GetBucket
 	return _dat.GetBucketOwnershipControlsCalls
 }
 
+func (s3Client) _GetBucketOwnershipControls_AllCalls() []_s3Client_GetBucketOwnershipControls_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketOwnershipControlsCalls
+}
+
+func (s3Client) _GetBucketOwnershipControls_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketOwnershipControlsCalls = []_s3Client_GetBucketOwnershipControls_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketOwnershipControlsCalls = []_s3Client_GetBucketOwnershipControls_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketPolicy(ctx context.Context, params *s3.GetBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketPolicy: nil pointer receiver")
@@ -2807,14 +5778,25 @@ func (_recv *s3Client) GetBucketPolicy(ctx context.Context, params *s3.GetBucket
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketPolicyCalls = append(_dat.GetBucketPolicyCalls, _s3Client_GetBucketPolicy_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketPolicy
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketPolicyCalls = append(_all.GetBucketPolicyCalls, _s3Client_GetBucketPolicy_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)
 	if len(_dat.GetBucketPolicyMocks) > 0 {
 		_fn = _dat.GetBucketPolicyMocks[0]
 		if len(_dat.GetBucketPolicyMocks) > 1 {
 			_dat.GetBucketPolicyMocks = _dat.GetBucketPolicyMocks[1:]
 		}
+	} else if len(_all.GetBucketPolicyMocks) > 0 {
+		_fn = _all.GetBucketPolicyMocks[0]
+		if len(_all.GetBucketPolicyMocks) > 1 {
+			_all.GetBucketPolicyMocks = _all.GetBucketPolicyMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketPolicy
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2836,16 +5818,43 @@ func (_recv *s3Client) _GetBucketPolicy_Do(fn func(context.Context, *s3.GetBucke
 	}
 }
 
-func (_recv *s3Client) _GetBucketPolicy_Stub() {
-	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketPolicy_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketPolicyMocks = []func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error){}
+	} else if len(_dat.GetBucketPolicyMocks) < 2 {
+		_dat.GetBucketPolicyMocks = []func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketPolicyMocks = _dat.GetBucketPolicyMocks[:len(_dat.GetBucketPolicyMocks)-1]
+		_dat.GetBucketPolicyMocks = append(_dat.GetBucketPolicyMocks, fn)
+		_dat.GetBucketPolicyMocks = append(_dat.GetBucketPolicyMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketPolicyMocks = []func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketPolicy_Stub() {
+	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketPolicy_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketPolicy_DoAll(t, func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketPolicy_Return(r0 *s3.GetBucketPolicyOutput, r1 error) {
-	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketPolicy_Do(func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketPolicy_ReturnAll(t *testing.T, r0 *s3.GetBucketPolicyOutput, r1 error) {
+	new(s3Client)._GetBucketPolicy_DoAll(t, func(context.Context, *s3.GetBucketPolicyInput, ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketPolicy_Calls() []_s3Client_GetBucketPolicy_Call {
@@ -2858,6 +5867,26 @@ func (_recv *s3Client) _GetBucketPolicy_Calls() []_s3Client_GetBucketPolicy_Call
 	return _dat.GetBucketPolicyCalls
 }
 
+func (s3Client) _GetBucketPolicy_AllCalls() []_s3Client_GetBucketPolicy_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketPolicyCalls
+}
+
+func (s3Client) _GetBucketPolicy_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketPolicyCalls = []_s3Client_GetBucketPolicy_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketPolicyCalls = []_s3Client_GetBucketPolicy_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketPolicyStatus(ctx context.Context, params *s3.GetBucketPolicyStatusInput, optFns ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketPolicyStatus: nil pointer receiver")
@@ -2865,14 +5894,25 @@ func (_recv *s3Client) GetBucketPolicyStatus(ctx context.Context, params *s3.Get
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketPolicyStatusCalls = append(_dat.GetBucketPolicyStatusCalls, _s3Client_GetBucketPolicyStatus_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketPolicyStatus
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketPolicyStatusCalls = append(_all.GetBucketPolicyStatusCalls, _s3Client_GetBucketPolicyStatus_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)
 	if len(_dat.GetBucketPolicyStatusMocks) > 0 {
 		_fn = _dat.GetBucketPolicyStatusMocks[0]
 		if len(_dat.GetBucketPolicyStatusMocks) > 1 {
 			_dat.GetBucketPolicyStatusMocks = _dat.GetBucketPolicyStatusMocks[1:]
 		}
+	} else if len(_all.GetBucketPolicyStatusMocks) > 0 {
+		_fn = _all.GetBucketPolicyStatusMocks[0]
+		if len(_all.GetBucketPolicyStatusMocks) > 1 {
+			_all.GetBucketPolicyStatusMocks = _all.GetBucketPolicyStatusMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketPolicyStatus
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2894,16 +5934,43 @@ func (_recv *s3Client) _GetBucketPolicyStatus_Do(fn func(context.Context, *s3.Ge
 	}
 }
 
-func (_recv *s3Client) _GetBucketPolicyStatus_Stub() {
-	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyStatusOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketPolicyStatus_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketPolicyStatusMocks = []func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error){}
+	} else if len(_dat.GetBucketPolicyStatusMocks) < 2 {
+		_dat.GetBucketPolicyStatusMocks = []func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketPolicyStatusMocks = _dat.GetBucketPolicyStatusMocks[:len(_dat.GetBucketPolicyStatusMocks)-1]
+		_dat.GetBucketPolicyStatusMocks = append(_dat.GetBucketPolicyStatusMocks, fn)
+		_dat.GetBucketPolicyStatusMocks = append(_dat.GetBucketPolicyStatusMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketPolicyStatusMocks = []func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketPolicyStatus_Stub() {
+	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyStatusOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketPolicyStatus_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketPolicyStatus_DoAll(t, func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (r0 *s3.GetBucketPolicyStatusOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketPolicyStatus_Return(r0 *s3.GetBucketPolicyStatusOutput, r1 error) {
-	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketPolicyStatus_Do(func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketPolicyStatus_ReturnAll(t *testing.T, r0 *s3.GetBucketPolicyStatusOutput, r1 error) {
+	new(s3Client)._GetBucketPolicyStatus_DoAll(t, func(context.Context, *s3.GetBucketPolicyStatusInput, ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketPolicyStatus_Calls() []_s3Client_GetBucketPolicyStatus_Call {
@@ -2916,6 +5983,26 @@ func (_recv *s3Client) _GetBucketPolicyStatus_Calls() []_s3Client_GetBucketPolic
 	return _dat.GetBucketPolicyStatusCalls
 }
 
+func (s3Client) _GetBucketPolicyStatus_AllCalls() []_s3Client_GetBucketPolicyStatus_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketPolicyStatusCalls
+}
+
+func (s3Client) _GetBucketPolicyStatus_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketPolicyStatusCalls = []_s3Client_GetBucketPolicyStatus_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketPolicyStatusCalls = []_s3Client_GetBucketPolicyStatus_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketReplication(ctx context.Context, params *s3.GetBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketReplication: nil pointer receiver")
@@ -2923,14 +6010,25 @@ func (_recv *s3Client) GetBucketReplication(ctx context.Context, params *s3.GetB
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketReplicationCalls = append(_dat.GetBucketReplicationCalls, _s3Client_GetBucketReplication_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketReplication
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketReplicationCalls = append(_all.GetBucketReplicationCalls, _s3Client_GetBucketReplication_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)
 	if len(_dat.GetBucketReplicationMocks) > 0 {
 		_fn = _dat.GetBucketReplicationMocks[0]
 		if len(_dat.GetBucketReplicationMocks) > 1 {
 			_dat.GetBucketReplicationMocks = _dat.GetBucketReplicationMocks[1:]
 		}
+	} else if len(_all.GetBucketReplicationMocks) > 0 {
+		_fn = _all.GetBucketReplicationMocks[0]
+		if len(_all.GetBucketReplicationMocks) > 1 {
+			_all.GetBucketReplicationMocks = _all.GetBucketReplicationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketReplication
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -2952,16 +6050,43 @@ func (_recv *s3Client) _GetBucketReplication_Do(fn func(context.Context, *s3.Get
 	}
 }
 
-func (_recv *s3Client) _GetBucketReplication_Stub() {
-	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.GetBucketReplicationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketReplication_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketReplicationMocks = []func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error){}
+	} else if len(_dat.GetBucketReplicationMocks) < 2 {
+		_dat.GetBucketReplicationMocks = []func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketReplicationMocks = _dat.GetBucketReplicationMocks[:len(_dat.GetBucketReplicationMocks)-1]
+		_dat.GetBucketReplicationMocks = append(_dat.GetBucketReplicationMocks, fn)
+		_dat.GetBucketReplicationMocks = append(_dat.GetBucketReplicationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketReplicationMocks = []func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketReplication_Stub() {
+	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.GetBucketReplicationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketReplication_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketReplication_DoAll(t, func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.GetBucketReplicationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketReplication_Return(r0 *s3.GetBucketReplicationOutput, r1 error) {
-	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketReplication_Do(func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketReplication_ReturnAll(t *testing.T, r0 *s3.GetBucketReplicationOutput, r1 error) {
+	new(s3Client)._GetBucketReplication_DoAll(t, func(context.Context, *s3.GetBucketReplicationInput, ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketReplication_Calls() []_s3Client_GetBucketReplication_Call {
@@ -2974,6 +6099,26 @@ func (_recv *s3Client) _GetBucketReplication_Calls() []_s3Client_GetBucketReplic
 	return _dat.GetBucketReplicationCalls
 }
 
+func (s3Client) _GetBucketReplication_AllCalls() []_s3Client_GetBucketReplication_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketReplicationCalls
+}
+
+func (s3Client) _GetBucketReplication_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketReplicationCalls = []_s3Client_GetBucketReplication_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketReplicationCalls = []_s3Client_GetBucketReplication_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketRequestPayment(ctx context.Context, params *s3.GetBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketRequestPayment: nil pointer receiver")
@@ -2981,14 +6126,25 @@ func (_recv *s3Client) GetBucketRequestPayment(ctx context.Context, params *s3.G
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketRequestPaymentCalls = append(_dat.GetBucketRequestPaymentCalls, _s3Client_GetBucketRequestPayment_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketRequestPayment
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketRequestPaymentCalls = append(_all.GetBucketRequestPaymentCalls, _s3Client_GetBucketRequestPayment_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)
 	if len(_dat.GetBucketRequestPaymentMocks) > 0 {
 		_fn = _dat.GetBucketRequestPaymentMocks[0]
 		if len(_dat.GetBucketRequestPaymentMocks) > 1 {
 			_dat.GetBucketRequestPaymentMocks = _dat.GetBucketRequestPaymentMocks[1:]
 		}
+	} else if len(_all.GetBucketRequestPaymentMocks) > 0 {
+		_fn = _all.GetBucketRequestPaymentMocks[0]
+		if len(_all.GetBucketRequestPaymentMocks) > 1 {
+			_all.GetBucketRequestPaymentMocks = _all.GetBucketRequestPaymentMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketRequestPayment
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3010,16 +6166,43 @@ func (_recv *s3Client) _GetBucketRequestPayment_Do(fn func(context.Context, *s3.
 	}
 }
 
-func (_recv *s3Client) _GetBucketRequestPayment_Stub() {
-	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.GetBucketRequestPaymentOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketRequestPayment_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketRequestPaymentMocks = []func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error){}
+	} else if len(_dat.GetBucketRequestPaymentMocks) < 2 {
+		_dat.GetBucketRequestPaymentMocks = []func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketRequestPaymentMocks = _dat.GetBucketRequestPaymentMocks[:len(_dat.GetBucketRequestPaymentMocks)-1]
+		_dat.GetBucketRequestPaymentMocks = append(_dat.GetBucketRequestPaymentMocks, fn)
+		_dat.GetBucketRequestPaymentMocks = append(_dat.GetBucketRequestPaymentMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketRequestPaymentMocks = []func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketRequestPayment_Stub() {
+	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.GetBucketRequestPaymentOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketRequestPayment_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketRequestPayment_DoAll(t, func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.GetBucketRequestPaymentOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketRequestPayment_Return(r0 *s3.GetBucketRequestPaymentOutput, r1 error) {
-	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketRequestPayment_Do(func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketRequestPayment_ReturnAll(t *testing.T, r0 *s3.GetBucketRequestPaymentOutput, r1 error) {
+	new(s3Client)._GetBucketRequestPayment_DoAll(t, func(context.Context, *s3.GetBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketRequestPayment_Calls() []_s3Client_GetBucketRequestPayment_Call {
@@ -3032,6 +6215,26 @@ func (_recv *s3Client) _GetBucketRequestPayment_Calls() []_s3Client_GetBucketReq
 	return _dat.GetBucketRequestPaymentCalls
 }
 
+func (s3Client) _GetBucketRequestPayment_AllCalls() []_s3Client_GetBucketRequestPayment_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketRequestPaymentCalls
+}
+
+func (s3Client) _GetBucketRequestPayment_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketRequestPaymentCalls = []_s3Client_GetBucketRequestPayment_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketRequestPaymentCalls = []_s3Client_GetBucketRequestPayment_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketTagging(ctx context.Context, params *s3.GetBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketTagging: nil pointer receiver")
@@ -3039,14 +6242,25 @@ func (_recv *s3Client) GetBucketTagging(ctx context.Context, params *s3.GetBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketTaggingCalls = append(_dat.GetBucketTaggingCalls, _s3Client_GetBucketTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketTaggingCalls = append(_all.GetBucketTaggingCalls, _s3Client_GetBucketTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)
 	if len(_dat.GetBucketTaggingMocks) > 0 {
 		_fn = _dat.GetBucketTaggingMocks[0]
 		if len(_dat.GetBucketTaggingMocks) > 1 {
 			_dat.GetBucketTaggingMocks = _dat.GetBucketTaggingMocks[1:]
 		}
+	} else if len(_all.GetBucketTaggingMocks) > 0 {
+		_fn = _all.GetBucketTaggingMocks[0]
+		if len(_all.GetBucketTaggingMocks) > 1 {
+			_all.GetBucketTaggingMocks = _all.GetBucketTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3068,16 +6282,43 @@ func (_recv *s3Client) _GetBucketTagging_Do(fn func(context.Context, *s3.GetBuck
 	}
 }
 
-func (_recv *s3Client) _GetBucketTagging_Stub() {
-	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketTagging_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketTaggingMocks = []func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error){}
+	} else if len(_dat.GetBucketTaggingMocks) < 2 {
+		_dat.GetBucketTaggingMocks = []func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketTaggingMocks = _dat.GetBucketTaggingMocks[:len(_dat.GetBucketTaggingMocks)-1]
+		_dat.GetBucketTaggingMocks = append(_dat.GetBucketTaggingMocks, fn)
+		_dat.GetBucketTaggingMocks = append(_dat.GetBucketTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketTaggingMocks = []func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketTagging_Stub() {
+	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketTagging_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketTagging_DoAll(t, func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.GetBucketTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketTagging_Return(r0 *s3.GetBucketTaggingOutput, r1 error) {
-	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketTagging_Do(func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketTagging_ReturnAll(t *testing.T, r0 *s3.GetBucketTaggingOutput, r1 error) {
+	new(s3Client)._GetBucketTagging_DoAll(t, func(context.Context, *s3.GetBucketTaggingInput, ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketTagging_Calls() []_s3Client_GetBucketTagging_Call {
@@ -3090,6 +6331,26 @@ func (_recv *s3Client) _GetBucketTagging_Calls() []_s3Client_GetBucketTagging_Ca
 	return _dat.GetBucketTaggingCalls
 }
 
+func (s3Client) _GetBucketTagging_AllCalls() []_s3Client_GetBucketTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketTaggingCalls
+}
+
+func (s3Client) _GetBucketTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketTaggingCalls = []_s3Client_GetBucketTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketTaggingCalls = []_s3Client_GetBucketTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketVersioning(ctx context.Context, params *s3.GetBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketVersioning: nil pointer receiver")
@@ -3097,14 +6358,25 @@ func (_recv *s3Client) GetBucketVersioning(ctx context.Context, params *s3.GetBu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketVersioningCalls = append(_dat.GetBucketVersioningCalls, _s3Client_GetBucketVersioning_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketVersioning
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketVersioningCalls = append(_all.GetBucketVersioningCalls, _s3Client_GetBucketVersioning_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)
 	if len(_dat.GetBucketVersioningMocks) > 0 {
 		_fn = _dat.GetBucketVersioningMocks[0]
 		if len(_dat.GetBucketVersioningMocks) > 1 {
 			_dat.GetBucketVersioningMocks = _dat.GetBucketVersioningMocks[1:]
 		}
+	} else if len(_all.GetBucketVersioningMocks) > 0 {
+		_fn = _all.GetBucketVersioningMocks[0]
+		if len(_all.GetBucketVersioningMocks) > 1 {
+			_all.GetBucketVersioningMocks = _all.GetBucketVersioningMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketVersioning
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3126,16 +6398,43 @@ func (_recv *s3Client) _GetBucketVersioning_Do(fn func(context.Context, *s3.GetB
 	}
 }
 
-func (_recv *s3Client) _GetBucketVersioning_Stub() {
-	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.GetBucketVersioningOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketVersioning_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketVersioningMocks = []func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error){}
+	} else if len(_dat.GetBucketVersioningMocks) < 2 {
+		_dat.GetBucketVersioningMocks = []func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketVersioningMocks = _dat.GetBucketVersioningMocks[:len(_dat.GetBucketVersioningMocks)-1]
+		_dat.GetBucketVersioningMocks = append(_dat.GetBucketVersioningMocks, fn)
+		_dat.GetBucketVersioningMocks = append(_dat.GetBucketVersioningMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketVersioningMocks = []func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketVersioning_Stub() {
+	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.GetBucketVersioningOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketVersioning_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketVersioning_DoAll(t, func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.GetBucketVersioningOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketVersioning_Return(r0 *s3.GetBucketVersioningOutput, r1 error) {
-	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketVersioning_Do(func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketVersioning_ReturnAll(t *testing.T, r0 *s3.GetBucketVersioningOutput, r1 error) {
+	new(s3Client)._GetBucketVersioning_DoAll(t, func(context.Context, *s3.GetBucketVersioningInput, ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketVersioning_Calls() []_s3Client_GetBucketVersioning_Call {
@@ -3148,6 +6447,26 @@ func (_recv *s3Client) _GetBucketVersioning_Calls() []_s3Client_GetBucketVersion
 	return _dat.GetBucketVersioningCalls
 }
 
+func (s3Client) _GetBucketVersioning_AllCalls() []_s3Client_GetBucketVersioning_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketVersioningCalls
+}
+
+func (s3Client) _GetBucketVersioning_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketVersioningCalls = []_s3Client_GetBucketVersioning_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketVersioningCalls = []_s3Client_GetBucketVersioning_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetBucketWebsite(ctx context.Context, params *s3.GetBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetBucketWebsite: nil pointer receiver")
@@ -3155,14 +6474,25 @@ func (_recv *s3Client) GetBucketWebsite(ctx context.Context, params *s3.GetBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetBucketWebsiteCalls = append(_dat.GetBucketWebsiteCalls, _s3Client_GetBucketWebsite_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetBucketWebsite
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetBucketWebsiteCalls = append(_all.GetBucketWebsiteCalls, _s3Client_GetBucketWebsite_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)
 	if len(_dat.GetBucketWebsiteMocks) > 0 {
 		_fn = _dat.GetBucketWebsiteMocks[0]
 		if len(_dat.GetBucketWebsiteMocks) > 1 {
 			_dat.GetBucketWebsiteMocks = _dat.GetBucketWebsiteMocks[1:]
 		}
+	} else if len(_all.GetBucketWebsiteMocks) > 0 {
+		_fn = _all.GetBucketWebsiteMocks[0]
+		if len(_all.GetBucketWebsiteMocks) > 1 {
+			_all.GetBucketWebsiteMocks = _all.GetBucketWebsiteMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetBucketWebsite
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3184,16 +6514,43 @@ func (_recv *s3Client) _GetBucketWebsite_Do(fn func(context.Context, *s3.GetBuck
 	}
 }
 
-func (_recv *s3Client) _GetBucketWebsite_Stub() {
-	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.GetBucketWebsiteOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetBucketWebsite_DoAll(t *testing.T, fn func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetBucketWebsiteMocks = []func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error){}
+	} else if len(_dat.GetBucketWebsiteMocks) < 2 {
+		_dat.GetBucketWebsiteMocks = []func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.GetBucketWebsiteMocks = _dat.GetBucketWebsiteMocks[:len(_dat.GetBucketWebsiteMocks)-1]
+		_dat.GetBucketWebsiteMocks = append(_dat.GetBucketWebsiteMocks, fn)
+		_dat.GetBucketWebsiteMocks = append(_dat.GetBucketWebsiteMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetBucketWebsiteMocks = []func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetBucketWebsite_Stub() {
+	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.GetBucketWebsiteOutput, r1 error) { return })
+}
+
+func (s3Client) _GetBucketWebsite_StubAll(t *testing.T) {
+	new(s3Client)._GetBucketWebsite_DoAll(t, func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.GetBucketWebsiteOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetBucketWebsite_Return(r0 *s3.GetBucketWebsiteOutput, r1 error) {
-	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
-		return r0, r1
-	})
+	_recv._GetBucketWebsite_Do(func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetBucketWebsite_ReturnAll(t *testing.T, r0 *s3.GetBucketWebsiteOutput, r1 error) {
+	new(s3Client)._GetBucketWebsite_DoAll(t, func(context.Context, *s3.GetBucketWebsiteInput, ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetBucketWebsite_Calls() []_s3Client_GetBucketWebsite_Call {
@@ -3206,6 +6563,26 @@ func (_recv *s3Client) _GetBucketWebsite_Calls() []_s3Client_GetBucketWebsite_Ca
 	return _dat.GetBucketWebsiteCalls
 }
 
+func (s3Client) _GetBucketWebsite_AllCalls() []_s3Client_GetBucketWebsite_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetBucketWebsiteCalls
+}
+
+func (s3Client) _GetBucketWebsite_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetBucketWebsiteCalls = []_s3Client_GetBucketWebsite_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetBucketWebsiteCalls = []_s3Client_GetBucketWebsite_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObject: nil pointer receiver")
@@ -3213,14 +6590,25 @@ func (_recv *s3Client) GetObject(ctx context.Context, params *s3.GetObjectInput,
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectCalls = append(_dat.GetObjectCalls, _s3Client_GetObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectCalls = append(_all.GetObjectCalls, _s3Client_GetObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error)
 	if len(_dat.GetObjectMocks) > 0 {
 		_fn = _dat.GetObjectMocks[0]
 		if len(_dat.GetObjectMocks) > 1 {
 			_dat.GetObjectMocks = _dat.GetObjectMocks[1:]
 		}
+	} else if len(_all.GetObjectMocks) > 0 {
+		_fn = _all.GetObjectMocks[0]
+		if len(_all.GetObjectMocks) > 1 {
+			_all.GetObjectMocks = _all.GetObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3242,16 +6630,43 @@ func (_recv *s3Client) _GetObject_Do(fn func(context.Context, *s3.GetObjectInput
 	}
 }
 
-func (_recv *s3Client) _GetObject_Stub() {
-	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (r0 *s3.GetObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObject_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectMocks = []func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error){}
+	} else if len(_dat.GetObjectMocks) < 2 {
+		_dat.GetObjectMocks = []func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectMocks = _dat.GetObjectMocks[:len(_dat.GetObjectMocks)-1]
+		_dat.GetObjectMocks = append(_dat.GetObjectMocks, fn)
+		_dat.GetObjectMocks = append(_dat.GetObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectMocks = []func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObject_Stub() {
+	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (r0 *s3.GetObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObject_StubAll(t *testing.T) {
+	new(s3Client)._GetObject_DoAll(t, func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (r0 *s3.GetObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObject_Return(r0 *s3.GetObjectOutput, r1 error) {
-	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObject_Do(func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObject_ReturnAll(t *testing.T, r0 *s3.GetObjectOutput, r1 error) {
+	new(s3Client)._GetObject_DoAll(t, func(context.Context, *s3.GetObjectInput, ...func(*s3.Options)) (*s3.GetObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObject_Calls() []_s3Client_GetObject_Call {
@@ -3264,6 +6679,26 @@ func (_recv *s3Client) _GetObject_Calls() []_s3Client_GetObject_Call {
 	return _dat.GetObjectCalls
 }
 
+func (s3Client) _GetObject_AllCalls() []_s3Client_GetObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectCalls
+}
+
+func (s3Client) _GetObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectCalls = []_s3Client_GetObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectCalls = []_s3Client_GetObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectAcl(ctx context.Context, params *s3.GetObjectAclInput, optFns ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectAcl: nil pointer receiver")
@@ -3271,14 +6706,25 @@ func (_recv *s3Client) GetObjectAcl(ctx context.Context, params *s3.GetObjectAcl
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectAclCalls = append(_dat.GetObjectAclCalls, _s3Client_GetObjectAcl_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectAcl
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectAclCalls = append(_all.GetObjectAclCalls, _s3Client_GetObjectAcl_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)
 	if len(_dat.GetObjectAclMocks) > 0 {
 		_fn = _dat.GetObjectAclMocks[0]
 		if len(_dat.GetObjectAclMocks) > 1 {
 			_dat.GetObjectAclMocks = _dat.GetObjectAclMocks[1:]
 		}
+	} else if len(_all.GetObjectAclMocks) > 0 {
+		_fn = _all.GetObjectAclMocks[0]
+		if len(_all.GetObjectAclMocks) > 1 {
+			_all.GetObjectAclMocks = _all.GetObjectAclMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectAcl
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3300,16 +6746,43 @@ func (_recv *s3Client) _GetObjectAcl_Do(fn func(context.Context, *s3.GetObjectAc
 	}
 }
 
-func (_recv *s3Client) _GetObjectAcl_Stub() {
-	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (r0 *s3.GetObjectAclOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectAcl_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectAclMocks = []func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error){}
+	} else if len(_dat.GetObjectAclMocks) < 2 {
+		_dat.GetObjectAclMocks = []func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectAclMocks = _dat.GetObjectAclMocks[:len(_dat.GetObjectAclMocks)-1]
+		_dat.GetObjectAclMocks = append(_dat.GetObjectAclMocks, fn)
+		_dat.GetObjectAclMocks = append(_dat.GetObjectAclMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectAclMocks = []func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectAcl_Stub() {
+	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (r0 *s3.GetObjectAclOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectAcl_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectAcl_DoAll(t, func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (r0 *s3.GetObjectAclOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectAcl_Return(r0 *s3.GetObjectAclOutput, r1 error) {
-	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectAcl_Do(func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectAcl_ReturnAll(t *testing.T, r0 *s3.GetObjectAclOutput, r1 error) {
+	new(s3Client)._GetObjectAcl_DoAll(t, func(context.Context, *s3.GetObjectAclInput, ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectAcl_Calls() []_s3Client_GetObjectAcl_Call {
@@ -3322,6 +6795,26 @@ func (_recv *s3Client) _GetObjectAcl_Calls() []_s3Client_GetObjectAcl_Call {
 	return _dat.GetObjectAclCalls
 }
 
+func (s3Client) _GetObjectAcl_AllCalls() []_s3Client_GetObjectAcl_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectAclCalls
+}
+
+func (s3Client) _GetObjectAcl_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectAclCalls = []_s3Client_GetObjectAcl_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectAclCalls = []_s3Client_GetObjectAcl_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectAttributes(ctx context.Context, params *s3.GetObjectAttributesInput, optFns ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectAttributes: nil pointer receiver")
@@ -3329,14 +6822,25 @@ func (_recv *s3Client) GetObjectAttributes(ctx context.Context, params *s3.GetOb
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectAttributesCalls = append(_dat.GetObjectAttributesCalls, _s3Client_GetObjectAttributes_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectAttributes
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectAttributesCalls = append(_all.GetObjectAttributesCalls, _s3Client_GetObjectAttributes_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)
 	if len(_dat.GetObjectAttributesMocks) > 0 {
 		_fn = _dat.GetObjectAttributesMocks[0]
 		if len(_dat.GetObjectAttributesMocks) > 1 {
 			_dat.GetObjectAttributesMocks = _dat.GetObjectAttributesMocks[1:]
 		}
+	} else if len(_all.GetObjectAttributesMocks) > 0 {
+		_fn = _all.GetObjectAttributesMocks[0]
+		if len(_all.GetObjectAttributesMocks) > 1 {
+			_all.GetObjectAttributesMocks = _all.GetObjectAttributesMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectAttributes
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3358,16 +6862,43 @@ func (_recv *s3Client) _GetObjectAttributes_Do(fn func(context.Context, *s3.GetO
 	}
 }
 
-func (_recv *s3Client) _GetObjectAttributes_Stub() {
-	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (r0 *s3.GetObjectAttributesOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectAttributes_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectAttributesMocks = []func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error){}
+	} else if len(_dat.GetObjectAttributesMocks) < 2 {
+		_dat.GetObjectAttributesMocks = []func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectAttributesMocks = _dat.GetObjectAttributesMocks[:len(_dat.GetObjectAttributesMocks)-1]
+		_dat.GetObjectAttributesMocks = append(_dat.GetObjectAttributesMocks, fn)
+		_dat.GetObjectAttributesMocks = append(_dat.GetObjectAttributesMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectAttributesMocks = []func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectAttributes_Stub() {
+	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (r0 *s3.GetObjectAttributesOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectAttributes_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectAttributes_DoAll(t, func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (r0 *s3.GetObjectAttributesOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectAttributes_Return(r0 *s3.GetObjectAttributesOutput, r1 error) {
-	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectAttributes_Do(func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectAttributes_ReturnAll(t *testing.T, r0 *s3.GetObjectAttributesOutput, r1 error) {
+	new(s3Client)._GetObjectAttributes_DoAll(t, func(context.Context, *s3.GetObjectAttributesInput, ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectAttributes_Calls() []_s3Client_GetObjectAttributes_Call {
@@ -3380,6 +6911,26 @@ func (_recv *s3Client) _GetObjectAttributes_Calls() []_s3Client_GetObjectAttribu
 	return _dat.GetObjectAttributesCalls
 }
 
+func (s3Client) _GetObjectAttributes_AllCalls() []_s3Client_GetObjectAttributes_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectAttributesCalls
+}
+
+func (s3Client) _GetObjectAttributes_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectAttributesCalls = []_s3Client_GetObjectAttributes_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectAttributesCalls = []_s3Client_GetObjectAttributes_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectLegalHold(ctx context.Context, params *s3.GetObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectLegalHold: nil pointer receiver")
@@ -3387,14 +6938,25 @@ func (_recv *s3Client) GetObjectLegalHold(ctx context.Context, params *s3.GetObj
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectLegalHoldCalls = append(_dat.GetObjectLegalHoldCalls, _s3Client_GetObjectLegalHold_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectLegalHold
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectLegalHoldCalls = append(_all.GetObjectLegalHoldCalls, _s3Client_GetObjectLegalHold_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)
 	if len(_dat.GetObjectLegalHoldMocks) > 0 {
 		_fn = _dat.GetObjectLegalHoldMocks[0]
 		if len(_dat.GetObjectLegalHoldMocks) > 1 {
 			_dat.GetObjectLegalHoldMocks = _dat.GetObjectLegalHoldMocks[1:]
 		}
+	} else if len(_all.GetObjectLegalHoldMocks) > 0 {
+		_fn = _all.GetObjectLegalHoldMocks[0]
+		if len(_all.GetObjectLegalHoldMocks) > 1 {
+			_all.GetObjectLegalHoldMocks = _all.GetObjectLegalHoldMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectLegalHold
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3416,16 +6978,43 @@ func (_recv *s3Client) _GetObjectLegalHold_Do(fn func(context.Context, *s3.GetOb
 	}
 }
 
-func (_recv *s3Client) _GetObjectLegalHold_Stub() {
-	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.GetObjectLegalHoldOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectLegalHold_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectLegalHoldMocks = []func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error){}
+	} else if len(_dat.GetObjectLegalHoldMocks) < 2 {
+		_dat.GetObjectLegalHoldMocks = []func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectLegalHoldMocks = _dat.GetObjectLegalHoldMocks[:len(_dat.GetObjectLegalHoldMocks)-1]
+		_dat.GetObjectLegalHoldMocks = append(_dat.GetObjectLegalHoldMocks, fn)
+		_dat.GetObjectLegalHoldMocks = append(_dat.GetObjectLegalHoldMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectLegalHoldMocks = []func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectLegalHold_Stub() {
+	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.GetObjectLegalHoldOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectLegalHold_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectLegalHold_DoAll(t, func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.GetObjectLegalHoldOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectLegalHold_Return(r0 *s3.GetObjectLegalHoldOutput, r1 error) {
-	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectLegalHold_Do(func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectLegalHold_ReturnAll(t *testing.T, r0 *s3.GetObjectLegalHoldOutput, r1 error) {
+	new(s3Client)._GetObjectLegalHold_DoAll(t, func(context.Context, *s3.GetObjectLegalHoldInput, ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectLegalHold_Calls() []_s3Client_GetObjectLegalHold_Call {
@@ -3438,6 +7027,26 @@ func (_recv *s3Client) _GetObjectLegalHold_Calls() []_s3Client_GetObjectLegalHol
 	return _dat.GetObjectLegalHoldCalls
 }
 
+func (s3Client) _GetObjectLegalHold_AllCalls() []_s3Client_GetObjectLegalHold_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectLegalHoldCalls
+}
+
+func (s3Client) _GetObjectLegalHold_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectLegalHoldCalls = []_s3Client_GetObjectLegalHold_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectLegalHoldCalls = []_s3Client_GetObjectLegalHold_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectLockConfiguration(ctx context.Context, params *s3.GetObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectLockConfiguration: nil pointer receiver")
@@ -3445,14 +7054,25 @@ func (_recv *s3Client) GetObjectLockConfiguration(ctx context.Context, params *s
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectLockConfigurationCalls = append(_dat.GetObjectLockConfigurationCalls, _s3Client_GetObjectLockConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectLockConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectLockConfigurationCalls = append(_all.GetObjectLockConfigurationCalls, _s3Client_GetObjectLockConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)
 	if len(_dat.GetObjectLockConfigurationMocks) > 0 {
 		_fn = _dat.GetObjectLockConfigurationMocks[0]
 		if len(_dat.GetObjectLockConfigurationMocks) > 1 {
 			_dat.GetObjectLockConfigurationMocks = _dat.GetObjectLockConfigurationMocks[1:]
 		}
+	} else if len(_all.GetObjectLockConfigurationMocks) > 0 {
+		_fn = _all.GetObjectLockConfigurationMocks[0]
+		if len(_all.GetObjectLockConfigurationMocks) > 1 {
+			_all.GetObjectLockConfigurationMocks = _all.GetObjectLockConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectLockConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3474,16 +7094,43 @@ func (_recv *s3Client) _GetObjectLockConfiguration_Do(fn func(context.Context, *
 	}
 }
 
-func (_recv *s3Client) _GetObjectLockConfiguration_Stub() {
-	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetObjectLockConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectLockConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectLockConfigurationMocks = []func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error){}
+	} else if len(_dat.GetObjectLockConfigurationMocks) < 2 {
+		_dat.GetObjectLockConfigurationMocks = []func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectLockConfigurationMocks = _dat.GetObjectLockConfigurationMocks[:len(_dat.GetObjectLockConfigurationMocks)-1]
+		_dat.GetObjectLockConfigurationMocks = append(_dat.GetObjectLockConfigurationMocks, fn)
+		_dat.GetObjectLockConfigurationMocks = append(_dat.GetObjectLockConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectLockConfigurationMocks = []func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectLockConfiguration_Stub() {
+	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetObjectLockConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectLockConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectLockConfiguration_DoAll(t, func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.GetObjectLockConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectLockConfiguration_Return(r0 *s3.GetObjectLockConfigurationOutput, r1 error) {
-	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectLockConfiguration_Do(func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectLockConfiguration_ReturnAll(t *testing.T, r0 *s3.GetObjectLockConfigurationOutput, r1 error) {
+	new(s3Client)._GetObjectLockConfiguration_DoAll(t, func(context.Context, *s3.GetObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectLockConfiguration_Calls() []_s3Client_GetObjectLockConfiguration_Call {
@@ -3496,6 +7143,26 @@ func (_recv *s3Client) _GetObjectLockConfiguration_Calls() []_s3Client_GetObject
 	return _dat.GetObjectLockConfigurationCalls
 }
 
+func (s3Client) _GetObjectLockConfiguration_AllCalls() []_s3Client_GetObjectLockConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectLockConfigurationCalls
+}
+
+func (s3Client) _GetObjectLockConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectLockConfigurationCalls = []_s3Client_GetObjectLockConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectLockConfigurationCalls = []_s3Client_GetObjectLockConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectRetention(ctx context.Context, params *s3.GetObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectRetention: nil pointer receiver")
@@ -3503,14 +7170,25 @@ func (_recv *s3Client) GetObjectRetention(ctx context.Context, params *s3.GetObj
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectRetentionCalls = append(_dat.GetObjectRetentionCalls, _s3Client_GetObjectRetention_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectRetention
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectRetentionCalls = append(_all.GetObjectRetentionCalls, _s3Client_GetObjectRetention_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)
 	if len(_dat.GetObjectRetentionMocks) > 0 {
 		_fn = _dat.GetObjectRetentionMocks[0]
 		if len(_dat.GetObjectRetentionMocks) > 1 {
 			_dat.GetObjectRetentionMocks = _dat.GetObjectRetentionMocks[1:]
 		}
+	} else if len(_all.GetObjectRetentionMocks) > 0 {
+		_fn = _all.GetObjectRetentionMocks[0]
+		if len(_all.GetObjectRetentionMocks) > 1 {
+			_all.GetObjectRetentionMocks = _all.GetObjectRetentionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectRetention
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3532,16 +7210,43 @@ func (_recv *s3Client) _GetObjectRetention_Do(fn func(context.Context, *s3.GetOb
 	}
 }
 
-func (_recv *s3Client) _GetObjectRetention_Stub() {
-	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.GetObjectRetentionOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectRetention_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectRetentionMocks = []func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error){}
+	} else if len(_dat.GetObjectRetentionMocks) < 2 {
+		_dat.GetObjectRetentionMocks = []func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectRetentionMocks = _dat.GetObjectRetentionMocks[:len(_dat.GetObjectRetentionMocks)-1]
+		_dat.GetObjectRetentionMocks = append(_dat.GetObjectRetentionMocks, fn)
+		_dat.GetObjectRetentionMocks = append(_dat.GetObjectRetentionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectRetentionMocks = []func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectRetention_Stub() {
+	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.GetObjectRetentionOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectRetention_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectRetention_DoAll(t, func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.GetObjectRetentionOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectRetention_Return(r0 *s3.GetObjectRetentionOutput, r1 error) {
-	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectRetention_Do(func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectRetention_ReturnAll(t *testing.T, r0 *s3.GetObjectRetentionOutput, r1 error) {
+	new(s3Client)._GetObjectRetention_DoAll(t, func(context.Context, *s3.GetObjectRetentionInput, ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectRetention_Calls() []_s3Client_GetObjectRetention_Call {
@@ -3554,6 +7259,26 @@ func (_recv *s3Client) _GetObjectRetention_Calls() []_s3Client_GetObjectRetentio
 	return _dat.GetObjectRetentionCalls
 }
 
+func (s3Client) _GetObjectRetention_AllCalls() []_s3Client_GetObjectRetention_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectRetentionCalls
+}
+
+func (s3Client) _GetObjectRetention_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectRetentionCalls = []_s3Client_GetObjectRetention_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectRetentionCalls = []_s3Client_GetObjectRetention_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectTagging(ctx context.Context, params *s3.GetObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectTagging: nil pointer receiver")
@@ -3561,14 +7286,25 @@ func (_recv *s3Client) GetObjectTagging(ctx context.Context, params *s3.GetObjec
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectTaggingCalls = append(_dat.GetObjectTaggingCalls, _s3Client_GetObjectTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectTaggingCalls = append(_all.GetObjectTaggingCalls, _s3Client_GetObjectTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)
 	if len(_dat.GetObjectTaggingMocks) > 0 {
 		_fn = _dat.GetObjectTaggingMocks[0]
 		if len(_dat.GetObjectTaggingMocks) > 1 {
 			_dat.GetObjectTaggingMocks = _dat.GetObjectTaggingMocks[1:]
 		}
+	} else if len(_all.GetObjectTaggingMocks) > 0 {
+		_fn = _all.GetObjectTaggingMocks[0]
+		if len(_all.GetObjectTaggingMocks) > 1 {
+			_all.GetObjectTaggingMocks = _all.GetObjectTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3590,16 +7326,43 @@ func (_recv *s3Client) _GetObjectTagging_Do(fn func(context.Context, *s3.GetObje
 	}
 }
 
-func (_recv *s3Client) _GetObjectTagging_Stub() {
-	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.GetObjectTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectTagging_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectTaggingMocks = []func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error){}
+	} else if len(_dat.GetObjectTaggingMocks) < 2 {
+		_dat.GetObjectTaggingMocks = []func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectTaggingMocks = _dat.GetObjectTaggingMocks[:len(_dat.GetObjectTaggingMocks)-1]
+		_dat.GetObjectTaggingMocks = append(_dat.GetObjectTaggingMocks, fn)
+		_dat.GetObjectTaggingMocks = append(_dat.GetObjectTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectTaggingMocks = []func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectTagging_Stub() {
+	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.GetObjectTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectTagging_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectTagging_DoAll(t, func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.GetObjectTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectTagging_Return(r0 *s3.GetObjectTaggingOutput, r1 error) {
-	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectTagging_Do(func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectTagging_ReturnAll(t *testing.T, r0 *s3.GetObjectTaggingOutput, r1 error) {
+	new(s3Client)._GetObjectTagging_DoAll(t, func(context.Context, *s3.GetObjectTaggingInput, ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectTagging_Calls() []_s3Client_GetObjectTagging_Call {
@@ -3612,6 +7375,26 @@ func (_recv *s3Client) _GetObjectTagging_Calls() []_s3Client_GetObjectTagging_Ca
 	return _dat.GetObjectTaggingCalls
 }
 
+func (s3Client) _GetObjectTagging_AllCalls() []_s3Client_GetObjectTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectTaggingCalls
+}
+
+func (s3Client) _GetObjectTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectTaggingCalls = []_s3Client_GetObjectTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectTaggingCalls = []_s3Client_GetObjectTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetObjectTorrent(ctx context.Context, params *s3.GetObjectTorrentInput, optFns ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetObjectTorrent: nil pointer receiver")
@@ -3619,14 +7402,25 @@ func (_recv *s3Client) GetObjectTorrent(ctx context.Context, params *s3.GetObjec
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetObjectTorrentCalls = append(_dat.GetObjectTorrentCalls, _s3Client_GetObjectTorrent_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetObjectTorrent
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetObjectTorrentCalls = append(_all.GetObjectTorrentCalls, _s3Client_GetObjectTorrent_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)
 	if len(_dat.GetObjectTorrentMocks) > 0 {
 		_fn = _dat.GetObjectTorrentMocks[0]
 		if len(_dat.GetObjectTorrentMocks) > 1 {
 			_dat.GetObjectTorrentMocks = _dat.GetObjectTorrentMocks[1:]
 		}
+	} else if len(_all.GetObjectTorrentMocks) > 0 {
+		_fn = _all.GetObjectTorrentMocks[0]
+		if len(_all.GetObjectTorrentMocks) > 1 {
+			_all.GetObjectTorrentMocks = _all.GetObjectTorrentMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetObjectTorrent
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3648,16 +7442,43 @@ func (_recv *s3Client) _GetObjectTorrent_Do(fn func(context.Context, *s3.GetObje
 	}
 }
 
-func (_recv *s3Client) _GetObjectTorrent_Stub() {
-	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (r0 *s3.GetObjectTorrentOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetObjectTorrent_DoAll(t *testing.T, fn func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetObjectTorrentMocks = []func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error){}
+	} else if len(_dat.GetObjectTorrentMocks) < 2 {
+		_dat.GetObjectTorrentMocks = []func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error){fn, fn}
+	} else {
+		_dat.GetObjectTorrentMocks = _dat.GetObjectTorrentMocks[:len(_dat.GetObjectTorrentMocks)-1]
+		_dat.GetObjectTorrentMocks = append(_dat.GetObjectTorrentMocks, fn)
+		_dat.GetObjectTorrentMocks = append(_dat.GetObjectTorrentMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetObjectTorrentMocks = []func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetObjectTorrent_Stub() {
+	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (r0 *s3.GetObjectTorrentOutput, r1 error) { return })
+}
+
+func (s3Client) _GetObjectTorrent_StubAll(t *testing.T) {
+	new(s3Client)._GetObjectTorrent_DoAll(t, func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (r0 *s3.GetObjectTorrentOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetObjectTorrent_Return(r0 *s3.GetObjectTorrentOutput, r1 error) {
-	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
-		return r0, r1
-	})
+	_recv._GetObjectTorrent_Do(func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetObjectTorrent_ReturnAll(t *testing.T, r0 *s3.GetObjectTorrentOutput, r1 error) {
+	new(s3Client)._GetObjectTorrent_DoAll(t, func(context.Context, *s3.GetObjectTorrentInput, ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetObjectTorrent_Calls() []_s3Client_GetObjectTorrent_Call {
@@ -3670,6 +7491,26 @@ func (_recv *s3Client) _GetObjectTorrent_Calls() []_s3Client_GetObjectTorrent_Ca
 	return _dat.GetObjectTorrentCalls
 }
 
+func (s3Client) _GetObjectTorrent_AllCalls() []_s3Client_GetObjectTorrent_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetObjectTorrentCalls
+}
+
+func (s3Client) _GetObjectTorrent_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetObjectTorrentCalls = []_s3Client_GetObjectTorrent_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetObjectTorrentCalls = []_s3Client_GetObjectTorrent_Call{}
+	})
+}
+
+
 func (_recv *s3Client) GetPublicAccessBlock(ctx context.Context, params *s3.GetPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
 	if _recv == nil {
 		panic("s3Client.GetPublicAccessBlock: nil pointer receiver")
@@ -3677,14 +7518,25 @@ func (_recv *s3Client) GetPublicAccessBlock(ctx context.Context, params *s3.GetP
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.GetPublicAccessBlockCalls = append(_dat.GetPublicAccessBlockCalls, _s3Client_GetPublicAccessBlock_Call{ctx, params, optFns})
-	_fn := _recv.Client.GetPublicAccessBlock
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.GetPublicAccessBlockCalls = append(_all.GetPublicAccessBlockCalls, _s3Client_GetPublicAccessBlock_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)
 	if len(_dat.GetPublicAccessBlockMocks) > 0 {
 		_fn = _dat.GetPublicAccessBlockMocks[0]
 		if len(_dat.GetPublicAccessBlockMocks) > 1 {
 			_dat.GetPublicAccessBlockMocks = _dat.GetPublicAccessBlockMocks[1:]
 		}
+	} else if len(_all.GetPublicAccessBlockMocks) > 0 {
+		_fn = _all.GetPublicAccessBlockMocks[0]
+		if len(_all.GetPublicAccessBlockMocks) > 1 {
+			_all.GetPublicAccessBlockMocks = _all.GetPublicAccessBlockMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.GetPublicAccessBlock
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3706,16 +7558,43 @@ func (_recv *s3Client) _GetPublicAccessBlock_Do(fn func(context.Context, *s3.Get
 	}
 }
 
-func (_recv *s3Client) _GetPublicAccessBlock_Stub() {
-	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.GetPublicAccessBlockOutput, r1 error) {
-		return r0, r1
+func (s3Client) _GetPublicAccessBlock_DoAll(t *testing.T, fn func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.GetPublicAccessBlockMocks = []func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error){}
+	} else if len(_dat.GetPublicAccessBlockMocks) < 2 {
+		_dat.GetPublicAccessBlockMocks = []func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.GetPublicAccessBlockMocks = _dat.GetPublicAccessBlockMocks[:len(_dat.GetPublicAccessBlockMocks)-1]
+		_dat.GetPublicAccessBlockMocks = append(_dat.GetPublicAccessBlockMocks, fn)
+		_dat.GetPublicAccessBlockMocks = append(_dat.GetPublicAccessBlockMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.GetPublicAccessBlockMocks = []func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _GetPublicAccessBlock_Stub() {
+	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.GetPublicAccessBlockOutput, r1 error) { return })
+}
+
+func (s3Client) _GetPublicAccessBlock_StubAll(t *testing.T) {
+	new(s3Client)._GetPublicAccessBlock_DoAll(t, func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.GetPublicAccessBlockOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _GetPublicAccessBlock_Return(r0 *s3.GetPublicAccessBlockOutput, r1 error) {
-	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
-		return r0, r1
-	})
+	_recv._GetPublicAccessBlock_Do(func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _GetPublicAccessBlock_ReturnAll(t *testing.T, r0 *s3.GetPublicAccessBlockOutput, r1 error) {
+	new(s3Client)._GetPublicAccessBlock_DoAll(t, func(context.Context, *s3.GetPublicAccessBlockInput, ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _GetPublicAccessBlock_Calls() []_s3Client_GetPublicAccessBlock_Call {
@@ -3728,6 +7607,26 @@ func (_recv *s3Client) _GetPublicAccessBlock_Calls() []_s3Client_GetPublicAccess
 	return _dat.GetPublicAccessBlockCalls
 }
 
+func (s3Client) _GetPublicAccessBlock_AllCalls() []_s3Client_GetPublicAccessBlock_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.GetPublicAccessBlockCalls
+}
+
+func (s3Client) _GetPublicAccessBlock_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.GetPublicAccessBlockCalls = []_s3Client_GetPublicAccessBlock_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.GetPublicAccessBlockCalls = []_s3Client_GetPublicAccessBlock_Call{}
+	})
+}
+
+
 func (_recv *s3Client) HeadBucket(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error) {
 	if _recv == nil {
 		panic("s3Client.HeadBucket: nil pointer receiver")
@@ -3735,14 +7634,25 @@ func (_recv *s3Client) HeadBucket(ctx context.Context, params *s3.HeadBucketInpu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.HeadBucketCalls = append(_dat.HeadBucketCalls, _s3Client_HeadBucket_Call{ctx, params, optFns})
-	_fn := _recv.Client.HeadBucket
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.HeadBucketCalls = append(_all.HeadBucketCalls, _s3Client_HeadBucket_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error)
 	if len(_dat.HeadBucketMocks) > 0 {
 		_fn = _dat.HeadBucketMocks[0]
 		if len(_dat.HeadBucketMocks) > 1 {
 			_dat.HeadBucketMocks = _dat.HeadBucketMocks[1:]
 		}
+	} else if len(_all.HeadBucketMocks) > 0 {
+		_fn = _all.HeadBucketMocks[0]
+		if len(_all.HeadBucketMocks) > 1 {
+			_all.HeadBucketMocks = _all.HeadBucketMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.HeadBucket
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3764,16 +7674,43 @@ func (_recv *s3Client) _HeadBucket_Do(fn func(context.Context, *s3.HeadBucketInp
 	}
 }
 
-func (_recv *s3Client) _HeadBucket_Stub() {
-	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (r0 *s3.HeadBucketOutput, r1 error) {
-		return r0, r1
+func (s3Client) _HeadBucket_DoAll(t *testing.T, fn func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.HeadBucketMocks = []func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error){}
+	} else if len(_dat.HeadBucketMocks) < 2 {
+		_dat.HeadBucketMocks = []func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error){fn, fn}
+	} else {
+		_dat.HeadBucketMocks = _dat.HeadBucketMocks[:len(_dat.HeadBucketMocks)-1]
+		_dat.HeadBucketMocks = append(_dat.HeadBucketMocks, fn)
+		_dat.HeadBucketMocks = append(_dat.HeadBucketMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.HeadBucketMocks = []func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _HeadBucket_Stub() {
+	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (r0 *s3.HeadBucketOutput, r1 error) { return })
+}
+
+func (s3Client) _HeadBucket_StubAll(t *testing.T) {
+	new(s3Client)._HeadBucket_DoAll(t, func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (r0 *s3.HeadBucketOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _HeadBucket_Return(r0 *s3.HeadBucketOutput, r1 error) {
-	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error) {
-		return r0, r1
-	})
+	_recv._HeadBucket_Do(func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _HeadBucket_ReturnAll(t *testing.T, r0 *s3.HeadBucketOutput, r1 error) {
+	new(s3Client)._HeadBucket_DoAll(t, func(context.Context, *s3.HeadBucketInput, ...func(*s3.Options)) (*s3.HeadBucketOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _HeadBucket_Calls() []_s3Client_HeadBucket_Call {
@@ -3786,6 +7723,26 @@ func (_recv *s3Client) _HeadBucket_Calls() []_s3Client_HeadBucket_Call {
 	return _dat.HeadBucketCalls
 }
 
+func (s3Client) _HeadBucket_AllCalls() []_s3Client_HeadBucket_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.HeadBucketCalls
+}
+
+func (s3Client) _HeadBucket_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.HeadBucketCalls = []_s3Client_HeadBucket_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.HeadBucketCalls = []_s3Client_HeadBucket_Call{}
+	})
+}
+
+
 func (_recv *s3Client) HeadObject(ctx context.Context, params *s3.HeadObjectInput, optFns ...func(*s3.Options)) (*s3.HeadObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.HeadObject: nil pointer receiver")
@@ -3793,14 +7750,25 @@ func (_recv *s3Client) HeadObject(ctx context.Context, params *s3.HeadObjectInpu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.HeadObjectCalls = append(_dat.HeadObjectCalls, _s3Client_HeadObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.HeadObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.HeadObjectCalls = append(_all.HeadObjectCalls, _s3Client_HeadObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error)
 	if len(_dat.HeadObjectMocks) > 0 {
 		_fn = _dat.HeadObjectMocks[0]
 		if len(_dat.HeadObjectMocks) > 1 {
 			_dat.HeadObjectMocks = _dat.HeadObjectMocks[1:]
 		}
+	} else if len(_all.HeadObjectMocks) > 0 {
+		_fn = _all.HeadObjectMocks[0]
+		if len(_all.HeadObjectMocks) > 1 {
+			_all.HeadObjectMocks = _all.HeadObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.HeadObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3822,16 +7790,43 @@ func (_recv *s3Client) _HeadObject_Do(fn func(context.Context, *s3.HeadObjectInp
 	}
 }
 
-func (_recv *s3Client) _HeadObject_Stub() {
-	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (r0 *s3.HeadObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _HeadObject_DoAll(t *testing.T, fn func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.HeadObjectMocks = []func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error){}
+	} else if len(_dat.HeadObjectMocks) < 2 {
+		_dat.HeadObjectMocks = []func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error){fn, fn}
+	} else {
+		_dat.HeadObjectMocks = _dat.HeadObjectMocks[:len(_dat.HeadObjectMocks)-1]
+		_dat.HeadObjectMocks = append(_dat.HeadObjectMocks, fn)
+		_dat.HeadObjectMocks = append(_dat.HeadObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.HeadObjectMocks = []func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _HeadObject_Stub() {
+	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (r0 *s3.HeadObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _HeadObject_StubAll(t *testing.T) {
+	new(s3Client)._HeadObject_DoAll(t, func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (r0 *s3.HeadObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _HeadObject_Return(r0 *s3.HeadObjectOutput, r1 error) {
-	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._HeadObject_Do(func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _HeadObject_ReturnAll(t *testing.T, r0 *s3.HeadObjectOutput, r1 error) {
+	new(s3Client)._HeadObject_DoAll(t, func(context.Context, *s3.HeadObjectInput, ...func(*s3.Options)) (*s3.HeadObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _HeadObject_Calls() []_s3Client_HeadObject_Call {
@@ -3844,6 +7839,26 @@ func (_recv *s3Client) _HeadObject_Calls() []_s3Client_HeadObject_Call {
 	return _dat.HeadObjectCalls
 }
 
+func (s3Client) _HeadObject_AllCalls() []_s3Client_HeadObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.HeadObjectCalls
+}
+
+func (s3Client) _HeadObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.HeadObjectCalls = []_s3Client_HeadObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.HeadObjectCalls = []_s3Client_HeadObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListBucketAnalyticsConfigurations(ctx context.Context, params *s3.ListBucketAnalyticsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListBucketAnalyticsConfigurations: nil pointer receiver")
@@ -3851,14 +7866,25 @@ func (_recv *s3Client) ListBucketAnalyticsConfigurations(ctx context.Context, pa
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListBucketAnalyticsConfigurationsCalls = append(_dat.ListBucketAnalyticsConfigurationsCalls, _s3Client_ListBucketAnalyticsConfigurations_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListBucketAnalyticsConfigurations
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListBucketAnalyticsConfigurationsCalls = append(_all.ListBucketAnalyticsConfigurationsCalls, _s3Client_ListBucketAnalyticsConfigurations_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)
 	if len(_dat.ListBucketAnalyticsConfigurationsMocks) > 0 {
 		_fn = _dat.ListBucketAnalyticsConfigurationsMocks[0]
 		if len(_dat.ListBucketAnalyticsConfigurationsMocks) > 1 {
 			_dat.ListBucketAnalyticsConfigurationsMocks = _dat.ListBucketAnalyticsConfigurationsMocks[1:]
 		}
+	} else if len(_all.ListBucketAnalyticsConfigurationsMocks) > 0 {
+		_fn = _all.ListBucketAnalyticsConfigurationsMocks[0]
+		if len(_all.ListBucketAnalyticsConfigurationsMocks) > 1 {
+			_all.ListBucketAnalyticsConfigurationsMocks = _all.ListBucketAnalyticsConfigurationsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListBucketAnalyticsConfigurations
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3880,16 +7906,43 @@ func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Do(fn func(context.Con
 	}
 }
 
-func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Stub() {
-	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListBucketAnalyticsConfigurations_DoAll(t *testing.T, fn func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketAnalyticsConfigurationsMocks = []func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketAnalyticsConfigurationsMocks) < 2 {
+		_dat.ListBucketAnalyticsConfigurationsMocks = []func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketAnalyticsConfigurationsMocks = _dat.ListBucketAnalyticsConfigurationsMocks[:len(_dat.ListBucketAnalyticsConfigurationsMocks)-1]
+		_dat.ListBucketAnalyticsConfigurationsMocks = append(_dat.ListBucketAnalyticsConfigurationsMocks, fn)
+		_dat.ListBucketAnalyticsConfigurationsMocks = append(_dat.ListBucketAnalyticsConfigurationsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListBucketAnalyticsConfigurationsMocks = []func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Stub() {
+	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListBucketAnalyticsConfigurations_StubAll(t *testing.T) {
+	new(s3Client)._ListBucketAnalyticsConfigurations_DoAll(t, func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Return(r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) {
-	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListBucketAnalyticsConfigurations_Do(func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListBucketAnalyticsConfigurations_ReturnAll(t *testing.T, r0 *s3.ListBucketAnalyticsConfigurationsOutput, r1 error) {
+	new(s3Client)._ListBucketAnalyticsConfigurations_DoAll(t, func(context.Context, *s3.ListBucketAnalyticsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Calls() []_s3Client_ListBucketAnalyticsConfigurations_Call {
@@ -3902,6 +7955,26 @@ func (_recv *s3Client) _ListBucketAnalyticsConfigurations_Calls() []_s3Client_Li
 	return _dat.ListBucketAnalyticsConfigurationsCalls
 }
 
+func (s3Client) _ListBucketAnalyticsConfigurations_AllCalls() []_s3Client_ListBucketAnalyticsConfigurations_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketAnalyticsConfigurationsCalls
+}
+
+func (s3Client) _ListBucketAnalyticsConfigurations_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListBucketAnalyticsConfigurationsCalls = []_s3Client_ListBucketAnalyticsConfigurations_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListBucketAnalyticsConfigurationsCalls = []_s3Client_ListBucketAnalyticsConfigurations_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListBucketIntelligentTieringConfigurations(ctx context.Context, params *s3.ListBucketIntelligentTieringConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListBucketIntelligentTieringConfigurations: nil pointer receiver")
@@ -3909,14 +7982,25 @@ func (_recv *s3Client) ListBucketIntelligentTieringConfigurations(ctx context.Co
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListBucketIntelligentTieringConfigurationsCalls = append(_dat.ListBucketIntelligentTieringConfigurationsCalls, _s3Client_ListBucketIntelligentTieringConfigurations_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListBucketIntelligentTieringConfigurations
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListBucketIntelligentTieringConfigurationsCalls = append(_all.ListBucketIntelligentTieringConfigurationsCalls, _s3Client_ListBucketIntelligentTieringConfigurations_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)
 	if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) > 0 {
 		_fn = _dat.ListBucketIntelligentTieringConfigurationsMocks[0]
 		if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) > 1 {
 			_dat.ListBucketIntelligentTieringConfigurationsMocks = _dat.ListBucketIntelligentTieringConfigurationsMocks[1:]
 		}
+	} else if len(_all.ListBucketIntelligentTieringConfigurationsMocks) > 0 {
+		_fn = _all.ListBucketIntelligentTieringConfigurationsMocks[0]
+		if len(_all.ListBucketIntelligentTieringConfigurationsMocks) > 1 {
+			_all.ListBucketIntelligentTieringConfigurationsMocks = _all.ListBucketIntelligentTieringConfigurationsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListBucketIntelligentTieringConfigurations
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3938,16 +8022,43 @@ func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Do(fn func(co
 	}
 }
 
-func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Stub() {
-	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListBucketIntelligentTieringConfigurations_DoAll(t *testing.T, fn func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = []func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketIntelligentTieringConfigurationsMocks) < 2 {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = []func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = _dat.ListBucketIntelligentTieringConfigurationsMocks[:len(_dat.ListBucketIntelligentTieringConfigurationsMocks)-1]
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = append(_dat.ListBucketIntelligentTieringConfigurationsMocks, fn)
+		_dat.ListBucketIntelligentTieringConfigurationsMocks = append(_dat.ListBucketIntelligentTieringConfigurationsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListBucketIntelligentTieringConfigurationsMocks = []func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Stub() {
+	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListBucketIntelligentTieringConfigurations_StubAll(t *testing.T) {
+	new(s3Client)._ListBucketIntelligentTieringConfigurations_DoAll(t, func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Return(r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) {
-	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListBucketIntelligentTieringConfigurations_Do(func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListBucketIntelligentTieringConfigurations_ReturnAll(t *testing.T, r0 *s3.ListBucketIntelligentTieringConfigurationsOutput, r1 error) {
+	new(s3Client)._ListBucketIntelligentTieringConfigurations_DoAll(t, func(context.Context, *s3.ListBucketIntelligentTieringConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Calls() []_s3Client_ListBucketIntelligentTieringConfigurations_Call {
@@ -3960,6 +8071,26 @@ func (_recv *s3Client) _ListBucketIntelligentTieringConfigurations_Calls() []_s3
 	return _dat.ListBucketIntelligentTieringConfigurationsCalls
 }
 
+func (s3Client) _ListBucketIntelligentTieringConfigurations_AllCalls() []_s3Client_ListBucketIntelligentTieringConfigurations_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketIntelligentTieringConfigurationsCalls
+}
+
+func (s3Client) _ListBucketIntelligentTieringConfigurations_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListBucketIntelligentTieringConfigurationsCalls = []_s3Client_ListBucketIntelligentTieringConfigurations_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListBucketIntelligentTieringConfigurationsCalls = []_s3Client_ListBucketIntelligentTieringConfigurations_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListBucketInventoryConfigurations(ctx context.Context, params *s3.ListBucketInventoryConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListBucketInventoryConfigurations: nil pointer receiver")
@@ -3967,14 +8098,25 @@ func (_recv *s3Client) ListBucketInventoryConfigurations(ctx context.Context, pa
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListBucketInventoryConfigurationsCalls = append(_dat.ListBucketInventoryConfigurationsCalls, _s3Client_ListBucketInventoryConfigurations_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListBucketInventoryConfigurations
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListBucketInventoryConfigurationsCalls = append(_all.ListBucketInventoryConfigurationsCalls, _s3Client_ListBucketInventoryConfigurations_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)
 	if len(_dat.ListBucketInventoryConfigurationsMocks) > 0 {
 		_fn = _dat.ListBucketInventoryConfigurationsMocks[0]
 		if len(_dat.ListBucketInventoryConfigurationsMocks) > 1 {
 			_dat.ListBucketInventoryConfigurationsMocks = _dat.ListBucketInventoryConfigurationsMocks[1:]
 		}
+	} else if len(_all.ListBucketInventoryConfigurationsMocks) > 0 {
+		_fn = _all.ListBucketInventoryConfigurationsMocks[0]
+		if len(_all.ListBucketInventoryConfigurationsMocks) > 1 {
+			_all.ListBucketInventoryConfigurationsMocks = _all.ListBucketInventoryConfigurationsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListBucketInventoryConfigurations
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -3996,16 +8138,43 @@ func (_recv *s3Client) _ListBucketInventoryConfigurations_Do(fn func(context.Con
 	}
 }
 
-func (_recv *s3Client) _ListBucketInventoryConfigurations_Stub() {
-	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListBucketInventoryConfigurations_DoAll(t *testing.T, fn func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketInventoryConfigurationsMocks = []func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketInventoryConfigurationsMocks) < 2 {
+		_dat.ListBucketInventoryConfigurationsMocks = []func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketInventoryConfigurationsMocks = _dat.ListBucketInventoryConfigurationsMocks[:len(_dat.ListBucketInventoryConfigurationsMocks)-1]
+		_dat.ListBucketInventoryConfigurationsMocks = append(_dat.ListBucketInventoryConfigurationsMocks, fn)
+		_dat.ListBucketInventoryConfigurationsMocks = append(_dat.ListBucketInventoryConfigurationsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListBucketInventoryConfigurationsMocks = []func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListBucketInventoryConfigurations_Stub() {
+	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListBucketInventoryConfigurations_StubAll(t *testing.T) {
+	new(s3Client)._ListBucketInventoryConfigurations_DoAll(t, func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListBucketInventoryConfigurations_Return(r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) {
-	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListBucketInventoryConfigurations_Do(func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListBucketInventoryConfigurations_ReturnAll(t *testing.T, r0 *s3.ListBucketInventoryConfigurationsOutput, r1 error) {
+	new(s3Client)._ListBucketInventoryConfigurations_DoAll(t, func(context.Context, *s3.ListBucketInventoryConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListBucketInventoryConfigurations_Calls() []_s3Client_ListBucketInventoryConfigurations_Call {
@@ -4018,6 +8187,26 @@ func (_recv *s3Client) _ListBucketInventoryConfigurations_Calls() []_s3Client_Li
 	return _dat.ListBucketInventoryConfigurationsCalls
 }
 
+func (s3Client) _ListBucketInventoryConfigurations_AllCalls() []_s3Client_ListBucketInventoryConfigurations_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketInventoryConfigurationsCalls
+}
+
+func (s3Client) _ListBucketInventoryConfigurations_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListBucketInventoryConfigurationsCalls = []_s3Client_ListBucketInventoryConfigurations_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListBucketInventoryConfigurationsCalls = []_s3Client_ListBucketInventoryConfigurations_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListBucketMetricsConfigurations(ctx context.Context, params *s3.ListBucketMetricsConfigurationsInput, optFns ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListBucketMetricsConfigurations: nil pointer receiver")
@@ -4025,14 +8214,25 @@ func (_recv *s3Client) ListBucketMetricsConfigurations(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListBucketMetricsConfigurationsCalls = append(_dat.ListBucketMetricsConfigurationsCalls, _s3Client_ListBucketMetricsConfigurations_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListBucketMetricsConfigurations
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListBucketMetricsConfigurationsCalls = append(_all.ListBucketMetricsConfigurationsCalls, _s3Client_ListBucketMetricsConfigurations_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)
 	if len(_dat.ListBucketMetricsConfigurationsMocks) > 0 {
 		_fn = _dat.ListBucketMetricsConfigurationsMocks[0]
 		if len(_dat.ListBucketMetricsConfigurationsMocks) > 1 {
 			_dat.ListBucketMetricsConfigurationsMocks = _dat.ListBucketMetricsConfigurationsMocks[1:]
 		}
+	} else if len(_all.ListBucketMetricsConfigurationsMocks) > 0 {
+		_fn = _all.ListBucketMetricsConfigurationsMocks[0]
+		if len(_all.ListBucketMetricsConfigurationsMocks) > 1 {
+			_all.ListBucketMetricsConfigurationsMocks = _all.ListBucketMetricsConfigurationsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListBucketMetricsConfigurations
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4054,16 +8254,43 @@ func (_recv *s3Client) _ListBucketMetricsConfigurations_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _ListBucketMetricsConfigurations_Stub() {
-	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListBucketMetricsConfigurations_DoAll(t *testing.T, fn func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketMetricsConfigurationsMocks = []func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error){}
+	} else if len(_dat.ListBucketMetricsConfigurationsMocks) < 2 {
+		_dat.ListBucketMetricsConfigurationsMocks = []func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketMetricsConfigurationsMocks = _dat.ListBucketMetricsConfigurationsMocks[:len(_dat.ListBucketMetricsConfigurationsMocks)-1]
+		_dat.ListBucketMetricsConfigurationsMocks = append(_dat.ListBucketMetricsConfigurationsMocks, fn)
+		_dat.ListBucketMetricsConfigurationsMocks = append(_dat.ListBucketMetricsConfigurationsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListBucketMetricsConfigurationsMocks = []func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListBucketMetricsConfigurations_Stub() {
+	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListBucketMetricsConfigurations_StubAll(t *testing.T) {
+	new(s3Client)._ListBucketMetricsConfigurations_DoAll(t, func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListBucketMetricsConfigurations_Return(r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) {
-	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListBucketMetricsConfigurations_Do(func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListBucketMetricsConfigurations_ReturnAll(t *testing.T, r0 *s3.ListBucketMetricsConfigurationsOutput, r1 error) {
+	new(s3Client)._ListBucketMetricsConfigurations_DoAll(t, func(context.Context, *s3.ListBucketMetricsConfigurationsInput, ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListBucketMetricsConfigurations_Calls() []_s3Client_ListBucketMetricsConfigurations_Call {
@@ -4076,6 +8303,26 @@ func (_recv *s3Client) _ListBucketMetricsConfigurations_Calls() []_s3Client_List
 	return _dat.ListBucketMetricsConfigurationsCalls
 }
 
+func (s3Client) _ListBucketMetricsConfigurations_AllCalls() []_s3Client_ListBucketMetricsConfigurations_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketMetricsConfigurationsCalls
+}
+
+func (s3Client) _ListBucketMetricsConfigurations_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListBucketMetricsConfigurationsCalls = []_s3Client_ListBucketMetricsConfigurations_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListBucketMetricsConfigurationsCalls = []_s3Client_ListBucketMetricsConfigurations_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListBuckets(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListBuckets: nil pointer receiver")
@@ -4083,14 +8330,25 @@ func (_recv *s3Client) ListBuckets(ctx context.Context, params *s3.ListBucketsIn
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListBucketsCalls = append(_dat.ListBucketsCalls, _s3Client_ListBuckets_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListBuckets
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListBucketsCalls = append(_all.ListBucketsCalls, _s3Client_ListBuckets_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
 	if len(_dat.ListBucketsMocks) > 0 {
 		_fn = _dat.ListBucketsMocks[0]
 		if len(_dat.ListBucketsMocks) > 1 {
 			_dat.ListBucketsMocks = _dat.ListBucketsMocks[1:]
 		}
+	} else if len(_all.ListBucketsMocks) > 0 {
+		_fn = _all.ListBucketsMocks[0]
+		if len(_all.ListBucketsMocks) > 1 {
+			_all.ListBucketsMocks = _all.ListBucketsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListBuckets
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4112,16 +8370,43 @@ func (_recv *s3Client) _ListBuckets_Do(fn func(context.Context, *s3.ListBucketsI
 	}
 }
 
-func (_recv *s3Client) _ListBuckets_Stub() {
-	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (r0 *s3.ListBucketsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListBuckets_DoAll(t *testing.T, fn func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListBucketsMocks = []func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error){}
+	} else if len(_dat.ListBucketsMocks) < 2 {
+		_dat.ListBucketsMocks = []func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error){fn, fn}
+	} else {
+		_dat.ListBucketsMocks = _dat.ListBucketsMocks[:len(_dat.ListBucketsMocks)-1]
+		_dat.ListBucketsMocks = append(_dat.ListBucketsMocks, fn)
+		_dat.ListBucketsMocks = append(_dat.ListBucketsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListBucketsMocks = []func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListBuckets_Stub() {
+	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (r0 *s3.ListBucketsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListBuckets_StubAll(t *testing.T) {
+	new(s3Client)._ListBuckets_DoAll(t, func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (r0 *s3.ListBucketsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListBuckets_Return(r0 *s3.ListBucketsOutput, r1 error) {
-	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListBuckets_Do(func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListBuckets_ReturnAll(t *testing.T, r0 *s3.ListBucketsOutput, r1 error) {
+	new(s3Client)._ListBuckets_DoAll(t, func(context.Context, *s3.ListBucketsInput, ...func(*s3.Options)) (*s3.ListBucketsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListBuckets_Calls() []_s3Client_ListBuckets_Call {
@@ -4134,6 +8419,142 @@ func (_recv *s3Client) _ListBuckets_Calls() []_s3Client_ListBuckets_Call {
 	return _dat.ListBucketsCalls
 }
 
+func (s3Client) _ListBuckets_AllCalls() []_s3Client_ListBuckets_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListBucketsCalls
+}
+
+func (s3Client) _ListBuckets_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListBucketsCalls = []_s3Client_ListBuckets_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListBucketsCalls = []_s3Client_ListBuckets_Call{}
+	})
+}
+
+
+func (_recv *s3Client) ListDirectoryBuckets(ctx context.Context, params *s3.ListDirectoryBucketsInput, optFns ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error) {
+	if _recv == nil {
+		panic("s3Client.ListDirectoryBuckets: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.ListDirectoryBucketsCalls = append(_dat.ListDirectoryBucketsCalls, _s3Client_ListDirectoryBuckets_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListDirectoryBucketsCalls = append(_all.ListDirectoryBucketsCalls, _s3Client_ListDirectoryBuckets_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error)
+	if len(_dat.ListDirectoryBucketsMocks) > 0 {
+		_fn = _dat.ListDirectoryBucketsMocks[0]
+		if len(_dat.ListDirectoryBucketsMocks) > 1 {
+			_dat.ListDirectoryBucketsMocks = _dat.ListDirectoryBucketsMocks[1:]
+		}
+	} else if len(_all.ListDirectoryBucketsMocks) > 0 {
+		_fn = _all.ListDirectoryBucketsMocks[0]
+		if len(_all.ListDirectoryBucketsMocks) > 1 {
+			_all.ListDirectoryBucketsMocks = _all.ListDirectoryBucketsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListDirectoryBuckets
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _ListDirectoryBuckets_Do(fn func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.ListDirectoryBuckets: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListDirectoryBucketsMocks = []func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error){}
+	} else if len(_dat.ListDirectoryBucketsMocks) < 2 {
+		_dat.ListDirectoryBucketsMocks = []func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error){fn, fn}
+	} else {
+		_dat.ListDirectoryBucketsMocks = _dat.ListDirectoryBucketsMocks[:len(_dat.ListDirectoryBucketsMocks)-1]
+		_dat.ListDirectoryBucketsMocks = append(_dat.ListDirectoryBucketsMocks, fn)
+		_dat.ListDirectoryBucketsMocks = append(_dat.ListDirectoryBucketsMocks, fn)
+	}
+}
+
+func (s3Client) _ListDirectoryBuckets_DoAll(t *testing.T, fn func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListDirectoryBucketsMocks = []func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error){}
+	} else if len(_dat.ListDirectoryBucketsMocks) < 2 {
+		_dat.ListDirectoryBucketsMocks = []func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error){fn, fn}
+	} else {
+		_dat.ListDirectoryBucketsMocks = _dat.ListDirectoryBucketsMocks[:len(_dat.ListDirectoryBucketsMocks)-1]
+		_dat.ListDirectoryBucketsMocks = append(_dat.ListDirectoryBucketsMocks, fn)
+		_dat.ListDirectoryBucketsMocks = append(_dat.ListDirectoryBucketsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListDirectoryBucketsMocks = []func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _ListDirectoryBuckets_Stub() {
+	_recv._ListDirectoryBuckets_Do(func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (r0 *s3.ListDirectoryBucketsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListDirectoryBuckets_StubAll(t *testing.T) {
+	new(s3Client)._ListDirectoryBuckets_DoAll(t, func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (r0 *s3.ListDirectoryBucketsOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _ListDirectoryBuckets_Return(r0 *s3.ListDirectoryBucketsOutput, r1 error) {
+	_recv._ListDirectoryBuckets_Do(func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListDirectoryBuckets_ReturnAll(t *testing.T, r0 *s3.ListDirectoryBucketsOutput, r1 error) {
+	new(s3Client)._ListDirectoryBuckets_DoAll(t, func(context.Context, *s3.ListDirectoryBucketsInput, ...func(*s3.Options)) (*s3.ListDirectoryBucketsOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _ListDirectoryBuckets_Calls() []_s3Client_ListDirectoryBuckets_Call {
+	if _recv == nil {
+		panic("s3Client.ListDirectoryBuckets: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListDirectoryBucketsCalls
+}
+
+func (s3Client) _ListDirectoryBuckets_AllCalls() []_s3Client_ListDirectoryBuckets_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListDirectoryBucketsCalls
+}
+
+func (s3Client) _ListDirectoryBuckets_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListDirectoryBucketsCalls = []_s3Client_ListDirectoryBuckets_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListDirectoryBucketsCalls = []_s3Client_ListDirectoryBuckets_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListMultipartUploads(ctx context.Context, params *s3.ListMultipartUploadsInput, optFns ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListMultipartUploads: nil pointer receiver")
@@ -4141,14 +8562,25 @@ func (_recv *s3Client) ListMultipartUploads(ctx context.Context, params *s3.List
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListMultipartUploadsCalls = append(_dat.ListMultipartUploadsCalls, _s3Client_ListMultipartUploads_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListMultipartUploads
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListMultipartUploadsCalls = append(_all.ListMultipartUploadsCalls, _s3Client_ListMultipartUploads_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)
 	if len(_dat.ListMultipartUploadsMocks) > 0 {
 		_fn = _dat.ListMultipartUploadsMocks[0]
 		if len(_dat.ListMultipartUploadsMocks) > 1 {
 			_dat.ListMultipartUploadsMocks = _dat.ListMultipartUploadsMocks[1:]
 		}
+	} else if len(_all.ListMultipartUploadsMocks) > 0 {
+		_fn = _all.ListMultipartUploadsMocks[0]
+		if len(_all.ListMultipartUploadsMocks) > 1 {
+			_all.ListMultipartUploadsMocks = _all.ListMultipartUploadsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListMultipartUploads
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4170,16 +8602,43 @@ func (_recv *s3Client) _ListMultipartUploads_Do(fn func(context.Context, *s3.Lis
 	}
 }
 
-func (_recv *s3Client) _ListMultipartUploads_Stub() {
-	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (r0 *s3.ListMultipartUploadsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListMultipartUploads_DoAll(t *testing.T, fn func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListMultipartUploadsMocks = []func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error){}
+	} else if len(_dat.ListMultipartUploadsMocks) < 2 {
+		_dat.ListMultipartUploadsMocks = []func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error){fn, fn}
+	} else {
+		_dat.ListMultipartUploadsMocks = _dat.ListMultipartUploadsMocks[:len(_dat.ListMultipartUploadsMocks)-1]
+		_dat.ListMultipartUploadsMocks = append(_dat.ListMultipartUploadsMocks, fn)
+		_dat.ListMultipartUploadsMocks = append(_dat.ListMultipartUploadsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListMultipartUploadsMocks = []func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListMultipartUploads_Stub() {
+	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (r0 *s3.ListMultipartUploadsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListMultipartUploads_StubAll(t *testing.T) {
+	new(s3Client)._ListMultipartUploads_DoAll(t, func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (r0 *s3.ListMultipartUploadsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListMultipartUploads_Return(r0 *s3.ListMultipartUploadsOutput, r1 error) {
-	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListMultipartUploads_Do(func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListMultipartUploads_ReturnAll(t *testing.T, r0 *s3.ListMultipartUploadsOutput, r1 error) {
+	new(s3Client)._ListMultipartUploads_DoAll(t, func(context.Context, *s3.ListMultipartUploadsInput, ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListMultipartUploads_Calls() []_s3Client_ListMultipartUploads_Call {
@@ -4192,6 +8651,26 @@ func (_recv *s3Client) _ListMultipartUploads_Calls() []_s3Client_ListMultipartUp
 	return _dat.ListMultipartUploadsCalls
 }
 
+func (s3Client) _ListMultipartUploads_AllCalls() []_s3Client_ListMultipartUploads_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListMultipartUploadsCalls
+}
+
+func (s3Client) _ListMultipartUploads_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListMultipartUploadsCalls = []_s3Client_ListMultipartUploads_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListMultipartUploadsCalls = []_s3Client_ListMultipartUploads_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListObjectVersions(ctx context.Context, params *s3.ListObjectVersionsInput, optFns ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListObjectVersions: nil pointer receiver")
@@ -4199,14 +8678,25 @@ func (_recv *s3Client) ListObjectVersions(ctx context.Context, params *s3.ListOb
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListObjectVersionsCalls = append(_dat.ListObjectVersionsCalls, _s3Client_ListObjectVersions_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListObjectVersions
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListObjectVersionsCalls = append(_all.ListObjectVersionsCalls, _s3Client_ListObjectVersions_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)
 	if len(_dat.ListObjectVersionsMocks) > 0 {
 		_fn = _dat.ListObjectVersionsMocks[0]
 		if len(_dat.ListObjectVersionsMocks) > 1 {
 			_dat.ListObjectVersionsMocks = _dat.ListObjectVersionsMocks[1:]
 		}
+	} else if len(_all.ListObjectVersionsMocks) > 0 {
+		_fn = _all.ListObjectVersionsMocks[0]
+		if len(_all.ListObjectVersionsMocks) > 1 {
+			_all.ListObjectVersionsMocks = _all.ListObjectVersionsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListObjectVersions
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4228,16 +8718,43 @@ func (_recv *s3Client) _ListObjectVersions_Do(fn func(context.Context, *s3.ListO
 	}
 }
 
-func (_recv *s3Client) _ListObjectVersions_Stub() {
-	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (r0 *s3.ListObjectVersionsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListObjectVersions_DoAll(t *testing.T, fn func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectVersionsMocks = []func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error){}
+	} else if len(_dat.ListObjectVersionsMocks) < 2 {
+		_dat.ListObjectVersionsMocks = []func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error){fn, fn}
+	} else {
+		_dat.ListObjectVersionsMocks = _dat.ListObjectVersionsMocks[:len(_dat.ListObjectVersionsMocks)-1]
+		_dat.ListObjectVersionsMocks = append(_dat.ListObjectVersionsMocks, fn)
+		_dat.ListObjectVersionsMocks = append(_dat.ListObjectVersionsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListObjectVersionsMocks = []func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListObjectVersions_Stub() {
+	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (r0 *s3.ListObjectVersionsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListObjectVersions_StubAll(t *testing.T) {
+	new(s3Client)._ListObjectVersions_DoAll(t, func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (r0 *s3.ListObjectVersionsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListObjectVersions_Return(r0 *s3.ListObjectVersionsOutput, r1 error) {
-	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListObjectVersions_Do(func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListObjectVersions_ReturnAll(t *testing.T, r0 *s3.ListObjectVersionsOutput, r1 error) {
+	new(s3Client)._ListObjectVersions_DoAll(t, func(context.Context, *s3.ListObjectVersionsInput, ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListObjectVersions_Calls() []_s3Client_ListObjectVersions_Call {
@@ -4250,6 +8767,26 @@ func (_recv *s3Client) _ListObjectVersions_Calls() []_s3Client_ListObjectVersion
 	return _dat.ListObjectVersionsCalls
 }
 
+func (s3Client) _ListObjectVersions_AllCalls() []_s3Client_ListObjectVersions_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectVersionsCalls
+}
+
+func (s3Client) _ListObjectVersions_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListObjectVersionsCalls = []_s3Client_ListObjectVersions_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListObjectVersionsCalls = []_s3Client_ListObjectVersions_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListObjects(ctx context.Context, params *s3.ListObjectsInput, optFns ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListObjects: nil pointer receiver")
@@ -4257,14 +8794,25 @@ func (_recv *s3Client) ListObjects(ctx context.Context, params *s3.ListObjectsIn
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListObjectsCalls = append(_dat.ListObjectsCalls, _s3Client_ListObjects_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListObjects
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListObjectsCalls = append(_all.ListObjectsCalls, _s3Client_ListObjects_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error)
 	if len(_dat.ListObjectsMocks) > 0 {
 		_fn = _dat.ListObjectsMocks[0]
 		if len(_dat.ListObjectsMocks) > 1 {
 			_dat.ListObjectsMocks = _dat.ListObjectsMocks[1:]
 		}
+	} else if len(_all.ListObjectsMocks) > 0 {
+		_fn = _all.ListObjectsMocks[0]
+		if len(_all.ListObjectsMocks) > 1 {
+			_all.ListObjectsMocks = _all.ListObjectsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListObjects
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4286,16 +8834,43 @@ func (_recv *s3Client) _ListObjects_Do(fn func(context.Context, *s3.ListObjectsI
 	}
 }
 
-func (_recv *s3Client) _ListObjects_Stub() {
-	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (r0 *s3.ListObjectsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListObjects_DoAll(t *testing.T, fn func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectsMocks = []func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error){}
+	} else if len(_dat.ListObjectsMocks) < 2 {
+		_dat.ListObjectsMocks = []func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error){fn, fn}
+	} else {
+		_dat.ListObjectsMocks = _dat.ListObjectsMocks[:len(_dat.ListObjectsMocks)-1]
+		_dat.ListObjectsMocks = append(_dat.ListObjectsMocks, fn)
+		_dat.ListObjectsMocks = append(_dat.ListObjectsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListObjectsMocks = []func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListObjects_Stub() {
+	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (r0 *s3.ListObjectsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListObjects_StubAll(t *testing.T) {
+	new(s3Client)._ListObjects_DoAll(t, func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (r0 *s3.ListObjectsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListObjects_Return(r0 *s3.ListObjectsOutput, r1 error) {
-	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListObjects_Do(func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListObjects_ReturnAll(t *testing.T, r0 *s3.ListObjectsOutput, r1 error) {
+	new(s3Client)._ListObjects_DoAll(t, func(context.Context, *s3.ListObjectsInput, ...func(*s3.Options)) (*s3.ListObjectsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListObjects_Calls() []_s3Client_ListObjects_Call {
@@ -4308,6 +8883,26 @@ func (_recv *s3Client) _ListObjects_Calls() []_s3Client_ListObjects_Call {
 	return _dat.ListObjectsCalls
 }
 
+func (s3Client) _ListObjects_AllCalls() []_s3Client_ListObjects_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectsCalls
+}
+
+func (s3Client) _ListObjects_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListObjectsCalls = []_s3Client_ListObjects_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListObjectsCalls = []_s3Client_ListObjects_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListObjectsV2(ctx context.Context, params *s3.ListObjectsV2Input, optFns ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
 	if _recv == nil {
 		panic("s3Client.ListObjectsV2: nil pointer receiver")
@@ -4315,14 +8910,25 @@ func (_recv *s3Client) ListObjectsV2(ctx context.Context, params *s3.ListObjects
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListObjectsV2Calls = append(_dat.ListObjectsV2Calls, _s3Client_ListObjectsV2_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListObjectsV2
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListObjectsV2Calls = append(_all.ListObjectsV2Calls, _s3Client_ListObjectsV2_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)
 	if len(_dat.ListObjectsV2Mocks) > 0 {
 		_fn = _dat.ListObjectsV2Mocks[0]
 		if len(_dat.ListObjectsV2Mocks) > 1 {
 			_dat.ListObjectsV2Mocks = _dat.ListObjectsV2Mocks[1:]
 		}
+	} else if len(_all.ListObjectsV2Mocks) > 0 {
+		_fn = _all.ListObjectsV2Mocks[0]
+		if len(_all.ListObjectsV2Mocks) > 1 {
+			_all.ListObjectsV2Mocks = _all.ListObjectsV2Mocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListObjectsV2
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4344,16 +8950,43 @@ func (_recv *s3Client) _ListObjectsV2_Do(fn func(context.Context, *s3.ListObject
 	}
 }
 
-func (_recv *s3Client) _ListObjectsV2_Stub() {
-	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (r0 *s3.ListObjectsV2Output, r1 error) {
-		return r0, r1
+func (s3Client) _ListObjectsV2_DoAll(t *testing.T, fn func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListObjectsV2Mocks = []func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error){}
+	} else if len(_dat.ListObjectsV2Mocks) < 2 {
+		_dat.ListObjectsV2Mocks = []func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error){fn, fn}
+	} else {
+		_dat.ListObjectsV2Mocks = _dat.ListObjectsV2Mocks[:len(_dat.ListObjectsV2Mocks)-1]
+		_dat.ListObjectsV2Mocks = append(_dat.ListObjectsV2Mocks, fn)
+		_dat.ListObjectsV2Mocks = append(_dat.ListObjectsV2Mocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListObjectsV2Mocks = []func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListObjectsV2_Stub() {
+	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (r0 *s3.ListObjectsV2Output, r1 error) { return })
+}
+
+func (s3Client) _ListObjectsV2_StubAll(t *testing.T) {
+	new(s3Client)._ListObjectsV2_DoAll(t, func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (r0 *s3.ListObjectsV2Output, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListObjectsV2_Return(r0 *s3.ListObjectsV2Output, r1 error) {
-	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
-		return r0, r1
-	})
+	_recv._ListObjectsV2_Do(func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) { return r0, r1 })
+}
+
+func (s3Client) _ListObjectsV2_ReturnAll(t *testing.T, r0 *s3.ListObjectsV2Output, r1 error) {
+	new(s3Client)._ListObjectsV2_DoAll(t, func(context.Context, *s3.ListObjectsV2Input, ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListObjectsV2_Calls() []_s3Client_ListObjectsV2_Call {
@@ -4366,6 +8999,26 @@ func (_recv *s3Client) _ListObjectsV2_Calls() []_s3Client_ListObjectsV2_Call {
 	return _dat.ListObjectsV2Calls
 }
 
+func (s3Client) _ListObjectsV2_AllCalls() []_s3Client_ListObjectsV2_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListObjectsV2Calls
+}
+
+func (s3Client) _ListObjectsV2_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListObjectsV2Calls = []_s3Client_ListObjectsV2_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListObjectsV2Calls = []_s3Client_ListObjectsV2_Call{}
+	})
+}
+
+
 func (_recv *s3Client) ListParts(ctx context.Context, params *s3.ListPartsInput, optFns ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.ListParts: nil pointer receiver")
@@ -4373,14 +9026,25 @@ func (_recv *s3Client) ListParts(ctx context.Context, params *s3.ListPartsInput,
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.ListPartsCalls = append(_dat.ListPartsCalls, _s3Client_ListParts_Call{ctx, params, optFns})
-	_fn := _recv.Client.ListParts
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.ListPartsCalls = append(_all.ListPartsCalls, _s3Client_ListParts_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error)
 	if len(_dat.ListPartsMocks) > 0 {
 		_fn = _dat.ListPartsMocks[0]
 		if len(_dat.ListPartsMocks) > 1 {
 			_dat.ListPartsMocks = _dat.ListPartsMocks[1:]
 		}
+	} else if len(_all.ListPartsMocks) > 0 {
+		_fn = _all.ListPartsMocks[0]
+		if len(_all.ListPartsMocks) > 1 {
+			_all.ListPartsMocks = _all.ListPartsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.ListParts
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4402,16 +9066,43 @@ func (_recv *s3Client) _ListParts_Do(fn func(context.Context, *s3.ListPartsInput
 	}
 }
 
-func (_recv *s3Client) _ListParts_Stub() {
-	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (r0 *s3.ListPartsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _ListParts_DoAll(t *testing.T, fn func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.ListPartsMocks = []func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error){}
+	} else if len(_dat.ListPartsMocks) < 2 {
+		_dat.ListPartsMocks = []func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error){fn, fn}
+	} else {
+		_dat.ListPartsMocks = _dat.ListPartsMocks[:len(_dat.ListPartsMocks)-1]
+		_dat.ListPartsMocks = append(_dat.ListPartsMocks, fn)
+		_dat.ListPartsMocks = append(_dat.ListPartsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.ListPartsMocks = []func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _ListParts_Stub() {
+	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (r0 *s3.ListPartsOutput, r1 error) { return })
+}
+
+func (s3Client) _ListParts_StubAll(t *testing.T) {
+	new(s3Client)._ListParts_DoAll(t, func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (r0 *s3.ListPartsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _ListParts_Return(r0 *s3.ListPartsOutput, r1 error) {
-	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
-		return r0, r1
-	})
+	_recv._ListParts_Do(func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _ListParts_ReturnAll(t *testing.T, r0 *s3.ListPartsOutput, r1 error) {
+	new(s3Client)._ListParts_DoAll(t, func(context.Context, *s3.ListPartsInput, ...func(*s3.Options)) (*s3.ListPartsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _ListParts_Calls() []_s3Client_ListParts_Call {
@@ -4424,6 +9115,258 @@ func (_recv *s3Client) _ListParts_Calls() []_s3Client_ListParts_Call {
 	return _dat.ListPartsCalls
 }
 
+func (s3Client) _ListParts_AllCalls() []_s3Client_ListParts_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.ListPartsCalls
+}
+
+func (s3Client) _ListParts_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.ListPartsCalls = []_s3Client_ListParts_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.ListPartsCalls = []_s3Client_ListParts_Call{}
+	})
+}
+
+
+func (_recv *s3Client) Options() s3.Options {
+	if _recv == nil {
+		panic("s3Client.Options: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.OptionsCalls = append(_dat.OptionsCalls, _s3Client_Options_Call{})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.OptionsCalls = append(_all.OptionsCalls, _s3Client_Options_Call{})
+	var _fn func() (s3.Options)
+	if len(_dat.OptionsMocks) > 0 {
+		_fn = _dat.OptionsMocks[0]
+		if len(_dat.OptionsMocks) > 1 {
+			_dat.OptionsMocks = _dat.OptionsMocks[1:]
+		}
+	} else if len(_all.OptionsMocks) > 0 {
+		_fn = _all.OptionsMocks[0]
+		if len(_all.OptionsMocks) > 1 {
+			_all.OptionsMocks = _all.OptionsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.Options
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn()
+}
+
+func (_recv *s3Client) _Options_Do(fn func() (s3.Options)) {
+	if _recv == nil {
+		panic("s3Client.Options: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.OptionsMocks = []func() (s3.Options){}
+	} else if len(_dat.OptionsMocks) < 2 {
+		_dat.OptionsMocks = []func() (s3.Options){fn, fn}
+	} else {
+		_dat.OptionsMocks = _dat.OptionsMocks[:len(_dat.OptionsMocks)-1]
+		_dat.OptionsMocks = append(_dat.OptionsMocks, fn)
+		_dat.OptionsMocks = append(_dat.OptionsMocks, fn)
+	}
+}
+
+func (s3Client) _Options_DoAll(t *testing.T, fn func() (s3.Options)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.OptionsMocks = []func() (s3.Options){}
+	} else if len(_dat.OptionsMocks) < 2 {
+		_dat.OptionsMocks = []func() (s3.Options){fn, fn}
+	} else {
+		_dat.OptionsMocks = _dat.OptionsMocks[:len(_dat.OptionsMocks)-1]
+		_dat.OptionsMocks = append(_dat.OptionsMocks, fn)
+		_dat.OptionsMocks = append(_dat.OptionsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.OptionsMocks = []func() (s3.Options){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _Options_Stub() {
+	_recv._Options_Do(func() (r0 s3.Options) { return })
+}
+
+func (s3Client) _Options_StubAll(t *testing.T) {
+	new(s3Client)._Options_DoAll(t, func() (r0 s3.Options) { return })
+}
+
+func (_recv *s3Client) _Options_Return(r0 s3.Options) {
+	_recv._Options_Do(func() (s3.Options) { return r0 })
+}
+
+func (s3Client) _Options_ReturnAll(t *testing.T, r0 s3.Options) {
+	new(s3Client)._Options_DoAll(t, func() (s3.Options) { return r0 })
+}
+
+func (_recv *s3Client) _Options_Calls() []_s3Client_Options_Call {
+	if _recv == nil {
+		panic("s3Client.Options: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.OptionsCalls
+}
+
+func (s3Client) _Options_AllCalls() []_s3Client_Options_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.OptionsCalls
+}
+
+func (s3Client) _Options_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.OptionsCalls = []_s3Client_Options_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.OptionsCalls = []_s3Client_Options_Call{}
+	})
+}
+
+
+func (_recv *s3Client) PutBucketAbac(ctx context.Context, params *s3.PutBucketAbacInput, optFns ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error) {
+	if _recv == nil {
+		panic("s3Client.PutBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.PutBucketAbacCalls = append(_dat.PutBucketAbacCalls, _s3Client_PutBucketAbac_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketAbacCalls = append(_all.PutBucketAbacCalls, _s3Client_PutBucketAbac_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error)
+	if len(_dat.PutBucketAbacMocks) > 0 {
+		_fn = _dat.PutBucketAbacMocks[0]
+		if len(_dat.PutBucketAbacMocks) > 1 {
+			_dat.PutBucketAbacMocks = _dat.PutBucketAbacMocks[1:]
+		}
+	} else if len(_all.PutBucketAbacMocks) > 0 {
+		_fn = _all.PutBucketAbacMocks[0]
+		if len(_all.PutBucketAbacMocks) > 1 {
+			_all.PutBucketAbacMocks = _all.PutBucketAbacMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketAbac
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _PutBucketAbac_Do(fn func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.PutBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAbacMocks = []func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error){}
+	} else if len(_dat.PutBucketAbacMocks) < 2 {
+		_dat.PutBucketAbacMocks = []func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAbacMocks = _dat.PutBucketAbacMocks[:len(_dat.PutBucketAbacMocks)-1]
+		_dat.PutBucketAbacMocks = append(_dat.PutBucketAbacMocks, fn)
+		_dat.PutBucketAbacMocks = append(_dat.PutBucketAbacMocks, fn)
+	}
+}
+
+func (s3Client) _PutBucketAbac_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAbacMocks = []func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error){}
+	} else if len(_dat.PutBucketAbacMocks) < 2 {
+		_dat.PutBucketAbacMocks = []func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAbacMocks = _dat.PutBucketAbacMocks[:len(_dat.PutBucketAbacMocks)-1]
+		_dat.PutBucketAbacMocks = append(_dat.PutBucketAbacMocks, fn)
+		_dat.PutBucketAbacMocks = append(_dat.PutBucketAbacMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketAbacMocks = []func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _PutBucketAbac_Stub() {
+	_recv._PutBucketAbac_Do(func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (r0 *s3.PutBucketAbacOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketAbac_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketAbac_DoAll(t, func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (r0 *s3.PutBucketAbacOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _PutBucketAbac_Return(r0 *s3.PutBucketAbacOutput, r1 error) {
+	_recv._PutBucketAbac_Do(func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketAbac_ReturnAll(t *testing.T, r0 *s3.PutBucketAbacOutput, r1 error) {
+	new(s3Client)._PutBucketAbac_DoAll(t, func(context.Context, *s3.PutBucketAbacInput, ...func(*s3.Options)) (*s3.PutBucketAbacOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _PutBucketAbac_Calls() []_s3Client_PutBucketAbac_Call {
+	if _recv == nil {
+		panic("s3Client.PutBucketAbac: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAbacCalls
+}
+
+func (s3Client) _PutBucketAbac_AllCalls() []_s3Client_PutBucketAbac_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAbacCalls
+}
+
+func (s3Client) _PutBucketAbac_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketAbacCalls = []_s3Client_PutBucketAbac_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketAbacCalls = []_s3Client_PutBucketAbac_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketAccelerateConfiguration(ctx context.Context, params *s3.PutBucketAccelerateConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketAccelerateConfiguration: nil pointer receiver")
@@ -4431,14 +9374,25 @@ func (_recv *s3Client) PutBucketAccelerateConfiguration(ctx context.Context, par
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketAccelerateConfigurationCalls = append(_dat.PutBucketAccelerateConfigurationCalls, _s3Client_PutBucketAccelerateConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketAccelerateConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketAccelerateConfigurationCalls = append(_all.PutBucketAccelerateConfigurationCalls, _s3Client_PutBucketAccelerateConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)
 	if len(_dat.PutBucketAccelerateConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketAccelerateConfigurationMocks[0]
 		if len(_dat.PutBucketAccelerateConfigurationMocks) > 1 {
 			_dat.PutBucketAccelerateConfigurationMocks = _dat.PutBucketAccelerateConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketAccelerateConfigurationMocks) > 0 {
+		_fn = _all.PutBucketAccelerateConfigurationMocks[0]
+		if len(_all.PutBucketAccelerateConfigurationMocks) > 1 {
+			_all.PutBucketAccelerateConfigurationMocks = _all.PutBucketAccelerateConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketAccelerateConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4460,16 +9414,43 @@ func (_recv *s3Client) _PutBucketAccelerateConfiguration_Do(fn func(context.Cont
 	}
 }
 
-func (_recv *s3Client) _PutBucketAccelerateConfiguration_Stub() {
-	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketAccelerateConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAccelerateConfigurationMocks = []func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error){}
+	} else if len(_dat.PutBucketAccelerateConfigurationMocks) < 2 {
+		_dat.PutBucketAccelerateConfigurationMocks = []func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAccelerateConfigurationMocks = _dat.PutBucketAccelerateConfigurationMocks[:len(_dat.PutBucketAccelerateConfigurationMocks)-1]
+		_dat.PutBucketAccelerateConfigurationMocks = append(_dat.PutBucketAccelerateConfigurationMocks, fn)
+		_dat.PutBucketAccelerateConfigurationMocks = append(_dat.PutBucketAccelerateConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketAccelerateConfigurationMocks = []func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketAccelerateConfiguration_Stub() {
+	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketAccelerateConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketAccelerateConfiguration_DoAll(t, func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketAccelerateConfiguration_Return(r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) {
-	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketAccelerateConfiguration_Do(func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketAccelerateConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketAccelerateConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketAccelerateConfiguration_DoAll(t, func(context.Context, *s3.PutBucketAccelerateConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAccelerateConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketAccelerateConfiguration_Calls() []_s3Client_PutBucketAccelerateConfiguration_Call {
@@ -4482,6 +9463,26 @@ func (_recv *s3Client) _PutBucketAccelerateConfiguration_Calls() []_s3Client_Put
 	return _dat.PutBucketAccelerateConfigurationCalls
 }
 
+func (s3Client) _PutBucketAccelerateConfiguration_AllCalls() []_s3Client_PutBucketAccelerateConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAccelerateConfigurationCalls
+}
+
+func (s3Client) _PutBucketAccelerateConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketAccelerateConfigurationCalls = []_s3Client_PutBucketAccelerateConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketAccelerateConfigurationCalls = []_s3Client_PutBucketAccelerateConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketAcl(ctx context.Context, params *s3.PutBucketAclInput, optFns ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketAcl: nil pointer receiver")
@@ -4489,14 +9490,25 @@ func (_recv *s3Client) PutBucketAcl(ctx context.Context, params *s3.PutBucketAcl
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketAclCalls = append(_dat.PutBucketAclCalls, _s3Client_PutBucketAcl_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketAcl
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketAclCalls = append(_all.PutBucketAclCalls, _s3Client_PutBucketAcl_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)
 	if len(_dat.PutBucketAclMocks) > 0 {
 		_fn = _dat.PutBucketAclMocks[0]
 		if len(_dat.PutBucketAclMocks) > 1 {
 			_dat.PutBucketAclMocks = _dat.PutBucketAclMocks[1:]
 		}
+	} else if len(_all.PutBucketAclMocks) > 0 {
+		_fn = _all.PutBucketAclMocks[0]
+		if len(_all.PutBucketAclMocks) > 1 {
+			_all.PutBucketAclMocks = _all.PutBucketAclMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketAcl
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4518,16 +9530,43 @@ func (_recv *s3Client) _PutBucketAcl_Do(fn func(context.Context, *s3.PutBucketAc
 	}
 }
 
-func (_recv *s3Client) _PutBucketAcl_Stub() {
-	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (r0 *s3.PutBucketAclOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketAcl_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAclMocks = []func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error){}
+	} else if len(_dat.PutBucketAclMocks) < 2 {
+		_dat.PutBucketAclMocks = []func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAclMocks = _dat.PutBucketAclMocks[:len(_dat.PutBucketAclMocks)-1]
+		_dat.PutBucketAclMocks = append(_dat.PutBucketAclMocks, fn)
+		_dat.PutBucketAclMocks = append(_dat.PutBucketAclMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketAclMocks = []func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketAcl_Stub() {
+	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (r0 *s3.PutBucketAclOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketAcl_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketAcl_DoAll(t, func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (r0 *s3.PutBucketAclOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketAcl_Return(r0 *s3.PutBucketAclOutput, r1 error) {
-	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketAcl_Do(func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketAcl_ReturnAll(t *testing.T, r0 *s3.PutBucketAclOutput, r1 error) {
+	new(s3Client)._PutBucketAcl_DoAll(t, func(context.Context, *s3.PutBucketAclInput, ...func(*s3.Options)) (*s3.PutBucketAclOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketAcl_Calls() []_s3Client_PutBucketAcl_Call {
@@ -4540,6 +9579,26 @@ func (_recv *s3Client) _PutBucketAcl_Calls() []_s3Client_PutBucketAcl_Call {
 	return _dat.PutBucketAclCalls
 }
 
+func (s3Client) _PutBucketAcl_AllCalls() []_s3Client_PutBucketAcl_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAclCalls
+}
+
+func (s3Client) _PutBucketAcl_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketAclCalls = []_s3Client_PutBucketAcl_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketAclCalls = []_s3Client_PutBucketAcl_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketAnalyticsConfiguration(ctx context.Context, params *s3.PutBucketAnalyticsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketAnalyticsConfiguration: nil pointer receiver")
@@ -4547,14 +9606,25 @@ func (_recv *s3Client) PutBucketAnalyticsConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketAnalyticsConfigurationCalls = append(_dat.PutBucketAnalyticsConfigurationCalls, _s3Client_PutBucketAnalyticsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketAnalyticsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketAnalyticsConfigurationCalls = append(_all.PutBucketAnalyticsConfigurationCalls, _s3Client_PutBucketAnalyticsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)
 	if len(_dat.PutBucketAnalyticsConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketAnalyticsConfigurationMocks[0]
 		if len(_dat.PutBucketAnalyticsConfigurationMocks) > 1 {
 			_dat.PutBucketAnalyticsConfigurationMocks = _dat.PutBucketAnalyticsConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketAnalyticsConfigurationMocks) > 0 {
+		_fn = _all.PutBucketAnalyticsConfigurationMocks[0]
+		if len(_all.PutBucketAnalyticsConfigurationMocks) > 1 {
+			_all.PutBucketAnalyticsConfigurationMocks = _all.PutBucketAnalyticsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketAnalyticsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4576,16 +9646,43 @@ func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Stub() {
-	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketAnalyticsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error){}
+	} else if len(_dat.PutBucketAnalyticsConfigurationMocks) < 2 {
+		_dat.PutBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketAnalyticsConfigurationMocks = _dat.PutBucketAnalyticsConfigurationMocks[:len(_dat.PutBucketAnalyticsConfigurationMocks)-1]
+		_dat.PutBucketAnalyticsConfigurationMocks = append(_dat.PutBucketAnalyticsConfigurationMocks, fn)
+		_dat.PutBucketAnalyticsConfigurationMocks = append(_dat.PutBucketAnalyticsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketAnalyticsConfigurationMocks = []func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Stub() {
+	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketAnalyticsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Return(r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) {
-	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketAnalyticsConfiguration_Do(func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketAnalyticsConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketAnalyticsConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketAnalyticsConfiguration_DoAll(t, func(context.Context, *s3.PutBucketAnalyticsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketAnalyticsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Calls() []_s3Client_PutBucketAnalyticsConfiguration_Call {
@@ -4598,6 +9695,26 @@ func (_recv *s3Client) _PutBucketAnalyticsConfiguration_Calls() []_s3Client_PutB
 	return _dat.PutBucketAnalyticsConfigurationCalls
 }
 
+func (s3Client) _PutBucketAnalyticsConfiguration_AllCalls() []_s3Client_PutBucketAnalyticsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketAnalyticsConfigurationCalls
+}
+
+func (s3Client) _PutBucketAnalyticsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketAnalyticsConfigurationCalls = []_s3Client_PutBucketAnalyticsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketAnalyticsConfigurationCalls = []_s3Client_PutBucketAnalyticsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketCors(ctx context.Context, params *s3.PutBucketCorsInput, optFns ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketCors: nil pointer receiver")
@@ -4605,14 +9722,25 @@ func (_recv *s3Client) PutBucketCors(ctx context.Context, params *s3.PutBucketCo
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketCorsCalls = append(_dat.PutBucketCorsCalls, _s3Client_PutBucketCors_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketCors
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketCorsCalls = append(_all.PutBucketCorsCalls, _s3Client_PutBucketCors_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)
 	if len(_dat.PutBucketCorsMocks) > 0 {
 		_fn = _dat.PutBucketCorsMocks[0]
 		if len(_dat.PutBucketCorsMocks) > 1 {
 			_dat.PutBucketCorsMocks = _dat.PutBucketCorsMocks[1:]
 		}
+	} else if len(_all.PutBucketCorsMocks) > 0 {
+		_fn = _all.PutBucketCorsMocks[0]
+		if len(_all.PutBucketCorsMocks) > 1 {
+			_all.PutBucketCorsMocks = _all.PutBucketCorsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketCors
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4634,16 +9762,43 @@ func (_recv *s3Client) _PutBucketCors_Do(fn func(context.Context, *s3.PutBucketC
 	}
 }
 
-func (_recv *s3Client) _PutBucketCors_Stub() {
-	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (r0 *s3.PutBucketCorsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketCors_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketCorsMocks = []func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error){}
+	} else if len(_dat.PutBucketCorsMocks) < 2 {
+		_dat.PutBucketCorsMocks = []func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketCorsMocks = _dat.PutBucketCorsMocks[:len(_dat.PutBucketCorsMocks)-1]
+		_dat.PutBucketCorsMocks = append(_dat.PutBucketCorsMocks, fn)
+		_dat.PutBucketCorsMocks = append(_dat.PutBucketCorsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketCorsMocks = []func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketCors_Stub() {
+	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (r0 *s3.PutBucketCorsOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketCors_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketCors_DoAll(t, func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (r0 *s3.PutBucketCorsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketCors_Return(r0 *s3.PutBucketCorsOutput, r1 error) {
-	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketCors_Do(func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketCors_ReturnAll(t *testing.T, r0 *s3.PutBucketCorsOutput, r1 error) {
+	new(s3Client)._PutBucketCors_DoAll(t, func(context.Context, *s3.PutBucketCorsInput, ...func(*s3.Options)) (*s3.PutBucketCorsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketCors_Calls() []_s3Client_PutBucketCors_Call {
@@ -4656,6 +9811,26 @@ func (_recv *s3Client) _PutBucketCors_Calls() []_s3Client_PutBucketCors_Call {
 	return _dat.PutBucketCorsCalls
 }
 
+func (s3Client) _PutBucketCors_AllCalls() []_s3Client_PutBucketCors_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketCorsCalls
+}
+
+func (s3Client) _PutBucketCors_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketCorsCalls = []_s3Client_PutBucketCors_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketCorsCalls = []_s3Client_PutBucketCors_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketEncryption(ctx context.Context, params *s3.PutBucketEncryptionInput, optFns ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketEncryption: nil pointer receiver")
@@ -4663,14 +9838,25 @@ func (_recv *s3Client) PutBucketEncryption(ctx context.Context, params *s3.PutBu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketEncryptionCalls = append(_dat.PutBucketEncryptionCalls, _s3Client_PutBucketEncryption_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketEncryption
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketEncryptionCalls = append(_all.PutBucketEncryptionCalls, _s3Client_PutBucketEncryption_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)
 	if len(_dat.PutBucketEncryptionMocks) > 0 {
 		_fn = _dat.PutBucketEncryptionMocks[0]
 		if len(_dat.PutBucketEncryptionMocks) > 1 {
 			_dat.PutBucketEncryptionMocks = _dat.PutBucketEncryptionMocks[1:]
 		}
+	} else if len(_all.PutBucketEncryptionMocks) > 0 {
+		_fn = _all.PutBucketEncryptionMocks[0]
+		if len(_all.PutBucketEncryptionMocks) > 1 {
+			_all.PutBucketEncryptionMocks = _all.PutBucketEncryptionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketEncryption
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4692,16 +9878,43 @@ func (_recv *s3Client) _PutBucketEncryption_Do(fn func(context.Context, *s3.PutB
 	}
 }
 
-func (_recv *s3Client) _PutBucketEncryption_Stub() {
-	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.PutBucketEncryptionOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketEncryption_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketEncryptionMocks = []func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error){}
+	} else if len(_dat.PutBucketEncryptionMocks) < 2 {
+		_dat.PutBucketEncryptionMocks = []func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketEncryptionMocks = _dat.PutBucketEncryptionMocks[:len(_dat.PutBucketEncryptionMocks)-1]
+		_dat.PutBucketEncryptionMocks = append(_dat.PutBucketEncryptionMocks, fn)
+		_dat.PutBucketEncryptionMocks = append(_dat.PutBucketEncryptionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketEncryptionMocks = []func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketEncryption_Stub() {
+	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.PutBucketEncryptionOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketEncryption_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketEncryption_DoAll(t, func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (r0 *s3.PutBucketEncryptionOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketEncryption_Return(r0 *s3.PutBucketEncryptionOutput, r1 error) {
-	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketEncryption_Do(func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketEncryption_ReturnAll(t *testing.T, r0 *s3.PutBucketEncryptionOutput, r1 error) {
+	new(s3Client)._PutBucketEncryption_DoAll(t, func(context.Context, *s3.PutBucketEncryptionInput, ...func(*s3.Options)) (*s3.PutBucketEncryptionOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketEncryption_Calls() []_s3Client_PutBucketEncryption_Call {
@@ -4714,6 +9927,26 @@ func (_recv *s3Client) _PutBucketEncryption_Calls() []_s3Client_PutBucketEncrypt
 	return _dat.PutBucketEncryptionCalls
 }
 
+func (s3Client) _PutBucketEncryption_AllCalls() []_s3Client_PutBucketEncryption_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketEncryptionCalls
+}
+
+func (s3Client) _PutBucketEncryption_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketEncryptionCalls = []_s3Client_PutBucketEncryption_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketEncryptionCalls = []_s3Client_PutBucketEncryption_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketIntelligentTieringConfiguration(ctx context.Context, params *s3.PutBucketIntelligentTieringConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketIntelligentTieringConfiguration: nil pointer receiver")
@@ -4721,14 +9954,25 @@ func (_recv *s3Client) PutBucketIntelligentTieringConfiguration(ctx context.Cont
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketIntelligentTieringConfigurationCalls = append(_dat.PutBucketIntelligentTieringConfigurationCalls, _s3Client_PutBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketIntelligentTieringConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketIntelligentTieringConfigurationCalls = append(_all.PutBucketIntelligentTieringConfigurationCalls, _s3Client_PutBucketIntelligentTieringConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)
 	if len(_dat.PutBucketIntelligentTieringConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketIntelligentTieringConfigurationMocks[0]
 		if len(_dat.PutBucketIntelligentTieringConfigurationMocks) > 1 {
 			_dat.PutBucketIntelligentTieringConfigurationMocks = _dat.PutBucketIntelligentTieringConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketIntelligentTieringConfigurationMocks) > 0 {
+		_fn = _all.PutBucketIntelligentTieringConfigurationMocks[0]
+		if len(_all.PutBucketIntelligentTieringConfigurationMocks) > 1 {
+			_all.PutBucketIntelligentTieringConfigurationMocks = _all.PutBucketIntelligentTieringConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketIntelligentTieringConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4750,16 +9994,43 @@ func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Do(fn func(cont
 	}
 }
 
-func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Stub() {
-	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketIntelligentTieringConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error){}
+	} else if len(_dat.PutBucketIntelligentTieringConfigurationMocks) < 2 {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketIntelligentTieringConfigurationMocks = _dat.PutBucketIntelligentTieringConfigurationMocks[:len(_dat.PutBucketIntelligentTieringConfigurationMocks)-1]
+		_dat.PutBucketIntelligentTieringConfigurationMocks = append(_dat.PutBucketIntelligentTieringConfigurationMocks, fn)
+		_dat.PutBucketIntelligentTieringConfigurationMocks = append(_dat.PutBucketIntelligentTieringConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketIntelligentTieringConfigurationMocks = []func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Stub() {
+	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketIntelligentTieringConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Return(r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) {
-	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketIntelligentTieringConfiguration_Do(func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketIntelligentTieringConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketIntelligentTieringConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketIntelligentTieringConfiguration_DoAll(t, func(context.Context, *s3.PutBucketIntelligentTieringConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketIntelligentTieringConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Calls() []_s3Client_PutBucketIntelligentTieringConfiguration_Call {
@@ -4772,6 +10043,26 @@ func (_recv *s3Client) _PutBucketIntelligentTieringConfiguration_Calls() []_s3Cl
 	return _dat.PutBucketIntelligentTieringConfigurationCalls
 }
 
+func (s3Client) _PutBucketIntelligentTieringConfiguration_AllCalls() []_s3Client_PutBucketIntelligentTieringConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketIntelligentTieringConfigurationCalls
+}
+
+func (s3Client) _PutBucketIntelligentTieringConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketIntelligentTieringConfigurationCalls = []_s3Client_PutBucketIntelligentTieringConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketIntelligentTieringConfigurationCalls = []_s3Client_PutBucketIntelligentTieringConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketInventoryConfiguration(ctx context.Context, params *s3.PutBucketInventoryConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketInventoryConfiguration: nil pointer receiver")
@@ -4779,14 +10070,25 @@ func (_recv *s3Client) PutBucketInventoryConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketInventoryConfigurationCalls = append(_dat.PutBucketInventoryConfigurationCalls, _s3Client_PutBucketInventoryConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketInventoryConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketInventoryConfigurationCalls = append(_all.PutBucketInventoryConfigurationCalls, _s3Client_PutBucketInventoryConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)
 	if len(_dat.PutBucketInventoryConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketInventoryConfigurationMocks[0]
 		if len(_dat.PutBucketInventoryConfigurationMocks) > 1 {
 			_dat.PutBucketInventoryConfigurationMocks = _dat.PutBucketInventoryConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketInventoryConfigurationMocks) > 0 {
+		_fn = _all.PutBucketInventoryConfigurationMocks[0]
+		if len(_all.PutBucketInventoryConfigurationMocks) > 1 {
+			_all.PutBucketInventoryConfigurationMocks = _all.PutBucketInventoryConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketInventoryConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4808,16 +10110,43 @@ func (_recv *s3Client) _PutBucketInventoryConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _PutBucketInventoryConfiguration_Stub() {
-	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketInventoryConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketInventoryConfigurationMocks = []func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error){}
+	} else if len(_dat.PutBucketInventoryConfigurationMocks) < 2 {
+		_dat.PutBucketInventoryConfigurationMocks = []func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketInventoryConfigurationMocks = _dat.PutBucketInventoryConfigurationMocks[:len(_dat.PutBucketInventoryConfigurationMocks)-1]
+		_dat.PutBucketInventoryConfigurationMocks = append(_dat.PutBucketInventoryConfigurationMocks, fn)
+		_dat.PutBucketInventoryConfigurationMocks = append(_dat.PutBucketInventoryConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketInventoryConfigurationMocks = []func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketInventoryConfiguration_Stub() {
+	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketInventoryConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketInventoryConfiguration_Return(r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) {
-	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketInventoryConfiguration_Do(func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketInventoryConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketInventoryConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketInventoryConfiguration_DoAll(t, func(context.Context, *s3.PutBucketInventoryConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketInventoryConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketInventoryConfiguration_Calls() []_s3Client_PutBucketInventoryConfiguration_Call {
@@ -4830,6 +10159,26 @@ func (_recv *s3Client) _PutBucketInventoryConfiguration_Calls() []_s3Client_PutB
 	return _dat.PutBucketInventoryConfigurationCalls
 }
 
+func (s3Client) _PutBucketInventoryConfiguration_AllCalls() []_s3Client_PutBucketInventoryConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketInventoryConfigurationCalls
+}
+
+func (s3Client) _PutBucketInventoryConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketInventoryConfigurationCalls = []_s3Client_PutBucketInventoryConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketInventoryConfigurationCalls = []_s3Client_PutBucketInventoryConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketLifecycleConfiguration(ctx context.Context, params *s3.PutBucketLifecycleConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketLifecycleConfiguration: nil pointer receiver")
@@ -4837,14 +10186,25 @@ func (_recv *s3Client) PutBucketLifecycleConfiguration(ctx context.Context, para
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketLifecycleConfigurationCalls = append(_dat.PutBucketLifecycleConfigurationCalls, _s3Client_PutBucketLifecycleConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketLifecycleConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketLifecycleConfigurationCalls = append(_all.PutBucketLifecycleConfigurationCalls, _s3Client_PutBucketLifecycleConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)
 	if len(_dat.PutBucketLifecycleConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketLifecycleConfigurationMocks[0]
 		if len(_dat.PutBucketLifecycleConfigurationMocks) > 1 {
 			_dat.PutBucketLifecycleConfigurationMocks = _dat.PutBucketLifecycleConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketLifecycleConfigurationMocks) > 0 {
+		_fn = _all.PutBucketLifecycleConfigurationMocks[0]
+		if len(_all.PutBucketLifecycleConfigurationMocks) > 1 {
+			_all.PutBucketLifecycleConfigurationMocks = _all.PutBucketLifecycleConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketLifecycleConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4866,16 +10226,43 @@ func (_recv *s3Client) _PutBucketLifecycleConfiguration_Do(fn func(context.Conte
 	}
 }
 
-func (_recv *s3Client) _PutBucketLifecycleConfiguration_Stub() {
-	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketLifecycleConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketLifecycleConfigurationMocks = []func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error){}
+	} else if len(_dat.PutBucketLifecycleConfigurationMocks) < 2 {
+		_dat.PutBucketLifecycleConfigurationMocks = []func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketLifecycleConfigurationMocks = _dat.PutBucketLifecycleConfigurationMocks[:len(_dat.PutBucketLifecycleConfigurationMocks)-1]
+		_dat.PutBucketLifecycleConfigurationMocks = append(_dat.PutBucketLifecycleConfigurationMocks, fn)
+		_dat.PutBucketLifecycleConfigurationMocks = append(_dat.PutBucketLifecycleConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketLifecycleConfigurationMocks = []func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketLifecycleConfiguration_Stub() {
+	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketLifecycleConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketLifecycleConfiguration_DoAll(t, func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketLifecycleConfiguration_Return(r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) {
-	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketLifecycleConfiguration_Do(func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketLifecycleConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketLifecycleConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketLifecycleConfiguration_DoAll(t, func(context.Context, *s3.PutBucketLifecycleConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketLifecycleConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketLifecycleConfiguration_Calls() []_s3Client_PutBucketLifecycleConfiguration_Call {
@@ -4888,6 +10275,26 @@ func (_recv *s3Client) _PutBucketLifecycleConfiguration_Calls() []_s3Client_PutB
 	return _dat.PutBucketLifecycleConfigurationCalls
 }
 
+func (s3Client) _PutBucketLifecycleConfiguration_AllCalls() []_s3Client_PutBucketLifecycleConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketLifecycleConfigurationCalls
+}
+
+func (s3Client) _PutBucketLifecycleConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketLifecycleConfigurationCalls = []_s3Client_PutBucketLifecycleConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketLifecycleConfigurationCalls = []_s3Client_PutBucketLifecycleConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketLogging(ctx context.Context, params *s3.PutBucketLoggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketLogging: nil pointer receiver")
@@ -4895,14 +10302,25 @@ func (_recv *s3Client) PutBucketLogging(ctx context.Context, params *s3.PutBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketLoggingCalls = append(_dat.PutBucketLoggingCalls, _s3Client_PutBucketLogging_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketLogging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketLoggingCalls = append(_all.PutBucketLoggingCalls, _s3Client_PutBucketLogging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)
 	if len(_dat.PutBucketLoggingMocks) > 0 {
 		_fn = _dat.PutBucketLoggingMocks[0]
 		if len(_dat.PutBucketLoggingMocks) > 1 {
 			_dat.PutBucketLoggingMocks = _dat.PutBucketLoggingMocks[1:]
 		}
+	} else if len(_all.PutBucketLoggingMocks) > 0 {
+		_fn = _all.PutBucketLoggingMocks[0]
+		if len(_all.PutBucketLoggingMocks) > 1 {
+			_all.PutBucketLoggingMocks = _all.PutBucketLoggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketLogging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4924,16 +10342,43 @@ func (_recv *s3Client) _PutBucketLogging_Do(fn func(context.Context, *s3.PutBuck
 	}
 }
 
-func (_recv *s3Client) _PutBucketLogging_Stub() {
-	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketLoggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketLogging_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketLoggingMocks = []func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error){}
+	} else if len(_dat.PutBucketLoggingMocks) < 2 {
+		_dat.PutBucketLoggingMocks = []func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketLoggingMocks = _dat.PutBucketLoggingMocks[:len(_dat.PutBucketLoggingMocks)-1]
+		_dat.PutBucketLoggingMocks = append(_dat.PutBucketLoggingMocks, fn)
+		_dat.PutBucketLoggingMocks = append(_dat.PutBucketLoggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketLoggingMocks = []func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketLogging_Stub() {
+	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketLoggingOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketLogging_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketLogging_DoAll(t, func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketLoggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketLogging_Return(r0 *s3.PutBucketLoggingOutput, r1 error) {
-	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketLogging_Do(func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketLogging_ReturnAll(t *testing.T, r0 *s3.PutBucketLoggingOutput, r1 error) {
+	new(s3Client)._PutBucketLogging_DoAll(t, func(context.Context, *s3.PutBucketLoggingInput, ...func(*s3.Options)) (*s3.PutBucketLoggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketLogging_Calls() []_s3Client_PutBucketLogging_Call {
@@ -4946,6 +10391,26 @@ func (_recv *s3Client) _PutBucketLogging_Calls() []_s3Client_PutBucketLogging_Ca
 	return _dat.PutBucketLoggingCalls
 }
 
+func (s3Client) _PutBucketLogging_AllCalls() []_s3Client_PutBucketLogging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketLoggingCalls
+}
+
+func (s3Client) _PutBucketLogging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketLoggingCalls = []_s3Client_PutBucketLogging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketLoggingCalls = []_s3Client_PutBucketLogging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketMetricsConfiguration(ctx context.Context, params *s3.PutBucketMetricsConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketMetricsConfiguration: nil pointer receiver")
@@ -4953,14 +10418,25 @@ func (_recv *s3Client) PutBucketMetricsConfiguration(ctx context.Context, params
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketMetricsConfigurationCalls = append(_dat.PutBucketMetricsConfigurationCalls, _s3Client_PutBucketMetricsConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketMetricsConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketMetricsConfigurationCalls = append(_all.PutBucketMetricsConfigurationCalls, _s3Client_PutBucketMetricsConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)
 	if len(_dat.PutBucketMetricsConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketMetricsConfigurationMocks[0]
 		if len(_dat.PutBucketMetricsConfigurationMocks) > 1 {
 			_dat.PutBucketMetricsConfigurationMocks = _dat.PutBucketMetricsConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketMetricsConfigurationMocks) > 0 {
+		_fn = _all.PutBucketMetricsConfigurationMocks[0]
+		if len(_all.PutBucketMetricsConfigurationMocks) > 1 {
+			_all.PutBucketMetricsConfigurationMocks = _all.PutBucketMetricsConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketMetricsConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -4982,16 +10458,43 @@ func (_recv *s3Client) _PutBucketMetricsConfiguration_Do(fn func(context.Context
 	}
 }
 
-func (_recv *s3Client) _PutBucketMetricsConfiguration_Stub() {
-	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketMetricsConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketMetricsConfigurationMocks = []func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error){}
+	} else if len(_dat.PutBucketMetricsConfigurationMocks) < 2 {
+		_dat.PutBucketMetricsConfigurationMocks = []func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketMetricsConfigurationMocks = _dat.PutBucketMetricsConfigurationMocks[:len(_dat.PutBucketMetricsConfigurationMocks)-1]
+		_dat.PutBucketMetricsConfigurationMocks = append(_dat.PutBucketMetricsConfigurationMocks, fn)
+		_dat.PutBucketMetricsConfigurationMocks = append(_dat.PutBucketMetricsConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketMetricsConfigurationMocks = []func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketMetricsConfiguration_Stub() {
+	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketMetricsConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketMetricsConfiguration_Return(r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) {
-	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketMetricsConfiguration_Do(func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketMetricsConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketMetricsConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketMetricsConfiguration_DoAll(t, func(context.Context, *s3.PutBucketMetricsConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketMetricsConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketMetricsConfiguration_Calls() []_s3Client_PutBucketMetricsConfiguration_Call {
@@ -5004,6 +10507,26 @@ func (_recv *s3Client) _PutBucketMetricsConfiguration_Calls() []_s3Client_PutBuc
 	return _dat.PutBucketMetricsConfigurationCalls
 }
 
+func (s3Client) _PutBucketMetricsConfiguration_AllCalls() []_s3Client_PutBucketMetricsConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketMetricsConfigurationCalls
+}
+
+func (s3Client) _PutBucketMetricsConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketMetricsConfigurationCalls = []_s3Client_PutBucketMetricsConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketMetricsConfigurationCalls = []_s3Client_PutBucketMetricsConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketNotificationConfiguration(ctx context.Context, params *s3.PutBucketNotificationConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketNotificationConfiguration: nil pointer receiver")
@@ -5011,14 +10534,25 @@ func (_recv *s3Client) PutBucketNotificationConfiguration(ctx context.Context, p
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketNotificationConfigurationCalls = append(_dat.PutBucketNotificationConfigurationCalls, _s3Client_PutBucketNotificationConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketNotificationConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketNotificationConfigurationCalls = append(_all.PutBucketNotificationConfigurationCalls, _s3Client_PutBucketNotificationConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)
 	if len(_dat.PutBucketNotificationConfigurationMocks) > 0 {
 		_fn = _dat.PutBucketNotificationConfigurationMocks[0]
 		if len(_dat.PutBucketNotificationConfigurationMocks) > 1 {
 			_dat.PutBucketNotificationConfigurationMocks = _dat.PutBucketNotificationConfigurationMocks[1:]
 		}
+	} else if len(_all.PutBucketNotificationConfigurationMocks) > 0 {
+		_fn = _all.PutBucketNotificationConfigurationMocks[0]
+		if len(_all.PutBucketNotificationConfigurationMocks) > 1 {
+			_all.PutBucketNotificationConfigurationMocks = _all.PutBucketNotificationConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketNotificationConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5040,16 +10574,43 @@ func (_recv *s3Client) _PutBucketNotificationConfiguration_Do(fn func(context.Co
 	}
 }
 
-func (_recv *s3Client) _PutBucketNotificationConfiguration_Stub() {
-	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketNotificationConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketNotificationConfigurationMocks = []func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error){}
+	} else if len(_dat.PutBucketNotificationConfigurationMocks) < 2 {
+		_dat.PutBucketNotificationConfigurationMocks = []func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketNotificationConfigurationMocks = _dat.PutBucketNotificationConfigurationMocks[:len(_dat.PutBucketNotificationConfigurationMocks)-1]
+		_dat.PutBucketNotificationConfigurationMocks = append(_dat.PutBucketNotificationConfigurationMocks, fn)
+		_dat.PutBucketNotificationConfigurationMocks = append(_dat.PutBucketNotificationConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketNotificationConfigurationMocks = []func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketNotificationConfiguration_Stub() {
+	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketNotificationConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketNotificationConfiguration_DoAll(t, func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketNotificationConfiguration_Return(r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) {
-	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketNotificationConfiguration_Do(func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketNotificationConfiguration_ReturnAll(t *testing.T, r0 *s3.PutBucketNotificationConfigurationOutput, r1 error) {
+	new(s3Client)._PutBucketNotificationConfiguration_DoAll(t, func(context.Context, *s3.PutBucketNotificationConfigurationInput, ...func(*s3.Options)) (*s3.PutBucketNotificationConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketNotificationConfiguration_Calls() []_s3Client_PutBucketNotificationConfiguration_Call {
@@ -5062,6 +10623,26 @@ func (_recv *s3Client) _PutBucketNotificationConfiguration_Calls() []_s3Client_P
 	return _dat.PutBucketNotificationConfigurationCalls
 }
 
+func (s3Client) _PutBucketNotificationConfiguration_AllCalls() []_s3Client_PutBucketNotificationConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketNotificationConfigurationCalls
+}
+
+func (s3Client) _PutBucketNotificationConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketNotificationConfigurationCalls = []_s3Client_PutBucketNotificationConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketNotificationConfigurationCalls = []_s3Client_PutBucketNotificationConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketOwnershipControls(ctx context.Context, params *s3.PutBucketOwnershipControlsInput, optFns ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketOwnershipControls: nil pointer receiver")
@@ -5069,14 +10650,25 @@ func (_recv *s3Client) PutBucketOwnershipControls(ctx context.Context, params *s
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketOwnershipControlsCalls = append(_dat.PutBucketOwnershipControlsCalls, _s3Client_PutBucketOwnershipControls_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketOwnershipControls
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketOwnershipControlsCalls = append(_all.PutBucketOwnershipControlsCalls, _s3Client_PutBucketOwnershipControls_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)
 	if len(_dat.PutBucketOwnershipControlsMocks) > 0 {
 		_fn = _dat.PutBucketOwnershipControlsMocks[0]
 		if len(_dat.PutBucketOwnershipControlsMocks) > 1 {
 			_dat.PutBucketOwnershipControlsMocks = _dat.PutBucketOwnershipControlsMocks[1:]
 		}
+	} else if len(_all.PutBucketOwnershipControlsMocks) > 0 {
+		_fn = _all.PutBucketOwnershipControlsMocks[0]
+		if len(_all.PutBucketOwnershipControlsMocks) > 1 {
+			_all.PutBucketOwnershipControlsMocks = _all.PutBucketOwnershipControlsMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketOwnershipControls
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5098,16 +10690,43 @@ func (_recv *s3Client) _PutBucketOwnershipControls_Do(fn func(context.Context, *
 	}
 }
 
-func (_recv *s3Client) _PutBucketOwnershipControls_Stub() {
-	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.PutBucketOwnershipControlsOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketOwnershipControls_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketOwnershipControlsMocks = []func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error){}
+	} else if len(_dat.PutBucketOwnershipControlsMocks) < 2 {
+		_dat.PutBucketOwnershipControlsMocks = []func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketOwnershipControlsMocks = _dat.PutBucketOwnershipControlsMocks[:len(_dat.PutBucketOwnershipControlsMocks)-1]
+		_dat.PutBucketOwnershipControlsMocks = append(_dat.PutBucketOwnershipControlsMocks, fn)
+		_dat.PutBucketOwnershipControlsMocks = append(_dat.PutBucketOwnershipControlsMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketOwnershipControlsMocks = []func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketOwnershipControls_Stub() {
+	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.PutBucketOwnershipControlsOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketOwnershipControls_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketOwnershipControls_DoAll(t, func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (r0 *s3.PutBucketOwnershipControlsOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketOwnershipControls_Return(r0 *s3.PutBucketOwnershipControlsOutput, r1 error) {
-	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketOwnershipControls_Do(func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketOwnershipControls_ReturnAll(t *testing.T, r0 *s3.PutBucketOwnershipControlsOutput, r1 error) {
+	new(s3Client)._PutBucketOwnershipControls_DoAll(t, func(context.Context, *s3.PutBucketOwnershipControlsInput, ...func(*s3.Options)) (*s3.PutBucketOwnershipControlsOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketOwnershipControls_Calls() []_s3Client_PutBucketOwnershipControls_Call {
@@ -5120,6 +10739,26 @@ func (_recv *s3Client) _PutBucketOwnershipControls_Calls() []_s3Client_PutBucket
 	return _dat.PutBucketOwnershipControlsCalls
 }
 
+func (s3Client) _PutBucketOwnershipControls_AllCalls() []_s3Client_PutBucketOwnershipControls_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketOwnershipControlsCalls
+}
+
+func (s3Client) _PutBucketOwnershipControls_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketOwnershipControlsCalls = []_s3Client_PutBucketOwnershipControls_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketOwnershipControlsCalls = []_s3Client_PutBucketOwnershipControls_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketPolicy(ctx context.Context, params *s3.PutBucketPolicyInput, optFns ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketPolicy: nil pointer receiver")
@@ -5127,14 +10766,25 @@ func (_recv *s3Client) PutBucketPolicy(ctx context.Context, params *s3.PutBucket
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketPolicyCalls = append(_dat.PutBucketPolicyCalls, _s3Client_PutBucketPolicy_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketPolicy
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketPolicyCalls = append(_all.PutBucketPolicyCalls, _s3Client_PutBucketPolicy_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)
 	if len(_dat.PutBucketPolicyMocks) > 0 {
 		_fn = _dat.PutBucketPolicyMocks[0]
 		if len(_dat.PutBucketPolicyMocks) > 1 {
 			_dat.PutBucketPolicyMocks = _dat.PutBucketPolicyMocks[1:]
 		}
+	} else if len(_all.PutBucketPolicyMocks) > 0 {
+		_fn = _all.PutBucketPolicyMocks[0]
+		if len(_all.PutBucketPolicyMocks) > 1 {
+			_all.PutBucketPolicyMocks = _all.PutBucketPolicyMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketPolicy
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5156,16 +10806,43 @@ func (_recv *s3Client) _PutBucketPolicy_Do(fn func(context.Context, *s3.PutBucke
 	}
 }
 
-func (_recv *s3Client) _PutBucketPolicy_Stub() {
-	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.PutBucketPolicyOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketPolicy_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketPolicyMocks = []func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error){}
+	} else if len(_dat.PutBucketPolicyMocks) < 2 {
+		_dat.PutBucketPolicyMocks = []func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketPolicyMocks = _dat.PutBucketPolicyMocks[:len(_dat.PutBucketPolicyMocks)-1]
+		_dat.PutBucketPolicyMocks = append(_dat.PutBucketPolicyMocks, fn)
+		_dat.PutBucketPolicyMocks = append(_dat.PutBucketPolicyMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketPolicyMocks = []func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketPolicy_Stub() {
+	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.PutBucketPolicyOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketPolicy_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketPolicy_DoAll(t, func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (r0 *s3.PutBucketPolicyOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketPolicy_Return(r0 *s3.PutBucketPolicyOutput, r1 error) {
-	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketPolicy_Do(func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketPolicy_ReturnAll(t *testing.T, r0 *s3.PutBucketPolicyOutput, r1 error) {
+	new(s3Client)._PutBucketPolicy_DoAll(t, func(context.Context, *s3.PutBucketPolicyInput, ...func(*s3.Options)) (*s3.PutBucketPolicyOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketPolicy_Calls() []_s3Client_PutBucketPolicy_Call {
@@ -5178,6 +10855,26 @@ func (_recv *s3Client) _PutBucketPolicy_Calls() []_s3Client_PutBucketPolicy_Call
 	return _dat.PutBucketPolicyCalls
 }
 
+func (s3Client) _PutBucketPolicy_AllCalls() []_s3Client_PutBucketPolicy_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketPolicyCalls
+}
+
+func (s3Client) _PutBucketPolicy_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketPolicyCalls = []_s3Client_PutBucketPolicy_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketPolicyCalls = []_s3Client_PutBucketPolicy_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketReplication(ctx context.Context, params *s3.PutBucketReplicationInput, optFns ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketReplication: nil pointer receiver")
@@ -5185,14 +10882,25 @@ func (_recv *s3Client) PutBucketReplication(ctx context.Context, params *s3.PutB
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketReplicationCalls = append(_dat.PutBucketReplicationCalls, _s3Client_PutBucketReplication_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketReplication
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketReplicationCalls = append(_all.PutBucketReplicationCalls, _s3Client_PutBucketReplication_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)
 	if len(_dat.PutBucketReplicationMocks) > 0 {
 		_fn = _dat.PutBucketReplicationMocks[0]
 		if len(_dat.PutBucketReplicationMocks) > 1 {
 			_dat.PutBucketReplicationMocks = _dat.PutBucketReplicationMocks[1:]
 		}
+	} else if len(_all.PutBucketReplicationMocks) > 0 {
+		_fn = _all.PutBucketReplicationMocks[0]
+		if len(_all.PutBucketReplicationMocks) > 1 {
+			_all.PutBucketReplicationMocks = _all.PutBucketReplicationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketReplication
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5214,16 +10922,43 @@ func (_recv *s3Client) _PutBucketReplication_Do(fn func(context.Context, *s3.Put
 	}
 }
 
-func (_recv *s3Client) _PutBucketReplication_Stub() {
-	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.PutBucketReplicationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketReplication_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketReplicationMocks = []func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error){}
+	} else if len(_dat.PutBucketReplicationMocks) < 2 {
+		_dat.PutBucketReplicationMocks = []func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketReplicationMocks = _dat.PutBucketReplicationMocks[:len(_dat.PutBucketReplicationMocks)-1]
+		_dat.PutBucketReplicationMocks = append(_dat.PutBucketReplicationMocks, fn)
+		_dat.PutBucketReplicationMocks = append(_dat.PutBucketReplicationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketReplicationMocks = []func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketReplication_Stub() {
+	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.PutBucketReplicationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketReplication_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketReplication_DoAll(t, func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (r0 *s3.PutBucketReplicationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketReplication_Return(r0 *s3.PutBucketReplicationOutput, r1 error) {
-	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketReplication_Do(func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketReplication_ReturnAll(t *testing.T, r0 *s3.PutBucketReplicationOutput, r1 error) {
+	new(s3Client)._PutBucketReplication_DoAll(t, func(context.Context, *s3.PutBucketReplicationInput, ...func(*s3.Options)) (*s3.PutBucketReplicationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketReplication_Calls() []_s3Client_PutBucketReplication_Call {
@@ -5236,6 +10971,26 @@ func (_recv *s3Client) _PutBucketReplication_Calls() []_s3Client_PutBucketReplic
 	return _dat.PutBucketReplicationCalls
 }
 
+func (s3Client) _PutBucketReplication_AllCalls() []_s3Client_PutBucketReplication_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketReplicationCalls
+}
+
+func (s3Client) _PutBucketReplication_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketReplicationCalls = []_s3Client_PutBucketReplication_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketReplicationCalls = []_s3Client_PutBucketReplication_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketRequestPayment(ctx context.Context, params *s3.PutBucketRequestPaymentInput, optFns ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketRequestPayment: nil pointer receiver")
@@ -5243,14 +10998,25 @@ func (_recv *s3Client) PutBucketRequestPayment(ctx context.Context, params *s3.P
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketRequestPaymentCalls = append(_dat.PutBucketRequestPaymentCalls, _s3Client_PutBucketRequestPayment_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketRequestPayment
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketRequestPaymentCalls = append(_all.PutBucketRequestPaymentCalls, _s3Client_PutBucketRequestPayment_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)
 	if len(_dat.PutBucketRequestPaymentMocks) > 0 {
 		_fn = _dat.PutBucketRequestPaymentMocks[0]
 		if len(_dat.PutBucketRequestPaymentMocks) > 1 {
 			_dat.PutBucketRequestPaymentMocks = _dat.PutBucketRequestPaymentMocks[1:]
 		}
+	} else if len(_all.PutBucketRequestPaymentMocks) > 0 {
+		_fn = _all.PutBucketRequestPaymentMocks[0]
+		if len(_all.PutBucketRequestPaymentMocks) > 1 {
+			_all.PutBucketRequestPaymentMocks = _all.PutBucketRequestPaymentMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketRequestPayment
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5272,16 +11038,43 @@ func (_recv *s3Client) _PutBucketRequestPayment_Do(fn func(context.Context, *s3.
 	}
 }
 
-func (_recv *s3Client) _PutBucketRequestPayment_Stub() {
-	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.PutBucketRequestPaymentOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketRequestPayment_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketRequestPaymentMocks = []func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error){}
+	} else if len(_dat.PutBucketRequestPaymentMocks) < 2 {
+		_dat.PutBucketRequestPaymentMocks = []func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketRequestPaymentMocks = _dat.PutBucketRequestPaymentMocks[:len(_dat.PutBucketRequestPaymentMocks)-1]
+		_dat.PutBucketRequestPaymentMocks = append(_dat.PutBucketRequestPaymentMocks, fn)
+		_dat.PutBucketRequestPaymentMocks = append(_dat.PutBucketRequestPaymentMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketRequestPaymentMocks = []func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketRequestPayment_Stub() {
+	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.PutBucketRequestPaymentOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketRequestPayment_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketRequestPayment_DoAll(t, func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (r0 *s3.PutBucketRequestPaymentOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketRequestPayment_Return(r0 *s3.PutBucketRequestPaymentOutput, r1 error) {
-	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketRequestPayment_Do(func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketRequestPayment_ReturnAll(t *testing.T, r0 *s3.PutBucketRequestPaymentOutput, r1 error) {
+	new(s3Client)._PutBucketRequestPayment_DoAll(t, func(context.Context, *s3.PutBucketRequestPaymentInput, ...func(*s3.Options)) (*s3.PutBucketRequestPaymentOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketRequestPayment_Calls() []_s3Client_PutBucketRequestPayment_Call {
@@ -5294,6 +11087,26 @@ func (_recv *s3Client) _PutBucketRequestPayment_Calls() []_s3Client_PutBucketReq
 	return _dat.PutBucketRequestPaymentCalls
 }
 
+func (s3Client) _PutBucketRequestPayment_AllCalls() []_s3Client_PutBucketRequestPayment_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketRequestPaymentCalls
+}
+
+func (s3Client) _PutBucketRequestPayment_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketRequestPaymentCalls = []_s3Client_PutBucketRequestPayment_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketRequestPaymentCalls = []_s3Client_PutBucketRequestPayment_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketTagging(ctx context.Context, params *s3.PutBucketTaggingInput, optFns ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketTagging: nil pointer receiver")
@@ -5301,14 +11114,25 @@ func (_recv *s3Client) PutBucketTagging(ctx context.Context, params *s3.PutBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketTaggingCalls = append(_dat.PutBucketTaggingCalls, _s3Client_PutBucketTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketTaggingCalls = append(_all.PutBucketTaggingCalls, _s3Client_PutBucketTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)
 	if len(_dat.PutBucketTaggingMocks) > 0 {
 		_fn = _dat.PutBucketTaggingMocks[0]
 		if len(_dat.PutBucketTaggingMocks) > 1 {
 			_dat.PutBucketTaggingMocks = _dat.PutBucketTaggingMocks[1:]
 		}
+	} else if len(_all.PutBucketTaggingMocks) > 0 {
+		_fn = _all.PutBucketTaggingMocks[0]
+		if len(_all.PutBucketTaggingMocks) > 1 {
+			_all.PutBucketTaggingMocks = _all.PutBucketTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5330,16 +11154,43 @@ func (_recv *s3Client) _PutBucketTagging_Do(fn func(context.Context, *s3.PutBuck
 	}
 }
 
-func (_recv *s3Client) _PutBucketTagging_Stub() {
-	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketTagging_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketTaggingMocks = []func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error){}
+	} else if len(_dat.PutBucketTaggingMocks) < 2 {
+		_dat.PutBucketTaggingMocks = []func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketTaggingMocks = _dat.PutBucketTaggingMocks[:len(_dat.PutBucketTaggingMocks)-1]
+		_dat.PutBucketTaggingMocks = append(_dat.PutBucketTaggingMocks, fn)
+		_dat.PutBucketTaggingMocks = append(_dat.PutBucketTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketTaggingMocks = []func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketTagging_Stub() {
+	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketTagging_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketTagging_DoAll(t, func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (r0 *s3.PutBucketTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketTagging_Return(r0 *s3.PutBucketTaggingOutput, r1 error) {
-	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketTagging_Do(func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketTagging_ReturnAll(t *testing.T, r0 *s3.PutBucketTaggingOutput, r1 error) {
+	new(s3Client)._PutBucketTagging_DoAll(t, func(context.Context, *s3.PutBucketTaggingInput, ...func(*s3.Options)) (*s3.PutBucketTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketTagging_Calls() []_s3Client_PutBucketTagging_Call {
@@ -5352,6 +11203,26 @@ func (_recv *s3Client) _PutBucketTagging_Calls() []_s3Client_PutBucketTagging_Ca
 	return _dat.PutBucketTaggingCalls
 }
 
+func (s3Client) _PutBucketTagging_AllCalls() []_s3Client_PutBucketTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketTaggingCalls
+}
+
+func (s3Client) _PutBucketTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketTaggingCalls = []_s3Client_PutBucketTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketTaggingCalls = []_s3Client_PutBucketTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketVersioning(ctx context.Context, params *s3.PutBucketVersioningInput, optFns ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketVersioning: nil pointer receiver")
@@ -5359,14 +11230,25 @@ func (_recv *s3Client) PutBucketVersioning(ctx context.Context, params *s3.PutBu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketVersioningCalls = append(_dat.PutBucketVersioningCalls, _s3Client_PutBucketVersioning_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketVersioning
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketVersioningCalls = append(_all.PutBucketVersioningCalls, _s3Client_PutBucketVersioning_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)
 	if len(_dat.PutBucketVersioningMocks) > 0 {
 		_fn = _dat.PutBucketVersioningMocks[0]
 		if len(_dat.PutBucketVersioningMocks) > 1 {
 			_dat.PutBucketVersioningMocks = _dat.PutBucketVersioningMocks[1:]
 		}
+	} else if len(_all.PutBucketVersioningMocks) > 0 {
+		_fn = _all.PutBucketVersioningMocks[0]
+		if len(_all.PutBucketVersioningMocks) > 1 {
+			_all.PutBucketVersioningMocks = _all.PutBucketVersioningMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketVersioning
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5388,16 +11270,43 @@ func (_recv *s3Client) _PutBucketVersioning_Do(fn func(context.Context, *s3.PutB
 	}
 }
 
-func (_recv *s3Client) _PutBucketVersioning_Stub() {
-	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.PutBucketVersioningOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketVersioning_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketVersioningMocks = []func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error){}
+	} else if len(_dat.PutBucketVersioningMocks) < 2 {
+		_dat.PutBucketVersioningMocks = []func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketVersioningMocks = _dat.PutBucketVersioningMocks[:len(_dat.PutBucketVersioningMocks)-1]
+		_dat.PutBucketVersioningMocks = append(_dat.PutBucketVersioningMocks, fn)
+		_dat.PutBucketVersioningMocks = append(_dat.PutBucketVersioningMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketVersioningMocks = []func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketVersioning_Stub() {
+	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.PutBucketVersioningOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketVersioning_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketVersioning_DoAll(t, func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (r0 *s3.PutBucketVersioningOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketVersioning_Return(r0 *s3.PutBucketVersioningOutput, r1 error) {
-	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketVersioning_Do(func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketVersioning_ReturnAll(t *testing.T, r0 *s3.PutBucketVersioningOutput, r1 error) {
+	new(s3Client)._PutBucketVersioning_DoAll(t, func(context.Context, *s3.PutBucketVersioningInput, ...func(*s3.Options)) (*s3.PutBucketVersioningOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketVersioning_Calls() []_s3Client_PutBucketVersioning_Call {
@@ -5410,6 +11319,26 @@ func (_recv *s3Client) _PutBucketVersioning_Calls() []_s3Client_PutBucketVersion
 	return _dat.PutBucketVersioningCalls
 }
 
+func (s3Client) _PutBucketVersioning_AllCalls() []_s3Client_PutBucketVersioning_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketVersioningCalls
+}
+
+func (s3Client) _PutBucketVersioning_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketVersioningCalls = []_s3Client_PutBucketVersioning_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketVersioningCalls = []_s3Client_PutBucketVersioning_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutBucketWebsite(ctx context.Context, params *s3.PutBucketWebsiteInput, optFns ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutBucketWebsite: nil pointer receiver")
@@ -5417,14 +11346,25 @@ func (_recv *s3Client) PutBucketWebsite(ctx context.Context, params *s3.PutBucke
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutBucketWebsiteCalls = append(_dat.PutBucketWebsiteCalls, _s3Client_PutBucketWebsite_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutBucketWebsite
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutBucketWebsiteCalls = append(_all.PutBucketWebsiteCalls, _s3Client_PutBucketWebsite_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)
 	if len(_dat.PutBucketWebsiteMocks) > 0 {
 		_fn = _dat.PutBucketWebsiteMocks[0]
 		if len(_dat.PutBucketWebsiteMocks) > 1 {
 			_dat.PutBucketWebsiteMocks = _dat.PutBucketWebsiteMocks[1:]
 		}
+	} else if len(_all.PutBucketWebsiteMocks) > 0 {
+		_fn = _all.PutBucketWebsiteMocks[0]
+		if len(_all.PutBucketWebsiteMocks) > 1 {
+			_all.PutBucketWebsiteMocks = _all.PutBucketWebsiteMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutBucketWebsite
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5446,16 +11386,43 @@ func (_recv *s3Client) _PutBucketWebsite_Do(fn func(context.Context, *s3.PutBuck
 	}
 }
 
-func (_recv *s3Client) _PutBucketWebsite_Stub() {
-	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.PutBucketWebsiteOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutBucketWebsite_DoAll(t *testing.T, fn func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutBucketWebsiteMocks = []func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error){}
+	} else if len(_dat.PutBucketWebsiteMocks) < 2 {
+		_dat.PutBucketWebsiteMocks = []func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error){fn, fn}
+	} else {
+		_dat.PutBucketWebsiteMocks = _dat.PutBucketWebsiteMocks[:len(_dat.PutBucketWebsiteMocks)-1]
+		_dat.PutBucketWebsiteMocks = append(_dat.PutBucketWebsiteMocks, fn)
+		_dat.PutBucketWebsiteMocks = append(_dat.PutBucketWebsiteMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutBucketWebsiteMocks = []func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutBucketWebsite_Stub() {
+	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.PutBucketWebsiteOutput, r1 error) { return })
+}
+
+func (s3Client) _PutBucketWebsite_StubAll(t *testing.T) {
+	new(s3Client)._PutBucketWebsite_DoAll(t, func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (r0 *s3.PutBucketWebsiteOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutBucketWebsite_Return(r0 *s3.PutBucketWebsiteOutput, r1 error) {
-	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) {
-		return r0, r1
-	})
+	_recv._PutBucketWebsite_Do(func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutBucketWebsite_ReturnAll(t *testing.T, r0 *s3.PutBucketWebsiteOutput, r1 error) {
+	new(s3Client)._PutBucketWebsite_DoAll(t, func(context.Context, *s3.PutBucketWebsiteInput, ...func(*s3.Options)) (*s3.PutBucketWebsiteOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutBucketWebsite_Calls() []_s3Client_PutBucketWebsite_Call {
@@ -5468,6 +11435,26 @@ func (_recv *s3Client) _PutBucketWebsite_Calls() []_s3Client_PutBucketWebsite_Ca
 	return _dat.PutBucketWebsiteCalls
 }
 
+func (s3Client) _PutBucketWebsite_AllCalls() []_s3Client_PutBucketWebsite_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutBucketWebsiteCalls
+}
+
+func (s3Client) _PutBucketWebsite_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutBucketWebsiteCalls = []_s3Client_PutBucketWebsite_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutBucketWebsiteCalls = []_s3Client_PutBucketWebsite_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObject(ctx context.Context, params *s3.PutObjectInput, optFns ...func(*s3.Options)) (*s3.PutObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObject: nil pointer receiver")
@@ -5475,14 +11462,25 @@ func (_recv *s3Client) PutObject(ctx context.Context, params *s3.PutObjectInput,
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectCalls = append(_dat.PutObjectCalls, _s3Client_PutObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectCalls = append(_all.PutObjectCalls, _s3Client_PutObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error)
 	if len(_dat.PutObjectMocks) > 0 {
 		_fn = _dat.PutObjectMocks[0]
 		if len(_dat.PutObjectMocks) > 1 {
 			_dat.PutObjectMocks = _dat.PutObjectMocks[1:]
 		}
+	} else if len(_all.PutObjectMocks) > 0 {
+		_fn = _all.PutObjectMocks[0]
+		if len(_all.PutObjectMocks) > 1 {
+			_all.PutObjectMocks = _all.PutObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5504,16 +11502,43 @@ func (_recv *s3Client) _PutObject_Do(fn func(context.Context, *s3.PutObjectInput
 	}
 }
 
-func (_recv *s3Client) _PutObject_Stub() {
-	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (r0 *s3.PutObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObject_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectMocks = []func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error){}
+	} else if len(_dat.PutObjectMocks) < 2 {
+		_dat.PutObjectMocks = []func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectMocks = _dat.PutObjectMocks[:len(_dat.PutObjectMocks)-1]
+		_dat.PutObjectMocks = append(_dat.PutObjectMocks, fn)
+		_dat.PutObjectMocks = append(_dat.PutObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectMocks = []func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObject_Stub() {
+	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (r0 *s3.PutObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObject_StubAll(t *testing.T) {
+	new(s3Client)._PutObject_DoAll(t, func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (r0 *s3.PutObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObject_Return(r0 *s3.PutObjectOutput, r1 error) {
-	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObject_Do(func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObject_ReturnAll(t *testing.T, r0 *s3.PutObjectOutput, r1 error) {
+	new(s3Client)._PutObject_DoAll(t, func(context.Context, *s3.PutObjectInput, ...func(*s3.Options)) (*s3.PutObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObject_Calls() []_s3Client_PutObject_Call {
@@ -5526,6 +11551,26 @@ func (_recv *s3Client) _PutObject_Calls() []_s3Client_PutObject_Call {
 	return _dat.PutObjectCalls
 }
 
+func (s3Client) _PutObject_AllCalls() []_s3Client_PutObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectCalls
+}
+
+func (s3Client) _PutObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectCalls = []_s3Client_PutObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectCalls = []_s3Client_PutObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObjectAcl(ctx context.Context, params *s3.PutObjectAclInput, optFns ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObjectAcl: nil pointer receiver")
@@ -5533,14 +11578,25 @@ func (_recv *s3Client) PutObjectAcl(ctx context.Context, params *s3.PutObjectAcl
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectAclCalls = append(_dat.PutObjectAclCalls, _s3Client_PutObjectAcl_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObjectAcl
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectAclCalls = append(_all.PutObjectAclCalls, _s3Client_PutObjectAcl_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)
 	if len(_dat.PutObjectAclMocks) > 0 {
 		_fn = _dat.PutObjectAclMocks[0]
 		if len(_dat.PutObjectAclMocks) > 1 {
 			_dat.PutObjectAclMocks = _dat.PutObjectAclMocks[1:]
 		}
+	} else if len(_all.PutObjectAclMocks) > 0 {
+		_fn = _all.PutObjectAclMocks[0]
+		if len(_all.PutObjectAclMocks) > 1 {
+			_all.PutObjectAclMocks = _all.PutObjectAclMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObjectAcl
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5562,16 +11618,43 @@ func (_recv *s3Client) _PutObjectAcl_Do(fn func(context.Context, *s3.PutObjectAc
 	}
 }
 
-func (_recv *s3Client) _PutObjectAcl_Stub() {
-	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (r0 *s3.PutObjectAclOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObjectAcl_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectAclMocks = []func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error){}
+	} else if len(_dat.PutObjectAclMocks) < 2 {
+		_dat.PutObjectAclMocks = []func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectAclMocks = _dat.PutObjectAclMocks[:len(_dat.PutObjectAclMocks)-1]
+		_dat.PutObjectAclMocks = append(_dat.PutObjectAclMocks, fn)
+		_dat.PutObjectAclMocks = append(_dat.PutObjectAclMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectAclMocks = []func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObjectAcl_Stub() {
+	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (r0 *s3.PutObjectAclOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObjectAcl_StubAll(t *testing.T) {
+	new(s3Client)._PutObjectAcl_DoAll(t, func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (r0 *s3.PutObjectAclOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObjectAcl_Return(r0 *s3.PutObjectAclOutput, r1 error) {
-	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObjectAcl_Do(func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObjectAcl_ReturnAll(t *testing.T, r0 *s3.PutObjectAclOutput, r1 error) {
+	new(s3Client)._PutObjectAcl_DoAll(t, func(context.Context, *s3.PutObjectAclInput, ...func(*s3.Options)) (*s3.PutObjectAclOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObjectAcl_Calls() []_s3Client_PutObjectAcl_Call {
@@ -5584,6 +11667,26 @@ func (_recv *s3Client) _PutObjectAcl_Calls() []_s3Client_PutObjectAcl_Call {
 	return _dat.PutObjectAclCalls
 }
 
+func (s3Client) _PutObjectAcl_AllCalls() []_s3Client_PutObjectAcl_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectAclCalls
+}
+
+func (s3Client) _PutObjectAcl_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectAclCalls = []_s3Client_PutObjectAcl_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectAclCalls = []_s3Client_PutObjectAcl_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObjectLegalHold(ctx context.Context, params *s3.PutObjectLegalHoldInput, optFns ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObjectLegalHold: nil pointer receiver")
@@ -5591,14 +11694,25 @@ func (_recv *s3Client) PutObjectLegalHold(ctx context.Context, params *s3.PutObj
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectLegalHoldCalls = append(_dat.PutObjectLegalHoldCalls, _s3Client_PutObjectLegalHold_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObjectLegalHold
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectLegalHoldCalls = append(_all.PutObjectLegalHoldCalls, _s3Client_PutObjectLegalHold_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)
 	if len(_dat.PutObjectLegalHoldMocks) > 0 {
 		_fn = _dat.PutObjectLegalHoldMocks[0]
 		if len(_dat.PutObjectLegalHoldMocks) > 1 {
 			_dat.PutObjectLegalHoldMocks = _dat.PutObjectLegalHoldMocks[1:]
 		}
+	} else if len(_all.PutObjectLegalHoldMocks) > 0 {
+		_fn = _all.PutObjectLegalHoldMocks[0]
+		if len(_all.PutObjectLegalHoldMocks) > 1 {
+			_all.PutObjectLegalHoldMocks = _all.PutObjectLegalHoldMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObjectLegalHold
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5620,16 +11734,43 @@ func (_recv *s3Client) _PutObjectLegalHold_Do(fn func(context.Context, *s3.PutOb
 	}
 }
 
-func (_recv *s3Client) _PutObjectLegalHold_Stub() {
-	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.PutObjectLegalHoldOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObjectLegalHold_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectLegalHoldMocks = []func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error){}
+	} else if len(_dat.PutObjectLegalHoldMocks) < 2 {
+		_dat.PutObjectLegalHoldMocks = []func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectLegalHoldMocks = _dat.PutObjectLegalHoldMocks[:len(_dat.PutObjectLegalHoldMocks)-1]
+		_dat.PutObjectLegalHoldMocks = append(_dat.PutObjectLegalHoldMocks, fn)
+		_dat.PutObjectLegalHoldMocks = append(_dat.PutObjectLegalHoldMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectLegalHoldMocks = []func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObjectLegalHold_Stub() {
+	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.PutObjectLegalHoldOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObjectLegalHold_StubAll(t *testing.T) {
+	new(s3Client)._PutObjectLegalHold_DoAll(t, func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (r0 *s3.PutObjectLegalHoldOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObjectLegalHold_Return(r0 *s3.PutObjectLegalHoldOutput, r1 error) {
-	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObjectLegalHold_Do(func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObjectLegalHold_ReturnAll(t *testing.T, r0 *s3.PutObjectLegalHoldOutput, r1 error) {
+	new(s3Client)._PutObjectLegalHold_DoAll(t, func(context.Context, *s3.PutObjectLegalHoldInput, ...func(*s3.Options)) (*s3.PutObjectLegalHoldOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObjectLegalHold_Calls() []_s3Client_PutObjectLegalHold_Call {
@@ -5642,6 +11783,26 @@ func (_recv *s3Client) _PutObjectLegalHold_Calls() []_s3Client_PutObjectLegalHol
 	return _dat.PutObjectLegalHoldCalls
 }
 
+func (s3Client) _PutObjectLegalHold_AllCalls() []_s3Client_PutObjectLegalHold_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectLegalHoldCalls
+}
+
+func (s3Client) _PutObjectLegalHold_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectLegalHoldCalls = []_s3Client_PutObjectLegalHold_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectLegalHoldCalls = []_s3Client_PutObjectLegalHold_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObjectLockConfiguration(ctx context.Context, params *s3.PutObjectLockConfigurationInput, optFns ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObjectLockConfiguration: nil pointer receiver")
@@ -5649,14 +11810,25 @@ func (_recv *s3Client) PutObjectLockConfiguration(ctx context.Context, params *s
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectLockConfigurationCalls = append(_dat.PutObjectLockConfigurationCalls, _s3Client_PutObjectLockConfiguration_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObjectLockConfiguration
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectLockConfigurationCalls = append(_all.PutObjectLockConfigurationCalls, _s3Client_PutObjectLockConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)
 	if len(_dat.PutObjectLockConfigurationMocks) > 0 {
 		_fn = _dat.PutObjectLockConfigurationMocks[0]
 		if len(_dat.PutObjectLockConfigurationMocks) > 1 {
 			_dat.PutObjectLockConfigurationMocks = _dat.PutObjectLockConfigurationMocks[1:]
 		}
+	} else if len(_all.PutObjectLockConfigurationMocks) > 0 {
+		_fn = _all.PutObjectLockConfigurationMocks[0]
+		if len(_all.PutObjectLockConfigurationMocks) > 1 {
+			_all.PutObjectLockConfigurationMocks = _all.PutObjectLockConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObjectLockConfiguration
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5678,16 +11850,43 @@ func (_recv *s3Client) _PutObjectLockConfiguration_Do(fn func(context.Context, *
 	}
 }
 
-func (_recv *s3Client) _PutObjectLockConfiguration_Stub() {
-	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutObjectLockConfigurationOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObjectLockConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectLockConfigurationMocks = []func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error){}
+	} else if len(_dat.PutObjectLockConfigurationMocks) < 2 {
+		_dat.PutObjectLockConfigurationMocks = []func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectLockConfigurationMocks = _dat.PutObjectLockConfigurationMocks[:len(_dat.PutObjectLockConfigurationMocks)-1]
+		_dat.PutObjectLockConfigurationMocks = append(_dat.PutObjectLockConfigurationMocks, fn)
+		_dat.PutObjectLockConfigurationMocks = append(_dat.PutObjectLockConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectLockConfigurationMocks = []func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObjectLockConfiguration_Stub() {
+	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutObjectLockConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObjectLockConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._PutObjectLockConfiguration_DoAll(t, func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (r0 *s3.PutObjectLockConfigurationOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObjectLockConfiguration_Return(r0 *s3.PutObjectLockConfigurationOutput, r1 error) {
-	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObjectLockConfiguration_Do(func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObjectLockConfiguration_ReturnAll(t *testing.T, r0 *s3.PutObjectLockConfigurationOutput, r1 error) {
+	new(s3Client)._PutObjectLockConfiguration_DoAll(t, func(context.Context, *s3.PutObjectLockConfigurationInput, ...func(*s3.Options)) (*s3.PutObjectLockConfigurationOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObjectLockConfiguration_Calls() []_s3Client_PutObjectLockConfiguration_Call {
@@ -5700,6 +11899,26 @@ func (_recv *s3Client) _PutObjectLockConfiguration_Calls() []_s3Client_PutObject
 	return _dat.PutObjectLockConfigurationCalls
 }
 
+func (s3Client) _PutObjectLockConfiguration_AllCalls() []_s3Client_PutObjectLockConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectLockConfigurationCalls
+}
+
+func (s3Client) _PutObjectLockConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectLockConfigurationCalls = []_s3Client_PutObjectLockConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectLockConfigurationCalls = []_s3Client_PutObjectLockConfiguration_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObjectRetention(ctx context.Context, params *s3.PutObjectRetentionInput, optFns ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObjectRetention: nil pointer receiver")
@@ -5707,14 +11926,25 @@ func (_recv *s3Client) PutObjectRetention(ctx context.Context, params *s3.PutObj
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectRetentionCalls = append(_dat.PutObjectRetentionCalls, _s3Client_PutObjectRetention_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObjectRetention
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectRetentionCalls = append(_all.PutObjectRetentionCalls, _s3Client_PutObjectRetention_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)
 	if len(_dat.PutObjectRetentionMocks) > 0 {
 		_fn = _dat.PutObjectRetentionMocks[0]
 		if len(_dat.PutObjectRetentionMocks) > 1 {
 			_dat.PutObjectRetentionMocks = _dat.PutObjectRetentionMocks[1:]
 		}
+	} else if len(_all.PutObjectRetentionMocks) > 0 {
+		_fn = _all.PutObjectRetentionMocks[0]
+		if len(_all.PutObjectRetentionMocks) > 1 {
+			_all.PutObjectRetentionMocks = _all.PutObjectRetentionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObjectRetention
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5736,16 +11966,43 @@ func (_recv *s3Client) _PutObjectRetention_Do(fn func(context.Context, *s3.PutOb
 	}
 }
 
-func (_recv *s3Client) _PutObjectRetention_Stub() {
-	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.PutObjectRetentionOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObjectRetention_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectRetentionMocks = []func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error){}
+	} else if len(_dat.PutObjectRetentionMocks) < 2 {
+		_dat.PutObjectRetentionMocks = []func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectRetentionMocks = _dat.PutObjectRetentionMocks[:len(_dat.PutObjectRetentionMocks)-1]
+		_dat.PutObjectRetentionMocks = append(_dat.PutObjectRetentionMocks, fn)
+		_dat.PutObjectRetentionMocks = append(_dat.PutObjectRetentionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectRetentionMocks = []func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObjectRetention_Stub() {
+	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.PutObjectRetentionOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObjectRetention_StubAll(t *testing.T) {
+	new(s3Client)._PutObjectRetention_DoAll(t, func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (r0 *s3.PutObjectRetentionOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObjectRetention_Return(r0 *s3.PutObjectRetentionOutput, r1 error) {
-	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObjectRetention_Do(func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObjectRetention_ReturnAll(t *testing.T, r0 *s3.PutObjectRetentionOutput, r1 error) {
+	new(s3Client)._PutObjectRetention_DoAll(t, func(context.Context, *s3.PutObjectRetentionInput, ...func(*s3.Options)) (*s3.PutObjectRetentionOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObjectRetention_Calls() []_s3Client_PutObjectRetention_Call {
@@ -5758,6 +12015,26 @@ func (_recv *s3Client) _PutObjectRetention_Calls() []_s3Client_PutObjectRetentio
 	return _dat.PutObjectRetentionCalls
 }
 
+func (s3Client) _PutObjectRetention_AllCalls() []_s3Client_PutObjectRetention_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectRetentionCalls
+}
+
+func (s3Client) _PutObjectRetention_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectRetentionCalls = []_s3Client_PutObjectRetention_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectRetentionCalls = []_s3Client_PutObjectRetention_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutObjectTagging(ctx context.Context, params *s3.PutObjectTaggingInput, optFns ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutObjectTagging: nil pointer receiver")
@@ -5765,14 +12042,25 @@ func (_recv *s3Client) PutObjectTagging(ctx context.Context, params *s3.PutObjec
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutObjectTaggingCalls = append(_dat.PutObjectTaggingCalls, _s3Client_PutObjectTagging_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutObjectTagging
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutObjectTaggingCalls = append(_all.PutObjectTaggingCalls, _s3Client_PutObjectTagging_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)
 	if len(_dat.PutObjectTaggingMocks) > 0 {
 		_fn = _dat.PutObjectTaggingMocks[0]
 		if len(_dat.PutObjectTaggingMocks) > 1 {
 			_dat.PutObjectTaggingMocks = _dat.PutObjectTaggingMocks[1:]
 		}
+	} else if len(_all.PutObjectTaggingMocks) > 0 {
+		_fn = _all.PutObjectTaggingMocks[0]
+		if len(_all.PutObjectTaggingMocks) > 1 {
+			_all.PutObjectTaggingMocks = _all.PutObjectTaggingMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutObjectTagging
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5794,16 +12082,43 @@ func (_recv *s3Client) _PutObjectTagging_Do(fn func(context.Context, *s3.PutObje
 	}
 }
 
-func (_recv *s3Client) _PutObjectTagging_Stub() {
-	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.PutObjectTaggingOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutObjectTagging_DoAll(t *testing.T, fn func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutObjectTaggingMocks = []func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error){}
+	} else if len(_dat.PutObjectTaggingMocks) < 2 {
+		_dat.PutObjectTaggingMocks = []func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error){fn, fn}
+	} else {
+		_dat.PutObjectTaggingMocks = _dat.PutObjectTaggingMocks[:len(_dat.PutObjectTaggingMocks)-1]
+		_dat.PutObjectTaggingMocks = append(_dat.PutObjectTaggingMocks, fn)
+		_dat.PutObjectTaggingMocks = append(_dat.PutObjectTaggingMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutObjectTaggingMocks = []func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutObjectTagging_Stub() {
+	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.PutObjectTaggingOutput, r1 error) { return })
+}
+
+func (s3Client) _PutObjectTagging_StubAll(t *testing.T) {
+	new(s3Client)._PutObjectTagging_DoAll(t, func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (r0 *s3.PutObjectTaggingOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutObjectTagging_Return(r0 *s3.PutObjectTaggingOutput, r1 error) {
-	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) {
-		return r0, r1
-	})
+	_recv._PutObjectTagging_Do(func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutObjectTagging_ReturnAll(t *testing.T, r0 *s3.PutObjectTaggingOutput, r1 error) {
+	new(s3Client)._PutObjectTagging_DoAll(t, func(context.Context, *s3.PutObjectTaggingInput, ...func(*s3.Options)) (*s3.PutObjectTaggingOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutObjectTagging_Calls() []_s3Client_PutObjectTagging_Call {
@@ -5816,6 +12131,26 @@ func (_recv *s3Client) _PutObjectTagging_Calls() []_s3Client_PutObjectTagging_Ca
 	return _dat.PutObjectTaggingCalls
 }
 
+func (s3Client) _PutObjectTagging_AllCalls() []_s3Client_PutObjectTagging_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutObjectTaggingCalls
+}
+
+func (s3Client) _PutObjectTagging_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutObjectTaggingCalls = []_s3Client_PutObjectTagging_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutObjectTaggingCalls = []_s3Client_PutObjectTagging_Call{}
+	})
+}
+
+
 func (_recv *s3Client) PutPublicAccessBlock(ctx context.Context, params *s3.PutPublicAccessBlockInput, optFns ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) {
 	if _recv == nil {
 		panic("s3Client.PutPublicAccessBlock: nil pointer receiver")
@@ -5823,14 +12158,25 @@ func (_recv *s3Client) PutPublicAccessBlock(ctx context.Context, params *s3.PutP
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.PutPublicAccessBlockCalls = append(_dat.PutPublicAccessBlockCalls, _s3Client_PutPublicAccessBlock_Call{ctx, params, optFns})
-	_fn := _recv.Client.PutPublicAccessBlock
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.PutPublicAccessBlockCalls = append(_all.PutPublicAccessBlockCalls, _s3Client_PutPublicAccessBlock_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)
 	if len(_dat.PutPublicAccessBlockMocks) > 0 {
 		_fn = _dat.PutPublicAccessBlockMocks[0]
 		if len(_dat.PutPublicAccessBlockMocks) > 1 {
 			_dat.PutPublicAccessBlockMocks = _dat.PutPublicAccessBlockMocks[1:]
 		}
+	} else if len(_all.PutPublicAccessBlockMocks) > 0 {
+		_fn = _all.PutPublicAccessBlockMocks[0]
+		if len(_all.PutPublicAccessBlockMocks) > 1 {
+			_all.PutPublicAccessBlockMocks = _all.PutPublicAccessBlockMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.PutPublicAccessBlock
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5852,16 +12198,43 @@ func (_recv *s3Client) _PutPublicAccessBlock_Do(fn func(context.Context, *s3.Put
 	}
 }
 
-func (_recv *s3Client) _PutPublicAccessBlock_Stub() {
-	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.PutPublicAccessBlockOutput, r1 error) {
-		return r0, r1
+func (s3Client) _PutPublicAccessBlock_DoAll(t *testing.T, fn func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.PutPublicAccessBlockMocks = []func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error){}
+	} else if len(_dat.PutPublicAccessBlockMocks) < 2 {
+		_dat.PutPublicAccessBlockMocks = []func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error){fn, fn}
+	} else {
+		_dat.PutPublicAccessBlockMocks = _dat.PutPublicAccessBlockMocks[:len(_dat.PutPublicAccessBlockMocks)-1]
+		_dat.PutPublicAccessBlockMocks = append(_dat.PutPublicAccessBlockMocks, fn)
+		_dat.PutPublicAccessBlockMocks = append(_dat.PutPublicAccessBlockMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.PutPublicAccessBlockMocks = []func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _PutPublicAccessBlock_Stub() {
+	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.PutPublicAccessBlockOutput, r1 error) { return })
+}
+
+func (s3Client) _PutPublicAccessBlock_StubAll(t *testing.T) {
+	new(s3Client)._PutPublicAccessBlock_DoAll(t, func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (r0 *s3.PutPublicAccessBlockOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _PutPublicAccessBlock_Return(r0 *s3.PutPublicAccessBlockOutput, r1 error) {
-	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) {
-		return r0, r1
-	})
+	_recv._PutPublicAccessBlock_Do(func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _PutPublicAccessBlock_ReturnAll(t *testing.T, r0 *s3.PutPublicAccessBlockOutput, r1 error) {
+	new(s3Client)._PutPublicAccessBlock_DoAll(t, func(context.Context, *s3.PutPublicAccessBlockInput, ...func(*s3.Options)) (*s3.PutPublicAccessBlockOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _PutPublicAccessBlock_Calls() []_s3Client_PutPublicAccessBlock_Call {
@@ -5874,6 +12247,142 @@ func (_recv *s3Client) _PutPublicAccessBlock_Calls() []_s3Client_PutPublicAccess
 	return _dat.PutPublicAccessBlockCalls
 }
 
+func (s3Client) _PutPublicAccessBlock_AllCalls() []_s3Client_PutPublicAccessBlock_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.PutPublicAccessBlockCalls
+}
+
+func (s3Client) _PutPublicAccessBlock_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.PutPublicAccessBlockCalls = []_s3Client_PutPublicAccessBlock_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.PutPublicAccessBlockCalls = []_s3Client_PutPublicAccessBlock_Call{}
+	})
+}
+
+
+func (_recv *s3Client) RenameObject(ctx context.Context, params *s3.RenameObjectInput, optFns ...func(*s3.Options)) (*s3.RenameObjectOutput, error) {
+	if _recv == nil {
+		panic("s3Client.RenameObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.RenameObjectCalls = append(_dat.RenameObjectCalls, _s3Client_RenameObject_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.RenameObjectCalls = append(_all.RenameObjectCalls, _s3Client_RenameObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error)
+	if len(_dat.RenameObjectMocks) > 0 {
+		_fn = _dat.RenameObjectMocks[0]
+		if len(_dat.RenameObjectMocks) > 1 {
+			_dat.RenameObjectMocks = _dat.RenameObjectMocks[1:]
+		}
+	} else if len(_all.RenameObjectMocks) > 0 {
+		_fn = _all.RenameObjectMocks[0]
+		if len(_all.RenameObjectMocks) > 1 {
+			_all.RenameObjectMocks = _all.RenameObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.RenameObject
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _RenameObject_Do(fn func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.RenameObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.RenameObjectMocks = []func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error){}
+	} else if len(_dat.RenameObjectMocks) < 2 {
+		_dat.RenameObjectMocks = []func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error){fn, fn}
+	} else {
+		_dat.RenameObjectMocks = _dat.RenameObjectMocks[:len(_dat.RenameObjectMocks)-1]
+		_dat.RenameObjectMocks = append(_dat.RenameObjectMocks, fn)
+		_dat.RenameObjectMocks = append(_dat.RenameObjectMocks, fn)
+	}
+}
+
+func (s3Client) _RenameObject_DoAll(t *testing.T, fn func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.RenameObjectMocks = []func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error){}
+	} else if len(_dat.RenameObjectMocks) < 2 {
+		_dat.RenameObjectMocks = []func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error){fn, fn}
+	} else {
+		_dat.RenameObjectMocks = _dat.RenameObjectMocks[:len(_dat.RenameObjectMocks)-1]
+		_dat.RenameObjectMocks = append(_dat.RenameObjectMocks, fn)
+		_dat.RenameObjectMocks = append(_dat.RenameObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.RenameObjectMocks = []func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _RenameObject_Stub() {
+	_recv._RenameObject_Do(func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (r0 *s3.RenameObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _RenameObject_StubAll(t *testing.T) {
+	new(s3Client)._RenameObject_DoAll(t, func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (r0 *s3.RenameObjectOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _RenameObject_Return(r0 *s3.RenameObjectOutput, r1 error) {
+	_recv._RenameObject_Do(func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _RenameObject_ReturnAll(t *testing.T, r0 *s3.RenameObjectOutput, r1 error) {
+	new(s3Client)._RenameObject_DoAll(t, func(context.Context, *s3.RenameObjectInput, ...func(*s3.Options)) (*s3.RenameObjectOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _RenameObject_Calls() []_s3Client_RenameObject_Call {
+	if _recv == nil {
+		panic("s3Client.RenameObject: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.RenameObjectCalls
+}
+
+func (s3Client) _RenameObject_AllCalls() []_s3Client_RenameObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.RenameObjectCalls
+}
+
+func (s3Client) _RenameObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.RenameObjectCalls = []_s3Client_RenameObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.RenameObjectCalls = []_s3Client_RenameObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) RestoreObject(ctx context.Context, params *s3.RestoreObjectInput, optFns ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) {
 	if _recv == nil {
 		panic("s3Client.RestoreObject: nil pointer receiver")
@@ -5881,14 +12390,25 @@ func (_recv *s3Client) RestoreObject(ctx context.Context, params *s3.RestoreObje
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.RestoreObjectCalls = append(_dat.RestoreObjectCalls, _s3Client_RestoreObject_Call{ctx, params, optFns})
-	_fn := _recv.Client.RestoreObject
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.RestoreObjectCalls = append(_all.RestoreObjectCalls, _s3Client_RestoreObject_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)
 	if len(_dat.RestoreObjectMocks) > 0 {
 		_fn = _dat.RestoreObjectMocks[0]
 		if len(_dat.RestoreObjectMocks) > 1 {
 			_dat.RestoreObjectMocks = _dat.RestoreObjectMocks[1:]
 		}
+	} else if len(_all.RestoreObjectMocks) > 0 {
+		_fn = _all.RestoreObjectMocks[0]
+		if len(_all.RestoreObjectMocks) > 1 {
+			_all.RestoreObjectMocks = _all.RestoreObjectMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.RestoreObject
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5910,16 +12430,43 @@ func (_recv *s3Client) _RestoreObject_Do(fn func(context.Context, *s3.RestoreObj
 	}
 }
 
-func (_recv *s3Client) _RestoreObject_Stub() {
-	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (r0 *s3.RestoreObjectOutput, r1 error) {
-		return r0, r1
+func (s3Client) _RestoreObject_DoAll(t *testing.T, fn func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.RestoreObjectMocks = []func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error){}
+	} else if len(_dat.RestoreObjectMocks) < 2 {
+		_dat.RestoreObjectMocks = []func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error){fn, fn}
+	} else {
+		_dat.RestoreObjectMocks = _dat.RestoreObjectMocks[:len(_dat.RestoreObjectMocks)-1]
+		_dat.RestoreObjectMocks = append(_dat.RestoreObjectMocks, fn)
+		_dat.RestoreObjectMocks = append(_dat.RestoreObjectMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.RestoreObjectMocks = []func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _RestoreObject_Stub() {
+	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (r0 *s3.RestoreObjectOutput, r1 error) { return })
+}
+
+func (s3Client) _RestoreObject_StubAll(t *testing.T) {
+	new(s3Client)._RestoreObject_DoAll(t, func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (r0 *s3.RestoreObjectOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _RestoreObject_Return(r0 *s3.RestoreObjectOutput, r1 error) {
-	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) {
-		return r0, r1
-	})
+	_recv._RestoreObject_Do(func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _RestoreObject_ReturnAll(t *testing.T, r0 *s3.RestoreObjectOutput, r1 error) {
+	new(s3Client)._RestoreObject_DoAll(t, func(context.Context, *s3.RestoreObjectInput, ...func(*s3.Options)) (*s3.RestoreObjectOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _RestoreObject_Calls() []_s3Client_RestoreObject_Call {
@@ -5932,6 +12479,26 @@ func (_recv *s3Client) _RestoreObject_Calls() []_s3Client_RestoreObject_Call {
 	return _dat.RestoreObjectCalls
 }
 
+func (s3Client) _RestoreObject_AllCalls() []_s3Client_RestoreObject_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.RestoreObjectCalls
+}
+
+func (s3Client) _RestoreObject_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.RestoreObjectCalls = []_s3Client_RestoreObject_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.RestoreObjectCalls = []_s3Client_RestoreObject_Call{}
+	})
+}
+
+
 func (_recv *s3Client) SelectObjectContent(ctx context.Context, params *s3.SelectObjectContentInput, optFns ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) {
 	if _recv == nil {
 		panic("s3Client.SelectObjectContent: nil pointer receiver")
@@ -5939,14 +12506,25 @@ func (_recv *s3Client) SelectObjectContent(ctx context.Context, params *s3.Selec
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.SelectObjectContentCalls = append(_dat.SelectObjectContentCalls, _s3Client_SelectObjectContent_Call{ctx, params, optFns})
-	_fn := _recv.Client.SelectObjectContent
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.SelectObjectContentCalls = append(_all.SelectObjectContentCalls, _s3Client_SelectObjectContent_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)
 	if len(_dat.SelectObjectContentMocks) > 0 {
 		_fn = _dat.SelectObjectContentMocks[0]
 		if len(_dat.SelectObjectContentMocks) > 1 {
 			_dat.SelectObjectContentMocks = _dat.SelectObjectContentMocks[1:]
 		}
+	} else if len(_all.SelectObjectContentMocks) > 0 {
+		_fn = _all.SelectObjectContentMocks[0]
+		if len(_all.SelectObjectContentMocks) > 1 {
+			_all.SelectObjectContentMocks = _all.SelectObjectContentMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.SelectObjectContent
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -5968,16 +12546,43 @@ func (_recv *s3Client) _SelectObjectContent_Do(fn func(context.Context, *s3.Sele
 	}
 }
 
-func (_recv *s3Client) _SelectObjectContent_Stub() {
-	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (r0 *s3.SelectObjectContentOutput, r1 error) {
-		return r0, r1
+func (s3Client) _SelectObjectContent_DoAll(t *testing.T, fn func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.SelectObjectContentMocks = []func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error){}
+	} else if len(_dat.SelectObjectContentMocks) < 2 {
+		_dat.SelectObjectContentMocks = []func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error){fn, fn}
+	} else {
+		_dat.SelectObjectContentMocks = _dat.SelectObjectContentMocks[:len(_dat.SelectObjectContentMocks)-1]
+		_dat.SelectObjectContentMocks = append(_dat.SelectObjectContentMocks, fn)
+		_dat.SelectObjectContentMocks = append(_dat.SelectObjectContentMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.SelectObjectContentMocks = []func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _SelectObjectContent_Stub() {
+	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (r0 *s3.SelectObjectContentOutput, r1 error) { return })
+}
+
+func (s3Client) _SelectObjectContent_StubAll(t *testing.T) {
+	new(s3Client)._SelectObjectContent_DoAll(t, func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (r0 *s3.SelectObjectContentOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _SelectObjectContent_Return(r0 *s3.SelectObjectContentOutput, r1 error) {
-	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) {
-		return r0, r1
-	})
+	_recv._SelectObjectContent_Do(func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _SelectObjectContent_ReturnAll(t *testing.T, r0 *s3.SelectObjectContentOutput, r1 error) {
+	new(s3Client)._SelectObjectContent_DoAll(t, func(context.Context, *s3.SelectObjectContentInput, ...func(*s3.Options)) (*s3.SelectObjectContentOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _SelectObjectContent_Calls() []_s3Client_SelectObjectContent_Call {
@@ -5990,6 +12595,374 @@ func (_recv *s3Client) _SelectObjectContent_Calls() []_s3Client_SelectObjectCont
 	return _dat.SelectObjectContentCalls
 }
 
+func (s3Client) _SelectObjectContent_AllCalls() []_s3Client_SelectObjectContent_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.SelectObjectContentCalls
+}
+
+func (s3Client) _SelectObjectContent_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.SelectObjectContentCalls = []_s3Client_SelectObjectContent_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.SelectObjectContentCalls = []_s3Client_SelectObjectContent_Call{}
+	})
+}
+
+
+func (_recv *s3Client) UpdateBucketMetadataInventoryTableConfiguration(ctx context.Context, params *s3.UpdateBucketMetadataInventoryTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataInventoryTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.UpdateBucketMetadataInventoryTableConfigurationCalls = append(_dat.UpdateBucketMetadataInventoryTableConfigurationCalls, _s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.UpdateBucketMetadataInventoryTableConfigurationCalls = append(_all.UpdateBucketMetadataInventoryTableConfigurationCalls, _s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error)
+	if len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks) > 0 {
+		_fn = _dat.UpdateBucketMetadataInventoryTableConfigurationMocks[0]
+		if len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks) > 1 {
+			_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = _dat.UpdateBucketMetadataInventoryTableConfigurationMocks[1:]
+		}
+	} else if len(_all.UpdateBucketMetadataInventoryTableConfigurationMocks) > 0 {
+		_fn = _all.UpdateBucketMetadataInventoryTableConfigurationMocks[0]
+		if len(_all.UpdateBucketMetadataInventoryTableConfigurationMocks) > 1 {
+			_all.UpdateBucketMetadataInventoryTableConfigurationMocks = _all.UpdateBucketMetadataInventoryTableConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.UpdateBucketMetadataInventoryTableConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataInventoryTableConfiguration_Do(fn func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataInventoryTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error){}
+	} else if len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks) < 2 {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = _dat.UpdateBucketMetadataInventoryTableConfigurationMocks[:len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks)-1]
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = append(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks, fn)
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = append(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _UpdateBucketMetadataInventoryTableConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error){}
+	} else if len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks) < 2 {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = _dat.UpdateBucketMetadataInventoryTableConfigurationMocks[:len(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks)-1]
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = append(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks, fn)
+		_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = append(_dat.UpdateBucketMetadataInventoryTableConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.UpdateBucketMetadataInventoryTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataInventoryTableConfiguration_Stub() {
+	_recv._UpdateBucketMetadataInventoryTableConfiguration_Do(func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.UpdateBucketMetadataInventoryTableConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _UpdateBucketMetadataInventoryTableConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._UpdateBucketMetadataInventoryTableConfiguration_DoAll(t, func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.UpdateBucketMetadataInventoryTableConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataInventoryTableConfiguration_Return(r0 *s3.UpdateBucketMetadataInventoryTableConfigurationOutput, r1 error) {
+	_recv._UpdateBucketMetadataInventoryTableConfiguration_Do(func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _UpdateBucketMetadataInventoryTableConfiguration_ReturnAll(t *testing.T, r0 *s3.UpdateBucketMetadataInventoryTableConfigurationOutput, r1 error) {
+	new(s3Client)._UpdateBucketMetadataInventoryTableConfiguration_DoAll(t, func(context.Context, *s3.UpdateBucketMetadataInventoryTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataInventoryTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataInventoryTableConfiguration_Calls() []_s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataInventoryTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateBucketMetadataInventoryTableConfigurationCalls
+}
+
+func (s3Client) _UpdateBucketMetadataInventoryTableConfiguration_AllCalls() []_s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateBucketMetadataInventoryTableConfigurationCalls
+}
+
+func (s3Client) _UpdateBucketMetadataInventoryTableConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.UpdateBucketMetadataInventoryTableConfigurationCalls = []_s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.UpdateBucketMetadataInventoryTableConfigurationCalls = []_s3Client_UpdateBucketMetadataInventoryTableConfiguration_Call{}
+	})
+}
+
+
+func (_recv *s3Client) UpdateBucketMetadataJournalTableConfiguration(ctx context.Context, params *s3.UpdateBucketMetadataJournalTableConfigurationInput, optFns ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error) {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataJournalTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.UpdateBucketMetadataJournalTableConfigurationCalls = append(_dat.UpdateBucketMetadataJournalTableConfigurationCalls, _s3Client_UpdateBucketMetadataJournalTableConfiguration_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.UpdateBucketMetadataJournalTableConfigurationCalls = append(_all.UpdateBucketMetadataJournalTableConfigurationCalls, _s3Client_UpdateBucketMetadataJournalTableConfiguration_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error)
+	if len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks) > 0 {
+		_fn = _dat.UpdateBucketMetadataJournalTableConfigurationMocks[0]
+		if len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks) > 1 {
+			_dat.UpdateBucketMetadataJournalTableConfigurationMocks = _dat.UpdateBucketMetadataJournalTableConfigurationMocks[1:]
+		}
+	} else if len(_all.UpdateBucketMetadataJournalTableConfigurationMocks) > 0 {
+		_fn = _all.UpdateBucketMetadataJournalTableConfigurationMocks[0]
+		if len(_all.UpdateBucketMetadataJournalTableConfigurationMocks) > 1 {
+			_all.UpdateBucketMetadataJournalTableConfigurationMocks = _all.UpdateBucketMetadataJournalTableConfigurationMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.UpdateBucketMetadataJournalTableConfiguration
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataJournalTableConfiguration_Do(fn func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataJournalTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error){}
+	} else if len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks) < 2 {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = _dat.UpdateBucketMetadataJournalTableConfigurationMocks[:len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks)-1]
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = append(_dat.UpdateBucketMetadataJournalTableConfigurationMocks, fn)
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = append(_dat.UpdateBucketMetadataJournalTableConfigurationMocks, fn)
+	}
+}
+
+func (s3Client) _UpdateBucketMetadataJournalTableConfiguration_DoAll(t *testing.T, fn func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error){}
+	} else if len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks) < 2 {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error){fn, fn}
+	} else {
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = _dat.UpdateBucketMetadataJournalTableConfigurationMocks[:len(_dat.UpdateBucketMetadataJournalTableConfigurationMocks)-1]
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = append(_dat.UpdateBucketMetadataJournalTableConfigurationMocks, fn)
+		_dat.UpdateBucketMetadataJournalTableConfigurationMocks = append(_dat.UpdateBucketMetadataJournalTableConfigurationMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.UpdateBucketMetadataJournalTableConfigurationMocks = []func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataJournalTableConfiguration_Stub() {
+	_recv._UpdateBucketMetadataJournalTableConfiguration_Do(func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.UpdateBucketMetadataJournalTableConfigurationOutput, r1 error) { return })
+}
+
+func (s3Client) _UpdateBucketMetadataJournalTableConfiguration_StubAll(t *testing.T) {
+	new(s3Client)._UpdateBucketMetadataJournalTableConfiguration_DoAll(t, func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (r0 *s3.UpdateBucketMetadataJournalTableConfigurationOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataJournalTableConfiguration_Return(r0 *s3.UpdateBucketMetadataJournalTableConfigurationOutput, r1 error) {
+	_recv._UpdateBucketMetadataJournalTableConfiguration_Do(func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _UpdateBucketMetadataJournalTableConfiguration_ReturnAll(t *testing.T, r0 *s3.UpdateBucketMetadataJournalTableConfigurationOutput, r1 error) {
+	new(s3Client)._UpdateBucketMetadataJournalTableConfiguration_DoAll(t, func(context.Context, *s3.UpdateBucketMetadataJournalTableConfigurationInput, ...func(*s3.Options)) (*s3.UpdateBucketMetadataJournalTableConfigurationOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _UpdateBucketMetadataJournalTableConfiguration_Calls() []_s3Client_UpdateBucketMetadataJournalTableConfiguration_Call {
+	if _recv == nil {
+		panic("s3Client.UpdateBucketMetadataJournalTableConfiguration: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateBucketMetadataJournalTableConfigurationCalls
+}
+
+func (s3Client) _UpdateBucketMetadataJournalTableConfiguration_AllCalls() []_s3Client_UpdateBucketMetadataJournalTableConfiguration_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateBucketMetadataJournalTableConfigurationCalls
+}
+
+func (s3Client) _UpdateBucketMetadataJournalTableConfiguration_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.UpdateBucketMetadataJournalTableConfigurationCalls = []_s3Client_UpdateBucketMetadataJournalTableConfiguration_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.UpdateBucketMetadataJournalTableConfigurationCalls = []_s3Client_UpdateBucketMetadataJournalTableConfiguration_Call{}
+	})
+}
+
+
+func (_recv *s3Client) UpdateObjectEncryption(ctx context.Context, params *s3.UpdateObjectEncryptionInput, optFns ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error) {
+	if _recv == nil {
+		panic("s3Client.UpdateObjectEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	_dat.mutex.Lock()
+	_dat.UpdateObjectEncryptionCalls = append(_dat.UpdateObjectEncryptionCalls, _s3Client_UpdateObjectEncryption_Call{ctx, params, optFns})
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.UpdateObjectEncryptionCalls = append(_all.UpdateObjectEncryptionCalls, _s3Client_UpdateObjectEncryption_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error)
+	if len(_dat.UpdateObjectEncryptionMocks) > 0 {
+		_fn = _dat.UpdateObjectEncryptionMocks[0]
+		if len(_dat.UpdateObjectEncryptionMocks) > 1 {
+			_dat.UpdateObjectEncryptionMocks = _dat.UpdateObjectEncryptionMocks[1:]
+		}
+	} else if len(_all.UpdateObjectEncryptionMocks) > 0 {
+		_fn = _all.UpdateObjectEncryptionMocks[0]
+		if len(_all.UpdateObjectEncryptionMocks) > 1 {
+			_all.UpdateObjectEncryptionMocks = _all.UpdateObjectEncryptionMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.UpdateObjectEncryption
+	}
+	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
+	return _fn(ctx, params, optFns...)
+}
+
+func (_recv *s3Client) _UpdateObjectEncryption_Do(fn func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error)) {
+	if _recv == nil {
+		panic("s3Client.UpdateObjectEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateObjectEncryptionMocks = []func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error){}
+	} else if len(_dat.UpdateObjectEncryptionMocks) < 2 {
+		_dat.UpdateObjectEncryptionMocks = []func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.UpdateObjectEncryptionMocks = _dat.UpdateObjectEncryptionMocks[:len(_dat.UpdateObjectEncryptionMocks)-1]
+		_dat.UpdateObjectEncryptionMocks = append(_dat.UpdateObjectEncryptionMocks, fn)
+		_dat.UpdateObjectEncryptionMocks = append(_dat.UpdateObjectEncryptionMocks, fn)
+	}
+}
+
+func (s3Client) _UpdateObjectEncryption_DoAll(t *testing.T, fn func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UpdateObjectEncryptionMocks = []func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error){}
+	} else if len(_dat.UpdateObjectEncryptionMocks) < 2 {
+		_dat.UpdateObjectEncryptionMocks = []func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error){fn, fn}
+	} else {
+		_dat.UpdateObjectEncryptionMocks = _dat.UpdateObjectEncryptionMocks[:len(_dat.UpdateObjectEncryptionMocks)-1]
+		_dat.UpdateObjectEncryptionMocks = append(_dat.UpdateObjectEncryptionMocks, fn)
+		_dat.UpdateObjectEncryptionMocks = append(_dat.UpdateObjectEncryptionMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.UpdateObjectEncryptionMocks = []func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error){}
+			_dat.once = sync.Once{}
+		})
+	})
+}
+
+func (_recv *s3Client) _UpdateObjectEncryption_Stub() {
+	_recv._UpdateObjectEncryption_Do(func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (r0 *s3.UpdateObjectEncryptionOutput, r1 error) { return })
+}
+
+func (s3Client) _UpdateObjectEncryption_StubAll(t *testing.T) {
+	new(s3Client)._UpdateObjectEncryption_DoAll(t, func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (r0 *s3.UpdateObjectEncryptionOutput, r1 error) { return })
+}
+
+func (_recv *s3Client) _UpdateObjectEncryption_Return(r0 *s3.UpdateObjectEncryptionOutput, r1 error) {
+	_recv._UpdateObjectEncryption_Do(func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _UpdateObjectEncryption_ReturnAll(t *testing.T, r0 *s3.UpdateObjectEncryptionOutput, r1 error) {
+	new(s3Client)._UpdateObjectEncryption_DoAll(t, func(context.Context, *s3.UpdateObjectEncryptionInput, ...func(*s3.Options)) (*s3.UpdateObjectEncryptionOutput, error) { return r0, r1 })
+}
+
+func (_recv *s3Client) _UpdateObjectEncryption_Calls() []_s3Client_UpdateObjectEncryption_Call {
+	if _recv == nil {
+		panic("s3Client.UpdateObjectEncryption: nil pointer receiver")
+	}
+	_dat := _s3ClientPtrData(_recv)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateObjectEncryptionCalls
+}
+
+func (s3Client) _UpdateObjectEncryption_AllCalls() []_s3Client_UpdateObjectEncryption_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UpdateObjectEncryptionCalls
+}
+
+func (s3Client) _UpdateObjectEncryption_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.UpdateObjectEncryptionCalls = []_s3Client_UpdateObjectEncryption_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.UpdateObjectEncryptionCalls = []_s3Client_UpdateObjectEncryption_Call{}
+	})
+}
+
+
 func (_recv *s3Client) UploadPart(ctx context.Context, params *s3.UploadPartInput, optFns ...func(*s3.Options)) (*s3.UploadPartOutput, error) {
 	if _recv == nil {
 		panic("s3Client.UploadPart: nil pointer receiver")
@@ -5997,14 +12970,25 @@ func (_recv *s3Client) UploadPart(ctx context.Context, params *s3.UploadPartInpu
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.UploadPartCalls = append(_dat.UploadPartCalls, _s3Client_UploadPart_Call{ctx, params, optFns})
-	_fn := _recv.Client.UploadPart
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.UploadPartCalls = append(_all.UploadPartCalls, _s3Client_UploadPart_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error)
 	if len(_dat.UploadPartMocks) > 0 {
 		_fn = _dat.UploadPartMocks[0]
 		if len(_dat.UploadPartMocks) > 1 {
 			_dat.UploadPartMocks = _dat.UploadPartMocks[1:]
 		}
+	} else if len(_all.UploadPartMocks) > 0 {
+		_fn = _all.UploadPartMocks[0]
+		if len(_all.UploadPartMocks) > 1 {
+			_all.UploadPartMocks = _all.UploadPartMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.UploadPart
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -6026,16 +13010,43 @@ func (_recv *s3Client) _UploadPart_Do(fn func(context.Context, *s3.UploadPartInp
 	}
 }
 
-func (_recv *s3Client) _UploadPart_Stub() {
-	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (r0 *s3.UploadPartOutput, r1 error) {
-		return r0, r1
+func (s3Client) _UploadPart_DoAll(t *testing.T, fn func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UploadPartMocks = []func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error){}
+	} else if len(_dat.UploadPartMocks) < 2 {
+		_dat.UploadPartMocks = []func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error){fn, fn}
+	} else {
+		_dat.UploadPartMocks = _dat.UploadPartMocks[:len(_dat.UploadPartMocks)-1]
+		_dat.UploadPartMocks = append(_dat.UploadPartMocks, fn)
+		_dat.UploadPartMocks = append(_dat.UploadPartMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.UploadPartMocks = []func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _UploadPart_Stub() {
+	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (r0 *s3.UploadPartOutput, r1 error) { return })
+}
+
+func (s3Client) _UploadPart_StubAll(t *testing.T) {
+	new(s3Client)._UploadPart_DoAll(t, func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (r0 *s3.UploadPartOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _UploadPart_Return(r0 *s3.UploadPartOutput, r1 error) {
-	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error) {
-		return r0, r1
-	})
+	_recv._UploadPart_Do(func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _UploadPart_ReturnAll(t *testing.T, r0 *s3.UploadPartOutput, r1 error) {
+	new(s3Client)._UploadPart_DoAll(t, func(context.Context, *s3.UploadPartInput, ...func(*s3.Options)) (*s3.UploadPartOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _UploadPart_Calls() []_s3Client_UploadPart_Call {
@@ -6048,6 +13059,26 @@ func (_recv *s3Client) _UploadPart_Calls() []_s3Client_UploadPart_Call {
 	return _dat.UploadPartCalls
 }
 
+func (s3Client) _UploadPart_AllCalls() []_s3Client_UploadPart_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UploadPartCalls
+}
+
+func (s3Client) _UploadPart_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.UploadPartCalls = []_s3Client_UploadPart_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.UploadPartCalls = []_s3Client_UploadPart_Call{}
+	})
+}
+
+
 func (_recv *s3Client) UploadPartCopy(ctx context.Context, params *s3.UploadPartCopyInput, optFns ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) {
 	if _recv == nil {
 		panic("s3Client.UploadPartCopy: nil pointer receiver")
@@ -6055,14 +13086,25 @@ func (_recv *s3Client) UploadPartCopy(ctx context.Context, params *s3.UploadPart
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.UploadPartCopyCalls = append(_dat.UploadPartCopyCalls, _s3Client_UploadPartCopy_Call{ctx, params, optFns})
-	_fn := _recv.Client.UploadPartCopy
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.UploadPartCopyCalls = append(_all.UploadPartCopyCalls, _s3Client_UploadPartCopy_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)
 	if len(_dat.UploadPartCopyMocks) > 0 {
 		_fn = _dat.UploadPartCopyMocks[0]
 		if len(_dat.UploadPartCopyMocks) > 1 {
 			_dat.UploadPartCopyMocks = _dat.UploadPartCopyMocks[1:]
 		}
+	} else if len(_all.UploadPartCopyMocks) > 0 {
+		_fn = _all.UploadPartCopyMocks[0]
+		if len(_all.UploadPartCopyMocks) > 1 {
+			_all.UploadPartCopyMocks = _all.UploadPartCopyMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.UploadPartCopy
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -6084,16 +13126,43 @@ func (_recv *s3Client) _UploadPartCopy_Do(fn func(context.Context, *s3.UploadPar
 	}
 }
 
-func (_recv *s3Client) _UploadPartCopy_Stub() {
-	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (r0 *s3.UploadPartCopyOutput, r1 error) {
-		return r0, r1
+func (s3Client) _UploadPartCopy_DoAll(t *testing.T, fn func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.UploadPartCopyMocks = []func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error){}
+	} else if len(_dat.UploadPartCopyMocks) < 2 {
+		_dat.UploadPartCopyMocks = []func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error){fn, fn}
+	} else {
+		_dat.UploadPartCopyMocks = _dat.UploadPartCopyMocks[:len(_dat.UploadPartCopyMocks)-1]
+		_dat.UploadPartCopyMocks = append(_dat.UploadPartCopyMocks, fn)
+		_dat.UploadPartCopyMocks = append(_dat.UploadPartCopyMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.UploadPartCopyMocks = []func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _UploadPartCopy_Stub() {
+	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (r0 *s3.UploadPartCopyOutput, r1 error) { return })
+}
+
+func (s3Client) _UploadPartCopy_StubAll(t *testing.T) {
+	new(s3Client)._UploadPartCopy_DoAll(t, func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (r0 *s3.UploadPartCopyOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _UploadPartCopy_Return(r0 *s3.UploadPartCopyOutput, r1 error) {
-	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) {
-		return r0, r1
-	})
+	_recv._UploadPartCopy_Do(func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _UploadPartCopy_ReturnAll(t *testing.T, r0 *s3.UploadPartCopyOutput, r1 error) {
+	new(s3Client)._UploadPartCopy_DoAll(t, func(context.Context, *s3.UploadPartCopyInput, ...func(*s3.Options)) (*s3.UploadPartCopyOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _UploadPartCopy_Calls() []_s3Client_UploadPartCopy_Call {
@@ -6106,6 +13175,26 @@ func (_recv *s3Client) _UploadPartCopy_Calls() []_s3Client_UploadPartCopy_Call {
 	return _dat.UploadPartCopyCalls
 }
 
+func (s3Client) _UploadPartCopy_AllCalls() []_s3Client_UploadPartCopy_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.UploadPartCopyCalls
+}
+
+func (s3Client) _UploadPartCopy_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.UploadPartCopyCalls = []_s3Client_UploadPartCopy_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.UploadPartCopyCalls = []_s3Client_UploadPartCopy_Call{}
+	})
+}
+
+
 func (_recv *s3Client) WriteGetObjectResponse(ctx context.Context, params *s3.WriteGetObjectResponseInput, optFns ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) {
 	if _recv == nil {
 		panic("s3Client.WriteGetObjectResponse: nil pointer receiver")
@@ -6113,14 +13202,25 @@ func (_recv *s3Client) WriteGetObjectResponse(ctx context.Context, params *s3.Wr
 	_dat := _s3ClientPtrData(_recv)
 	_dat.mutex.Lock()
 	_dat.WriteGetObjectResponseCalls = append(_dat.WriteGetObjectResponseCalls, _s3Client_WriteGetObjectResponse_Call{ctx, params, optFns})
-	_fn := _recv.Client.WriteGetObjectResponse
+	_all := _s3ClientPtrData(nil)
+	_all.mutex.Lock()
+	_all.WriteGetObjectResponseCalls = append(_all.WriteGetObjectResponseCalls, _s3Client_WriteGetObjectResponse_Call{ctx, params, optFns})
+	var _fn func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)
 	if len(_dat.WriteGetObjectResponseMocks) > 0 {
 		_fn = _dat.WriteGetObjectResponseMocks[0]
 		if len(_dat.WriteGetObjectResponseMocks) > 1 {
 			_dat.WriteGetObjectResponseMocks = _dat.WriteGetObjectResponseMocks[1:]
 		}
+	} else if len(_all.WriteGetObjectResponseMocks) > 0 {
+		_fn = _all.WriteGetObjectResponseMocks[0]
+		if len(_all.WriteGetObjectResponseMocks) > 1 {
+			_all.WriteGetObjectResponseMocks = _all.WriteGetObjectResponseMocks[1:]
+		}
+	} else {
+		_fn = _recv.Client.WriteGetObjectResponse
 	}
 	_dat.mutex.Unlock()
+	_all.mutex.Unlock()
 	return _fn(ctx, params, optFns...)
 }
 
@@ -6142,16 +13242,43 @@ func (_recv *s3Client) _WriteGetObjectResponse_Do(fn func(context.Context, *s3.W
 	}
 }
 
-func (_recv *s3Client) _WriteGetObjectResponse_Stub() {
-	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (r0 *s3.WriteGetObjectResponseOutput, r1 error) {
-		return r0, r1
+func (s3Client) _WriteGetObjectResponse_DoAll(t *testing.T, fn func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error)) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	if fn == nil {
+		_dat.WriteGetObjectResponseMocks = []func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error){}
+	} else if len(_dat.WriteGetObjectResponseMocks) < 2 {
+		_dat.WriteGetObjectResponseMocks = []func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error){fn, fn}
+	} else {
+		_dat.WriteGetObjectResponseMocks = _dat.WriteGetObjectResponseMocks[:len(_dat.WriteGetObjectResponseMocks)-1]
+		_dat.WriteGetObjectResponseMocks = append(_dat.WriteGetObjectResponseMocks, fn)
+		_dat.WriteGetObjectResponseMocks = append(_dat.WriteGetObjectResponseMocks, fn)
+	}
+	_dat.once.Do(func() {
+		t.Cleanup(func() {
+			defer _dat.mutex.Unlock()
+			_dat.mutex.Lock()
+			_dat.WriteGetObjectResponseMocks = []func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error){}
+			_dat.once = sync.Once{}
+		})
 	})
 }
 
+func (_recv *s3Client) _WriteGetObjectResponse_Stub() {
+	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (r0 *s3.WriteGetObjectResponseOutput, r1 error) { return })
+}
+
+func (s3Client) _WriteGetObjectResponse_StubAll(t *testing.T) {
+	new(s3Client)._WriteGetObjectResponse_DoAll(t, func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (r0 *s3.WriteGetObjectResponseOutput, r1 error) { return })
+}
+
 func (_recv *s3Client) _WriteGetObjectResponse_Return(r0 *s3.WriteGetObjectResponseOutput, r1 error) {
-	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) {
-		return r0, r1
-	})
+	_recv._WriteGetObjectResponse_Do(func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) { return r0, r1 })
+}
+
+func (s3Client) _WriteGetObjectResponse_ReturnAll(t *testing.T, r0 *s3.WriteGetObjectResponseOutput, r1 error) {
+	new(s3Client)._WriteGetObjectResponse_DoAll(t, func(context.Context, *s3.WriteGetObjectResponseInput, ...func(*s3.Options)) (*s3.WriteGetObjectResponseOutput, error) { return r0, r1 })
 }
 
 func (_recv *s3Client) _WriteGetObjectResponse_Calls() []_s3Client_WriteGetObjectResponse_Call {
@@ -6162,5 +13289,24 @@ func (_recv *s3Client) _WriteGetObjectResponse_Calls() []_s3Client_WriteGetObjec
 	defer _dat.mutex.Unlock()
 	_dat.mutex.Lock()
 	return _dat.WriteGetObjectResponseCalls
+}
+
+func (s3Client) _WriteGetObjectResponse_AllCalls() []_s3Client_WriteGetObjectResponse_Call {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	return _dat.WriteGetObjectResponseCalls
+}
+
+func (s3Client) _WriteGetObjectResponse_BubbleCalls(t *testing.T) {
+	_dat := _s3ClientPtrData(nil)
+	defer _dat.mutex.Unlock()
+	_dat.mutex.Lock()
+	_dat.WriteGetObjectResponseCalls = []_s3Client_WriteGetObjectResponse_Call{}
+	t.Cleanup(func() {
+		defer _dat.mutex.Unlock()
+		_dat.mutex.Lock()
+		_dat.WriteGetObjectResponseCalls = []_s3Client_WriteGetObjectResponse_Call{}
+	})
 }
 

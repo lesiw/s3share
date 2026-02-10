@@ -18,7 +18,8 @@ import (
 
 var errHelp = errors.New(`s3share [file]
 
-Uploads files to an S3 bucket specified in the environment variable S3SHARE_BUCKET.`)
+Uploads files to an S3 bucket specified in the
+environment variable S3SHARE_BUCKET.`)
 var errEnvNotSet = errors.New("S3SHARE_BUCKET environment variable not set.")
 
 type Uploader struct {
@@ -52,7 +53,10 @@ func (u *Uploader) uploadFile(path string) (string, error) {
 	}
 
 	if _, err := u.stat(path); err != nil {
-		return "", fmt.Errorf("file does not exist or cannot be read: %s", path)
+		return "", fmt.Errorf(
+			"file does not exist or cannot be read: %s",
+			path,
+		)
 	}
 
 	file, err := u.openFile(path)
@@ -66,7 +70,9 @@ func (u *Uploader) uploadFile(path string) (string, error) {
 		return "", fmt.Errorf("error computing file hash: %w", err)
 	}
 
-	key := base64.RawURLEncoding.EncodeToString(sum.Sum(nil)) + "/" + filepath.Base(path)
+	key := base64.RawURLEncoding.EncodeToString(
+		sum.Sum(nil),
+	) + "/" + filepath.Base(path)
 	if ok, err := u.objectExists(key); err != nil {
 		return "", err
 	} else if ok {
@@ -90,7 +96,7 @@ func (u *Uploader) uploadFile(path string) (string, error) {
 	return objectUrl(u.Bucket, key), nil
 }
 
-func objectUrl(bucket string, key string) string {
+func objectUrl(bucket, key string) string {
 	return fmt.Sprintf("https://%s.s3.amazonaws.com/%s", bucket, key)
 }
 

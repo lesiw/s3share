@@ -25,7 +25,7 @@ func run(u *Uploader) error {
 		if err != nil {
 			return err
 		}
-		u.println(url)
+		_, _ = u.println(url)
 	}
 	return nil
 }

@@ -48,12 +48,16 @@ func TestRunSetupClientError(t *testing.T) {
 
 func TestRunCallsUploadFile(t *testing.T) {
 	r := newTestRun(t)
-	r.Uploader.Args = &[]string{"s3share", "file1", "file2", "file with spaces"}
+	r.Uploader.Args = &[]string{
+		"s3share", "file1", "file2", "file with spaces",
+	}
 
 	err := run(r.Uploader)
 
 	assert.NilError(t, err)
-	assert.DeepEqual(t, r.UploadFileCalls, []string{"file1", "file2", "file with spaces"})
+	assert.DeepEqual(t, r.UploadFileCalls, []string{
+		"file1", "file2", "file with spaces",
+	})
 }
 
 func TestRunUploadFileError(t *testing.T) {
@@ -156,7 +160,9 @@ func TestUploadFileObjectPutError(t *testing.T) {
 	r.Uploader.ObjectExists = func(string) (bool, error) {
 		return false, nil
 	}
-	r.Uploader.PutObject = func(in *s3.PutObjectInput) (*s3manager.UploadOutput, error) {
+	r.Uploader.PutObject = func(
+		in *s3.PutObjectInput,
+	) (*s3manager.UploadOutput, error) {
 		r.PutObjectCalls = append(r.PutObjectCalls, in)
 		return nil, putErr
 	}

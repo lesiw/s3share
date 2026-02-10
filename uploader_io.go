@@ -62,7 +62,9 @@ func (u *Uploader) setupClient() error {
 	return nil
 }
 
-func (u *Uploader) headObject(in *s3.HeadObjectInput) (*s3.HeadObjectOutput, error) {
+func (u *Uploader) headObject(
+	in *s3.HeadObjectInput,
+) (*s3.HeadObjectOutput, error) {
 	if u.Client == nil {
 		if err := u.setupClient(); err != nil {
 			return nil, err
@@ -79,7 +81,9 @@ func (u *Uploader) openFile(path string) (io.ReadSeekCloser, error) {
 	return os.Open(path)
 }
 
-func (u *Uploader) putObject(in *s3.PutObjectInput) (*s3manager.UploadOutput, error) {
+func (u *Uploader) putObject(
+	in *s3.PutObjectInput,
+) (*s3manager.UploadOutput, error) {
 	if u.PutObject != nil {
 		return u.PutObject(in)
 	}

@@ -68,7 +68,9 @@ func newTestRun(t *testing.T) *testRun {
 	u.OpenFile = func(string) (io.ReadSeekCloser, error) {
 		return run.MockFile, nil
 	}
-	u.PutObject = func(in *s3.PutObjectInput) (*s3manager.UploadOutput, error) {
+	u.PutObject = func(
+		in *s3.PutObjectInput,
+	) (*s3manager.UploadOutput, error) {
 		run.PutObjectCalls = append(run.PutObjectCalls, in)
 		return &s3manager.UploadOutput{}, nil
 	}
